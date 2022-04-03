@@ -1,0 +1,68 @@
+---
+title: "2.1 Time Series of Returns"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Definition 2.1 (Simple return) Let $P_{t}$ be the price of an asset at time $t$. Given a time scale $\tau$, the $\tau$-period simple return at time $t, R_{t}(\tau)$, is the rate of change in the price obtained from holding the asset from time $t-\tau$ to time $t$ :
+$$
+R_{t}(\tau)=\frac{P_{t}-P_{t-\tau}}{P_{t-\tau}}=\frac{P_{t}}{P_{t-\tau}}-1
+$$
+The $\tau$-period simple gross return at time $t$ is $R_{t}(\tau)+1$. If $\tau=1$ we have a one-period simple return (respectively, a simple gross return), and denote it $R_{t}$ (resp., $R_{t}+1$ ).
+
+Proposition 2.1 The $\tau$-period simple gross return at time t equals the product of $\tau$ one-period simple gross returns at times $t-\tau+1$ to $t$.
+Proof
+$$
+\begin{aligned}
+R_{t}(\tau)+1 &=\frac{P_{t}}{P_{t-\tau}}=\frac{P_{t}}{P_{t-1}} \cdot \frac{P_{t-1}}{P_{t-2}} \cdots \frac{P_{t-\tau+1}}{P_{t-\tau}} \\
+&=\left(1+R_{t}\right) \cdot\left(1+R_{t-1}\right) \cdots\left(1+R_{t-\tau+1}\right)
+\end{aligned}
+$$
+
+$$
+\text { Annualized }\left(R_{t}(\tau)\right)=\left(\prod_{j=0}^{\tau-1}\left(1+R_{t-j}\right)\right)^{1 / \tau}-1$$
+
+
+$$
+\text { Annualized }\left(R_{t}(\tau)\right)=\exp \left(\frac{1}{\tau} \sum_{j=0}^{\tau-1} \ln \left(1+R_{t-j}\right)\right)-1
+$$
+
+Definition $2.2$ (log returns) The continuously compounded return or log return $r_{t}$ of an asset is defined as the natural logarithm of its simple gross return:
+$$
+r_{t}=\ln \left(1+R_{t}\right)=\ln \left(\frac{P_{t}}{P_{t-1}}\right)=\ln P_{t}-\ln P_{t-1}
+$$
+Then, for a $\tau$-period log return, we have
+$$
+\begin{aligned}
+r_{t}(\tau) &=\ln \left(1+R_{t}(\tau)\right)=\ln \left(\left(1+R_{t}\right)\left(1+R_{t-1}\right) \cdots\left(1+R_{t-\tau+1}\right)\right) \\
+&=\ln \left(1+R_{t}\right)+\ln \left(1+R_{t-1}\right)+\cdots+\ln \left(1+R_{t-\tau+1}\right) \\
+&=r_{t}+r_{t-1}+\cdots+r_{t-\tau+1}
+\end{aligned}
+$$
+
+
+- Returns with dividends
+
+$r_t=\frac{p_t+d_t}{p_{t-1}}-1$
+
+- Excess return. It is the difference between the return of an asset $A$ and the return of a reference asset $O$, usually at a risk-free rate. The simple excess return on asset $A$ would be then $Z_{t}^{A}=R_{t}^{A}-R_{t}^{O}$; and the logarithmic excess return is $z_{t}^{A}=r_{t}^{A}-r_{t}^{O}$. The excess return can be thought of as the payoff of a portfolio going long in the asset and short on the reference.
+
+- Portfolio return. Let $\mathscr{P}$ be a portfolio of $N$ assets, and let $n_{i}$ be the number of shares of asset $i$ in $\mathscr{P}$, for $i=1, \ldots, N$. Then, at a certain time $t$, the net value of $\mathscr{P}$ is $P_{t}^{\mathscr{P}}=\sum_{i=1}^{N} n_{i} P_{t}^{i}$, where $P_{t}^{i}$ is the price of asset $i$ at time $t$. Applying Eq. (2.3), we get that the $\tau$-period simple return of $\mathscr{P}$ at time $t$, denoted $R_{t}^{\mathscr{P}}(\tau)$, is given by
+$$
+R_{t}^{\mathscr{P}}(\tau)=\sum_{i=1}^{N} w_{i} R_{t}^{i}(\tau)
+$$
+where $R_{t}^{i}(\tau)$ is the $\tau$-period return of asset $i$ at time $t$, and $w_{i}=\left(n_{i} P_{t-\tau}^{i}\right) /\left(\sum_{j=1}^{N} n_{j}\right.$ $\left.P_{t-\tau}^{j}\right)$ is the weight, or proportion, of asset $i$ in $\mathscr{P}$. Therefore, the simple return of a portfolio is a weighted sum of the simple returns of its constituent assets. This nice property does not holds for the continuously compounded return of $\mathscr{P}$, since the logarithm of a sum is not the sum of logarithms. Hence, when dealing with portfolios we should prefer returns to log returns, even though empirically when returns are measured over short intervals of time, the continuously compounded return on a portfolio is close to the weighted sum of the continuously compounded returns on the individual assets (e.g., look back to Example $2.2$ where the log returns almost coincide with the simple returns). We shall be dealing more in depth with the financial analysis of portfolios in Chap. 8. In the remaining of this book we shall refer to simple returns just as returns (and use $R_{t}$ to denote this variable); and refer to continuously compounded return just as log returns (denoted $r_{t}$ ).
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+---
+title: "9.1 Online Problems and Competitive Analysis"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+We begin outlining the general formalities of online computation. Let $\mathscr{P}$ be an optimization problem, $\mathscr{S}$ be the set of all input instances of $\mathscr{P}$, and $F$ the cost or objective function, defined for all instances $I \in \mathscr{S}$ and onto a set of feasible outputs. We assume that the cost function $F$ is bounded.
+$\mathscr{P}$ is an online optimization problem if every input instance $I \in \mathscr{S}$ is given as a finite sequence $I=\left\{i_{1}, \ldots, i_{n}\right\}$, which is incrementally revealed by stages, such that at stage $j \in\{1, \ldots, n\}$ only the input $i_{j}$ is made known and a decision $o_{j}$ has to be made with that partial information. The cost function $F$ has its value updated after each decision and the final cost is the aggregation of the successive partial valuations obtained at the end of the finite sequence that constitute the input. By contrast, in an offline problem the input $I$ is fully given at once, and a decision is made with the full information.
+
+An online algorithm is a decision making procedure for an online optimization problem. Let $O A L G$ be an online algorithm for online problem $\mathscr{P}$, and denote by $O A L G(I)$ the total cost attained by algorithm $O A L G$ for its sequence of outputs $\left\{o_{1}, o_{2}, \ldots, o_{n}\right\}$ obtained when processing the input sequence $I=\left\{i_{1}, i_{2}, \ldots, i_{n}\right\}$. Let $O P T$ be an optimum offline algorithm for $\mathscr{P}$, and $O P T(I)$ be the optimal cost attained by $O P T$ on the input $I$.
+
+The competitiveness of the online algorithm OALG with respect to the optimum offline algorithm $O P T$, in accordance with $\mathscr{P}$ being a maximization or minimization problem, is defined as follows.
+
+- If $\mathscr{P}$ is a minimization problem then $O A L G$ is $c$-competitive if for all $I \in \mathscr{S}$
+$$
+O A L G(I) \leq c \cdot O P T(I)
+$$
+- If $\mathscr{P}$ is a maximization problem then $O A L G$ is $c$-competitive if for all $I \in \mathscr{S}$
+$$
+c \cdot O A L G(I) \geq O P T(I)
+$$
+The least $c$ such that $O A L G$ is $c$-competitive is the algorithm's competitive ratio. The analysis of performance (or competitiveness) of an online algorithm with respect to the competitive ratio measure is called competitive analysis. To do this type of analysis it is convenient to view the process of finding an online algorithmic solution to an online problem as a two-player game. In this game one of the players, known as the online player, chooses an online algorithm OALG and reveals it to his adversary, the offline player, who in turn chooses an input $I$ and feeds it to the algorithm. The goal of the online player is to minimize the competitive ratio, so he must choose $O A L G$ wisely, whereas the goal of the offline player is to maximize the competitive ratio, so once he knows $O A L G$ chooses the input according to this objective. This means that
+
+- if $\mathscr{P}$ is a minimization problem (Eq. (9.1)) offline chooses input $I$ that maximizes
+$$
+c=\frac{O A L G(I)}{O P T(I)}
+$$
+- if $\mathscr{P}$ is a maximization problem (Eq. (9.2)) offline chooses input $I$ that maximizes
+$$
+c=\frac{O P T(I)}{O A L G(I)}
+$$
+In the following sections we review some online solutions to online financial problems pertaining to price searching, trading and portfolio management.

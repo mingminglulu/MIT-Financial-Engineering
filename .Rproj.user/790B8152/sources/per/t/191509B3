@@ -1,0 +1,28 @@
+{
+    "id": "191509B3",
+    "path": "~/GitHub/MIT-Financial-Engineering/Time Series Models in Finance/4.3 Nonlinear Models ARCH and GARCH.Rmd",
+    "project_path": "Time Series Models in Finance/4.3 Nonlinear Models ARCH and GARCH.Rmd",
+    "type": "r_markdown",
+    "hash": "1354007096",
+    "contents": "",
+    "dirty": false,
+    "created": 1648897129284.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "65,0",
+        "scrollLine": "65",
+        "last_setup_crc32": "A5E24E46bb338d19"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1648897679,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1648897679806,
+    "read_only": false,
+    "read_only_alternatives": []
+}

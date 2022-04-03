@@ -1,0 +1,27 @@
+{
+    "id": "B5D9F6C9",
+    "path": "~/GitHub/MIT-Financial-Engineering/Time Series Models in Finance/2.3 Stationarity and Autocovariance.Rmd",
+    "project_path": "Time Series Models in Finance/2.3 Stationarity and Autocovariance.Rmd",
+    "type": "r_markdown",
+    "hash": "1757992461",
+    "contents": "",
+    "dirty": false,
+    "created": 1648893722589.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "77,0",
+        "scrollLine": "74"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1648893849,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1648893849724,
+    "read_only": false,
+    "read_only_alternatives": []
+}

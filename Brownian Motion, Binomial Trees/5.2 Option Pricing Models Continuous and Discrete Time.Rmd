@@ -1,0 +1,210 @@
+---
+title: '5.2 Option Pricing Models: Continuous and Discrete Time'
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+We now go on to review two very important and influential option pricing models.
+The first one is the Black-Scholes model for pricing European options, based on the
+assumption that the underlying stock prices follow a continuous time geometrical
+Brownian motion. This model is also refer as the Black-Scholes-Merton model as
+a recognition to the important contribution made by Robert Merton to the original
+formula for pricing options proposed by Fisher Black and Myron Scholes in 1973
+(Black and Scholes 1973; Merton 1973).
+The second option pricing model to be studied is the binomial tree of John Cox,
+Stephen Ross and Mark Rubinstein, published in 1979 (Cox et al. 1979), and which can be seen as a discrete time counterpart of the Black-Scholes model, as will be
+shown at the end of this section.
+
+# 5.2.1 The Black-Scholes Formula for Valuing European Options
+
+Let $G\left(P_{t}, t\right)$ be the price at time $t$ of an option or other derivative written on a stock with current price $P_{t}$, with delivery price $K$ and expiration date $T>t$. Let $r$ be the risk-free constant interest rate for the period $[0, T]$. Note that in this notation of $G\left(P_{t}, t\right)$ it is implicitly assumed that the price of the derivative depends on the current price $P_{t}$ of the stock and not on past prices. Additionally the Black-Scholes model relies on the following hypotheses:
+(1) The extended no arbitrage assumptions. Recall that these include the possibility of unlimited borrowing and lending at the constant interest rate of $r$, that there are no transaction costs, no taxes, no storage fees, no dividends, and most importantly no arbitrage (see Chap. 1, Definition 1.1).
+(2) The stock price $P_{t}$ follows a geometric Brownian motion with constant drift $\mu$ and volatility $\sigma$; i.e., it is modeled by Eq. (5.9): $d P=\mu P d t+\sigma P d B$.
+
+Originally Black and Scholes (1973) presented a SDE for $G$ that needed further hypotheses, but almost immediately Merton (1973) derived the same equation of Black and Scholes, founded only on the above list of assumptions. The approach by Merton is based on showing that it is possible to create a self-financing portfolio where long positions in the stock are completely financed by short positions in the derivative, and that the value of this perfectly hedged portfolio does not depend on the price of the stock. These arguments lead to the differential equation
+
+$$
+\frac{\partial G}{\partial t}+r P \frac{\partial G}{\partial P}+\frac{1}{2} \sigma^{2} P^{2} \frac{\partial^{2} G}{\partial P^{2}}=r G
+$$
+which has unique solutions under the constraints imposed above, and for each of the boundary conditions related to the derivative that can be defined on a stock. The case of interest is the derivative being a European call or put option. In this case, the boundary conditions are $G(0, t)=0$ and $G\left(P_{T}, T\right)=\max \left(P_{T}-K, 0\right)$, for a call, or $G\left(P_{T}, T\right)=\max \left(K-P_{T}, 0\right)$, for a put, and the solutions to (5.20) constitutes the Black-Scholes formulas for the price at time $t$ of a European call option (denote this $\left.G_{c}\left(P_{t}, t\right)\right)$ and a European put option $\left(G_{p}\left(P_{t}, t\right)\right)$, for a stock paying no dividends. These are:
+$$
+G_{c}\left(P_{t}, t\right)=P_{t} \Phi\left(d_{1}\right)-K e^{-r(T-t)} \Phi\left(d_{2}\right) \text { for the call, }
+$$
+and
+$$
+G_{p}\left(P_{t}, t\right)=K e^{-r(T-t)} \Phi\left(-d_{2}\right)-P_{t} \Phi\left(-d_{1}\right) \text { for the put, }
+$$
+
+where
+$$
+\begin{aligned}
+d_{1} &=\frac{\ln \left(P_{t} / K\right)+\left(r+\sigma^{2} / 2\right)(T-t)}{\sigma \sqrt{T-t}} \\
+d_{2} &=\frac{\ln \left(P_{t} / K\right)+\left(r-\sigma^{2} / 2\right)(T-t)}{\sigma \sqrt{T-t}}=d_{1}-\sigma \sqrt{T-t}
+\end{aligned}
+$$
+and $T-t$ is the time to maturity of the option. The function $\Phi(\cdot)$ is the standard normal cumulative distribution function; that is, $\Phi(x)=\int_{-\infty}^{x} \frac{1}{\sqrt{2 \pi}} \exp \left(-t^{2} / 2\right) d t$.
+We will not do here the full derivation of the Black-Scholes and Merton differential equation (5.20) and its solution subject to the appropriate boundary conditions to obtain the European option pricing formulas; for the details read (Campbell et al. 1997, Chap. 9) or (Hull 2009, Chap. 13).
+
+Remark 5.2 (Risk-neutral valuation revisited) The Black-Scholes formulas for valuation of European options can also be obtained by application of the risk-neutral valuation principle, as an alternative to solving the SDE (5.20). Recall from Chap. 1 , Sect. 1.2.3, that in a risk neutral world the following assertions holds:
+(1) The expected return on all securities is the risk-free interest rate $r$.
+(2) The present value of any cash flow can be obtained by discounting its expected value at the risk-free interest rate.
+
+Therefore to compute the present value of, say, a European call option on a stock, in a risk neutral world this amounts to computing, by (1) and (2) above,
+$$
+C=E\left(e^{-r(T-t)} \cdot \max \left(P_{T}-K, 0\right)\right)
+$$
+
+where $r$ is the risk-free interest rate, $K$ is the exercise price, $T-t$ is the time to maturity, and $S_{T}$ the price of the stock at expiration date. If the underlying stock is assumed to follow a geometric Brownian motion (just as for the Black-Scholes formulas), then by risk-neutrality the price of the stock satisfies the equation: $d P=$ $r P d t+\sigma P d B$, where the parameter $\mu$ has been replaced by $r$. This implies that the expectation $E\left(e^{-r(T-t)} \cdot \max \left(P_{T}-K, 0\right)\right)$ is an integral with respect to the lognormal density of $P_{T}$. This integral can be evaluated in terms of the standard normal distribution function $\Phi$, and the solution obtained is identical to Eq. (5.21). The same argument applies to the deduction of the formula for the put (Eq. (5.22)) from risk-neutral valuation.
+
+The Black-Scholes option pricing formulas (5.21) and (5.22), and extensions, are implemented in R. These extensions include dealing with stocks that pay dividends and have storage costs. Both of these market imperfections are summarize in one parameter, the cost-of-carry, which is the storage cost plus the interest that is paid to finance the stock discounting the dividend earned. For a non-dividend paying stock the cost-of-carry is $r$ (the risk-free interest rate), because there are no storage costs and no income is earned.
+
+Option Sensitives or Greeks
+The partial derivatives of $G$ with respect to its arguments in Eq. (5.20) are commonly called "Greeks", because of the greek letters used to denote them, and measure
+5.2 Option Pricing Models: Continuous and Discrete Time
+157
+different sensitivities of the option value to changes in the value of its parameters. The option sensitives are defined as follows:
+Delta $\Delta:=\frac{\partial G}{\partial P}$, Gamma $\Gamma:=\frac{\partial^{2} G}{\partial P^{2}}$,
+Theta $\Theta:=\frac{\partial G}{\partial t}$, Rho $R:=\frac{\partial G}{\partial r}$, Vega $\mathscr{V}:=\frac{\partial G}{\partial \sigma}$
+
+These options sensitives are widely used by professional investors for risk management and portfolio rebalancing. For example, one of the most popular of the option sensitives is the option delta $(\Delta)$ which measures the sensitivity of the option value to changes in the value of the underlying security, and it is use to compute the right proportion of calls on the underlying stock to compensate for any imbalances produce by changes in the price of the stock, a strategy known as delta hedging, and which we have already implemented in Chap. 1, Example 1.11. For the BlackScholes formula of a European call option we can evaluate these sensitives explicitly as:
+$$
+\begin{aligned}
+\Delta &=\Phi\left(d_{1}\right) \\
+\Gamma &=\frac{\phi\left(d_{1}\right)}{P \sigma \sqrt{T-t}} \\
+\Theta &=-\frac{P \sigma}{2 \sqrt{T-t}} \phi\left(d_{1}\right)-K r e^{-r(T-t)} \Phi\left(d_{2}\right) \\
+R &=(T-t) K e^{-r(T-t)} \Phi\left(d_{2}\right) \\
+\mathscr{V} &=P \sqrt{T-t} \phi\left(d_{1}\right)
+\end{aligned}
+$$
+Similar close expressions can be obtained for the Greeks of the Black-Scholes European put options.
+
+
+# 5.2.2 The Binomial Tree Option Pricing Model
+
+The binomial tree model for pricing option was proposed by Cox, Ross and Rubinstein in Cox et al. (1979), and we shall refer to it as the CRR model. The general idea
+of the CRR model is to construct a binomial tree lattice to simulate the movement
+of the stock’s price, which is assumed that it can only go up or down, at different
+time steps from current date to expiration of the option on the stock. Each level of
+the tree is labeled by a time step and contains all possible prices for the stock at
+that time. Then, working backwards from the leaves of the tree of prices to the root,
+compute the option prices from exercise date (at the leaves) to valuation date (at the
+root). For the computation of option prices the CRR model relies on the following
+assumptions:
+• The stock price follows a multiplicative binomial process over discrete periods.
+• There are no arbitrage opportunities and, moreover, extended no arbitrage holds.
+• The investor’s risk preferences are irrelevant for pricing securities; that is, the
+model assumes a risk-neutral measure.
+The inputs to the model are: the current stock price S; the strike price K; the
+expiration time T measured in years; the number of time periods (or height of the
+tree) n; the annualized volatility π and the annualized rate of interest r of a risk-free
+asset. The time to maturity T is partitioned in periods of equal length α = T/n. We
+now expand on the details of the construction of the CRR model.
+The first step is to construct the binomial tree lattice from the data. The stock
+price is assumed to move either up, with probability p, or down, with probability
+1 − p, by a factor of u > 1 or 0 < d < 1 respectively. Given the current stock
+price S, the price at the next time step is either uS (for an up move) or dS (for a down
+move); for the following time step uS increases to u2S or decreases to duS, and so on.
+This multiplicative process is repeated until the expiration date is reached. Figure 5.3
+presents a 3-period Binomial pricing tree
+
+By the no arbitrage assumption, the factors $u$ and $d$ must satisfy the relation
+$$
+d<e^{r \tau}<u
+$$
+since $u$ (respectively, $d$ ) represent the rate of return on the stock in the up (down) state. (The reader should think about why is this so, see Problem 5.4.3.)
+
+The CRR model was conceived by their authors as a discrete time model for valuing options which should contain the Black-Scholes model as a limiting case. Therefore, for a smooth transition from discrete time to continuous, one should assume that the interest rate $r$ is continuously compounded (so is independent of the time period), and choose values for $u, d$ and the probability $p$, such that the mean and variance of the future stock price for the discrete binomial process coincide with the mean and variance of the stock price for the continuous log normal process. With that idea in mind the following equations for computing $u, d$ and $p$ are obtained:
+$$
+\begin{aligned}
+&u=e^{\sigma \sqrt{\tau}} \\
+&d=1 / u=e^{-\sigma \sqrt{\tau}}
+\end{aligned}
+$$
+and
+$$
+p=\frac{e^{r \tau}-d}{u-d} \quad \text { and } \quad 1-p=\frac{u-e^{r \tau}}{u-d}
+$$
+
+An important property of the binomial price tree is that it is recombining. This means that at any node the stock price obtained after an up-down sequence is the same as after a down-up sequence. This is what makes the tree look like a lattice of diamond shapes, and hence reduces the number of nodes at the leaves (i.e., at the expiration date) to $n+1$, where $n$ is the number of time periods. This makes the model computationally feasible since the computation time is linear in $n$, as opposed to exponential if we had to work with a full branching binary tree. The recombining property allow us to compute the price of a node with a direct formula, instead of recursively from previous valuations, hence dispensing us from actually building the tree. The $i$ th price of the stock at the $j$ th period of time $(1 \leq i \leq j+1,0<j \leq n)$ is
+$$
+S_{i j}=S \cdot u^{n_{u}} d^{n_{d}}
+$$
+where $n_{u}$ is the number of up-moves and $n_{d}$ is the number of down-moves, and these quantities verify the equation $n_{u}+n_{d}=j$.
+
+Next, we work our way backwards from the leaves to the root to iteratively compute the price of the option. Here is where we use the no arbitrage assumption to equate the value of the option with that of the stock plus some cash earning the interest rate $r$. We explain how it is done in the case of a call option and one time period to maturity, and then show how to generalized to arbitrarily many time periods until maturity and include the case of put options.
+
+Let $C$ be the current value of the call for the stock with current price $S$, the strike price is $K$, and maturity one period of time $\tau$. Let $C_{u}$ (resp. $C_{d}$ ) be the value of the call
+
+at the end of the period if the stock price goes to $u S$ (resp. $d S$ ). The event $C_{u}$ occurs with probability $p$, and the event $C_{d}$ with probability $1-p$. Since in either case we are at the end of the contract the exercise policy imply that $C_{u}=\max (u S-K, 0)$ and $C_{d}=\max (d S-K, 0)$.
+
+We form a portfolio with $\Delta$ many shares of the stock and an amount $B$ of a riskless bond. The cost of this investment at current time is $\Delta S+B$, and at the option's maturity time the value of our portfolio will be either $\Delta u S+r B$ with probability $p$, or $\Delta d S+r B$ with probability $1-p$. The evolution of the value of the stock, the value of the call and the value of the portfolio just described is pictured in Fig. 5.4.
+The purpose of the portfolio is to cover our investment in the call. This means that at maturity date the value of the portfolio and the option payoff should be equal. Therefore, we must have
+$$
+\begin{aligned}
+&\Delta u S+B e^{r \tau}=C_{u} \\
+&\Delta d S+B e^{r \tau}=C_{d}
+\end{aligned}
+$$
+Solving these equations one obtains
+$$
+\Delta=\frac{C_{u}-C_{d}}{(u-d) S} \quad \text { and } \quad B=\frac{u C_{d}-d C_{u}}{(u-d) e^{r \tau}}
+$$
+The $\Delta$ and $B$ chosen so that the Eq. (5.27) hold makes the portfolio an hedging portfolio. By extended no arbitrage the value of the hedging portfolio and the value of the call should be equal at all past times (Proposition 1.1); that is
+$$
+C=\Delta S+B=\left[\frac{e^{r \tau}-d}{u-d} C_{u}+\frac{u-e^{r \tau}}{u-d} C_{d}\right] / e^{r \tau}
+$$
+Using Eq. (5.25) we can compute the price of the call option in terms of the two possible exercise values, $C_{u}$ and $C_{d}$, by the equation
+$$
+C=\left(p C_{u}+(1-p) C_{d}\right) e^{-r \tau}
+$$
+
+The generalization to $n$ time periods is a simple iteration of the hedging portfolio construction at each step. Let $C_{i, j}$ be the $i$ th price of the option at $j$ th time period, $0<i \leq j+1,0 \leq j \leq n$. The price of the option at the leaf nodes (i.e., the price at the expiration date) is computed simply as its local payoff. Thus,
+
+$C_{i, n}=\max \left(S_{i n}-K, 0\right) \quad$ for a call option,
+$C_{i, n}=\max \left(K-S_{i n}, 0\right) \quad$ for a put option.
+The price of the option at intermediate nodes is computed, as in the one step case (Eq. (5.28)), using the option values from the two children nodes (option up and option down $)$ weighted by their respective probabilities of $p$, for going up, or $(1-p)$ for going down, and discounting their values by the fixed risk-free rate $r$. Thus, for $j=0,1, \ldots, n$, and $0<i \leq j+1$,
+$$
+C_{i, j-1}=e^{-r \tau}\left(p C_{i+1, j}+(1-p) C_{i, j}\right)
+$$
+Let's named the value of the option (call or put) given for each time period by Eq. (5.31) the Binomial Value of the option.
+
+Now depending on the style of the option (European, American or Bermudan) we can evaluate the possibility of early exercise at each node by comparing the exercise value with the node's Binomial Value. For European options the value at all time intervals of the option is the Binomial Value, since there is no possibility of early exercise. For an American option, since the option may either be held or exercised prior to expiry, the value at each node is computed by max (Binomial Value, Exercise Value). For a Bermudan option, the value at nodes where early exercise is allowed is computed by max (Binomial Value, Exercise Value). One can now appreciate the flexibility of this model for computing various type of options: for European we find the value at the root node; for American we find the best time to exercise along any of the intermediate nodes; and for Bermudan we find the best time to exercise along some previously determined intermediate nodes.
+
+The construction of the CRR binomial option pricing tree just described, and summarized in Eqs. (5.29)-(5.31), and the parameters $u, d$ and $p$ given by (5.24) and (5.25), can be assembled together in an algorithm for pricing any vanilla option, written on a security that pays no dividends. This is shown as Algorithm 5.1.
+
+Convergence of the CRR model to the Black-Scholes model. We summarize the
+main ideas of the proof given in Cox et al. (1979, Sect. 5) of the convergence of the
+CRR binomial tree option pricing model to the continuous time Black-Scholes (BS）
+
+model. We centered our discussion around the valuation of a call option. One can show by repeated substitution in Eq. (5.31) of the successive values $C_{i, j}$ of a call, beginning with the values at the leaf nodes of the binomial tree (Eq. (5.29)), that for $n>1$ periods the value of the call is given by the formula
+$$
+C=\left(\sum_{j=a}^{n} \frac{n !}{(n-j) ! j !} p^{j}(1-p)^{n-j}\left[u^{j} d^{n-j} S-K\right]\right) e^{-r n \tau}
+$$
+where $a$ is the minimum number of upward moves that the stock price must make over the next $n$ periods to finish above the strike price, and so that the call option can be exercised. Formally, $a$ must be the smallest non-negative integer such that $u^{a} d^{n-a} S>K$. Rewrite (5.32) as
+$$
+C=S\left(\sum_{j=a}^{n} \frac{n !}{(n-j) ! j !} p^{j}(1-p)^{n-j} \frac{u^{j} d^{n-j}}{e^{r n \tau}}\right)-K e^{-m \tau}\left(\sum_{j=a}^{n} \frac{n !}{(n-j) ! j !} p^{j}(1-p)^{n-j}\right)
+$$
+The expression in parentheses multiplying the term $K e^{-r n \tau}$ is the complementary binomial distribution function $\phi(a ; n, p)$; that is $\phi(a ; n, p)=1-\mathbb{P}(j \leq a-1)$, the probability that the sum of $n$ random variables, each of which can take on the value 1 with probability $p$ and 0 with probability $1-p$, will be greater than or equal to $a$. The expression in parentheses accompanying $S$ can also be represented by $\phi\left(a ; n, p^{\prime}\right)$ where $p^{\prime}=u e^{-r \tau} p$ (and hence, $1-p^{\prime}=d e^{-r \tau}(1-p)$ ). Thus,
+$$
+C=S \phi\left(a ; n, p^{\prime}\right)-K e^{-r n \tau} \phi(a ; n, p)
+$$
+Cox, Ross and Rubinstein then show that
+$$
+\lim _{n \rightarrow \infty} \phi\left(a ; n, p^{\prime}\right)=\Phi\left(d_{1}\right) \quad \text { and } \quad \lim _{n \rightarrow \infty} \phi(a ; n, p)=\Phi\left(d_{2}\right)
+$$
+
+Thus, the CRR binomial tree model contains as a special limiting case the BS model.
+For sufficiently large n it will give almost the same value for a European option as
+that computed with the exact formula provided by Black-Scholes. However, the CRR
+model has the advantage over BS that it can efficiently compute the value of options
+for which earlier exercise is desirable.
+A key element for the computational feasibility of the CRR model is its recombining property, as we have already commented. This limit the application of CRR
+to path-independent style options, like European, American or Bermudan, since
+for those exotic options that are intrinsically path dependent, like Asian or Barrier
+options, the computational saving implied by the recombining property is not possible because necessarily all paths must be explore, and the number of distinct paths
+through a tree is 2n. Therefore, other option pricing models must be explored.
+
+
+
+

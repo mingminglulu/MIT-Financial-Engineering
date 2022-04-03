@@ -1,0 +1,47 @@
+---
+title: "9.2 Online Price Search"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+# 9.2.1 Searching for the Best Price
+
+The goal of this online problem is to select the minimum (resp. maximum) price to buy (resp. sell) some asset from a series of prices observed through time. We assume prices are quoted through a finite sequence of time instances $t_{1}, \ldots t_{n}$, and are taken from a finite interval of values $[m, M]$. At each time instant $t_{i}$ a price is quoted and the online player must decide to take it or not, and once taken that price is the player's payoff. If the online player doesn't select a price throughout the $n$ time instances, then at the end of the series he must accept the last quoted price. Let $\varphi=M / m$ be the global fluctuation ratio. If $m$ and $M$ are known we have the following deterministic online algorithm, known as the Reservation Price Policy (RPP), which we split in two versions according to the goal of the online player being to buy or to sell.
+Theorem 9.1 RPP attains a competitive ratio of $\sqrt{\phi}=\sqrt{M} / \sqrt{m}$.
+Proof We analyze the case where the online player wants to buy and is searching for a minimum price (i.e. $\operatorname{RPP}_{b u y}$ ). The inputs are price quotations given at times $t_{1}, t_{2}, \ldots, t_{n}$. There are basically two strategies that the offline player has to offset the online player's profits, which depends on the online player buying at some given price or not:
+
+Case 1: at some instant $t_{i}$ the price $p$ quoted is the lowest so far, but the online player decides not to buy. Then, immediately after, the offline player raises the price to $M$ and keeps it at that value until the end, which forces the online player to buy at the highest price possible, i.e. $M$. The player's performance ratio is $\frac{\text { online }}{\text { offline }}=\frac{M}{p}$.
+Case 2: at some instant $t_{i}$ the price $p$ quoted is the lowest so far, and the online player decides to buy. Then, immediately after, the offline player lowers the price to $m$ and keeps it at that value until the end. The player's performance ratio for this case is $\frac{\text { online }}{\text { offline }}=\frac{p}{m}$.
+Equating both performance ratios for a unified strategy, we find
+$$
+\frac{M}{p}=\frac{p}{m} \Rightarrow p=\sqrt{M \cdot m}
+$$
+and the competitive ratio
+$$
+c=\frac{O A L G(I)}{O P T(I)}=\frac{\sqrt{M}}{\sqrt{m}}=\sqrt{\varphi}
+$$
+The argument for the sell objective (i.e. $\mathrm{RPP}_{\text {sell }}$ ) is analogous.
+If we only know $\varphi$ then it can be shown that the competitive ratio attainable by any deterministic price search strategy is trivially $\varphi$ (see Exercise 9.5.2).
+
+# 9.2.2 Searching for a Price at Random
+
+An important improvement to the Reservation Price Policy to solve more efficiently the price search problem is to allow the online player to make his transaction decisions randomly. In a randomized algorithm the players may know the algorithm but can not know the random numbers that such algorithm will generate upon execution to make some decisions. This makes it harder for the offline player to select an appropriate input to maximize his competitiveness. The following randomized version of RPP is due to Leonid Levin, ${ }^{1}$ and we will see that attains a competitive ratio in the order of $O(\log \varphi)$. We state the algorithm for the case of selling, being the case of buying very similar. We suppose $\varphi=M / m=2^{k}$ for some integer $k>0$; hence $M=m 2^{k}$.
+
+Theorem $9.2$ RRPP attains a $O(\log \varphi)$-competitive ratio.
+Proof Let $p^{*}$ be the maximum price that can be possibly obtained in a given input sequence. There exists a positive integer $j$ such that
+$$
+m 2^{j} \leq p^{*}<m 2^{j+1}
+$$
+Note that $j \leq k$, since all prices are in $[m, M]$, and $j=k$ if and only if $p^{*}=M$. The offline player has control over the input and can choose $p^{*}$ to his advantage. Nonetheless, choosing $p^{*}=M$ (and consequently, $j=k$ ) will be seen to be not an optimal choice; hence, we can assume that $j \leq k-1$. For any $j$ satisfying Eq. (9.3), the expected return that the online player can obtain applying algorithm RRPP is
+$$
+\frac{m}{k}\left(k-j+\sum_{i=0}^{j} 2^{i}\right)=\frac{m}{k}\left(2^{j+1}+k-j-2\right)
+$$
+For any such $j$ the optimal choice of $p^{*}$ for the offline player is a value close to $m 2^{j+1}$. Then the player's performance ratio, offline to online, for a $j$ satisfying Eq. (9.3) is given by the following function $R(j)$
+$$
+R(j)=k \frac{2^{j+1}}{2^{j+1}+k-j-2}
+$$
+
+As a simple calculus exercise one can see that the function $R(j)$ attains its maximum at $j^{*}=k-2+1 / \ln 2$ (and this is why it is optimal for offline to choose $j \leq k-1$ ). Also one can see that the coefficient of $k$ in $R(j)$ is almost 1 , resulting in a competitive ratio of the order of $O(k)=O(\log \varphi)$.
+
+Remark $9.1$ If $m$ and $M$ are not known but $\varphi$ is known, then the same competitive ratio of $O(\log \varphi)$ holds. This is better than the deterministic strategy RPP where the competitive ratio is $\varphi$. Even further the randomized strategy RRPP can be modified to work when there is no knowledge of $\varphi$. This enhanced version of RRPP can attain a competitive ratio of $O\left((\log \varphi) \cdot \log ^{1+\varepsilon}(\log \varphi)\right)$, for arbitrary $\varepsilon>0$ and where $\varphi$ is the posterior global function ratio. For details see El-Yaniv et al. (2001).

@@ -1,0 +1,33 @@
+---
+title: "7.1 Combinatorial Optimization Problems"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+Definition 7.1 An optimization problem is a tuple $\mathscr{P}=(\mathscr{S}, \Omega, F)$, where $\mathscr{S}$ is a set of feasible solutions, $\Omega$ is a set of constraints over a fixed number of parameters, and $F: \mathscr{S} \rightarrow \mathbb{R}^{+}$is an objective function to be minimized. The set of constraints $\Omega$ consists of all the variables in a given set of equations. The set of feasible solutions $\mathscr{S}$ consists of all arrays of values for the variables that satisfies the constraints in $\Omega$. A solution for the optimization problem $\mathscr{P}$ is an element $s^{*}$ of $\mathscr{S}$ such that $F\left(s^{*}\right) \leq F(s)$ for all $s \in \mathscr{S}$; such a $s^{*}$ is called a globally optimal solution.
+
+In a strict sense we have defined above a minimization problem. For a maximization problem just ask for the global solution $s^{*}$ to satisfy $F\left(s^{*}\right) \geq F(s)$ for all $s \in \mathscr{S}$.
+
+tormally treat any optımızation problem as a mınımızation problem.
+Example $7.1$ Consider a GARCH(1,1) model for a log return series $\left\{r_{t}\right\}_{t=1}^{T}$,
+$$
+\begin{aligned}
+r_{t} &=\mu+a_{t}, \quad a_{t} \sim N\left(0, \sigma_{t}^{2}\right) \\
+\sigma_{t}^{2} &=\omega+\alpha_{1} \cdot a_{t-1}^{2}+\beta_{1} \cdot \sigma_{t-1}^{2}
+\end{aligned}
+$$
+with $-1 \leq \mu \leq 1, \omega>0, \alpha_{1} \geq 0, \beta_{1} \geq 0, \alpha_{1}+\beta_{1}<1$. Here we want to estimate the parameters $\mu, \omega, \alpha_{1}$ and $\beta_{1}$, so that we can recursively obtain $\sigma_{t}$ and $a_{t}$. We have seen in Chap. 4 that this estimation can be done by the method of maximum likelihood. Thus, the underlying combinatorial optimization problem $(\mathscr{S}, \Omega, F)$ can be explicitly define as follows. The set of constraints $\Omega$ consist of Eq. (7.1) plus the inequalities involving tuples of four variables $\psi=\left(\omega, \alpha_{1}, \beta_{1}, \mu\right)$; the set of feasible solutions $\mathscr{S}$ are the values for $\psi=\left(\omega, \alpha_{1}, \beta_{1}, \mu\right)$ that satisfy the Eq. (7.1) and inequalities, and we seek for those values that maximizes the log likelihood function (without additive constants)
+$$
+F(\psi)=-\frac{1}{2} \sum_{t=1}^{T}\left(\ln \sigma_{t}^{2}+\frac{a_{t}^{2}}{\sigma_{t}^{2}}\right)
+$$
+
+This is the objective function to consider for this problem, where one seeks to maximize its value with respect to all $\psi \in \mathscr{S}$. This function can have various local maxima, and therefore a traditional iterative numerical method (e.g. the local search described below as Algorithm 7.1) will often fail to find a global optimum. Hence, the need of an optimization heuristic is justified.
+
+Example 7.2 Another maximization problem we consider in this chapter is to find trading rules from Technical Analysis that best perform in a period of time $[1, T]$ and for an asset's return time series $\left\{r_{t}\right\}_{t=1}^{T}$. A description of this problem as a tuple $(\mathscr{S}, \Omega, F)$ is given by:
+$\Omega$ as a set of production rules which describe the process of constructing technical trading rules (or investment recipes as those presented in Sect. 6.1), from some predefined set of constants, variables and functions.
+$\mathscr{S}$ consists of the trading rules conforming to the specifications given by $\Omega$.
+$F$ could be the compounded benefit of a trading rule acting on $\left\{r_{t}\right\}_{t=1}^{T}$ (for an absolute measure of performance), or the excess return over the whole period $[1, T]$ with respect to a buy-and-hold strategy, which is a more realistic measure of performance as it is a test against the most common passive investment attitude.
+The objective is to find the trading rule in $\mathscr{S}$ with maximum $F$-value when acting on $\left\{r_{t}\right\}_{t=1}^{T}$. Note that the search space of all possible trading rules is exponential in the number of basic elements used for defining trading rules; hence an exhaustive deterministic search is out of the question, and we can justly turn to heuristic optimization techniques.
+
+The classical local search algorithm for solving an optimization problem $(\mathscr{S}, \Omega, F)$ starts with an initial solution (usually generated at random), and by making small perturbations or changes to the current solution creates another; that is, new solutions are obtained "in the neighborhood of current solutions". If the new solution is better (i.e. has a smaller $F$-value) then the current solution is substituted by the new one. This process is repeated until some stopping criteria is met, which can be (and often is) that there is no further significant improvement in the values of $F$, or that a predetermined number of repetitions have been accomplished. Algorithm 7.1 presents the classical local search procedure for solving $(\mathscr{S}, \Omega, F)$. Observe that with this procedure we can only guarantee that the search ends in a local optimum. In other words, if our optimization problem has more than one local minimum, once the search routine reaches one of these local solutions, it is likely to get trap in its vicinity because small perturbations will not produce better solutions, and so it misses the global minimum. A way to escape from this local trap is to allow to enter into the search path some solutions that are worse than those previously obtained. However, these "escape-moves" (also known as uphill-moves) must be performed in a controlled manner to avoid jumping out of the vicinity of a potential global solution. The heuristics presented in the following sections are in essence different implementations of these escape-moves.

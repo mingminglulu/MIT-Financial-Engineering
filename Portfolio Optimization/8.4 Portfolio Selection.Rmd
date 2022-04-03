@@ -1,0 +1,73 @@
+---
+title: "8.4 Portfolio Selection"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+When a portfolio deviates from the investor's expected return, its positions must be revised by either increasing or decreasing (possibly down to zero) their weights in the portfolio. All in order to align the portfolio back to the investor's financial objectives. The problem we are posed with is how to do this reallocation of wealth effectively, increasing future gains, through a finite sequence of trading periods, that conforms an investor's schedule for revising the portfolio positions. To model solutions to this problem, we focus on a simple situation of an investor who is long in a number $m$ of securities and with a determined investment horizon. We assume that there are no transaction costs, and that the only limitation for an investor to trade any amount of each security at any time is the amount of money he possesses at the time. The time between the present and the ending date of the life of the portfolio is divided into $n$ trading periods, limited by time instants $t=0, \ldots, n$, with $t=0$ representing the initial time and $t=n$ the final time. At the end of each period $[t-1, t], t=1, \ldots, n$, the proportion of wealth invested in each position is revised, being the overall goal to maximize the total wealth at the final date. The change in the market price for a given period is represented by the market vector $\boldsymbol{x}_{t}=\left(x_{t 1}, \ldots, x_{t m}\right)$, a sequence of price relatives simple gross returns) for the given trading period of the $m$ securities; that is, each $x_{t i}=P_{i}(t) / P_{i}(t-1)$ is the ratio of closing to opening price (price relative) of the $i$-th security for the period $[t-1, t]$. The distribution of wealth among the $m$ securities for the given period is represented by the portfolio vector $\boldsymbol{w}_{t}=\left(w_{t 1}, \ldots, w_{t m}\right)$ with non negative entries summing to one; that is $\boldsymbol{w}_{t} \in \mathscr{W}$, where $\mathscr{W}=\left\{\boldsymbol{w}: \boldsymbol{w} \in \mathbb{R}_{+}^{m}, \sum_{j=1}^{m} w_{j}=1\right\}$. Thus, an investment according to portfolio $\boldsymbol{w}_{t}$ produces an increase of wealth, with respect to market vector $\boldsymbol{x}_{t}$ for the period $[t-1, t]$, by a factor of
+$$
+\boldsymbol{w}_{t}^{\prime} \cdot \boldsymbol{x}_{t}=\sum_{j=1}^{m} w_{t j} x_{t j}
+$$
+A sequence of $n$ investments according to a selection of $n$ portfolio vectors $w^{n}=$ $\left(w_{1}, \ldots, w_{n}\right)$ results in a wealth increase of
+$$
+S_{n}\left(\boldsymbol{w}^{n}, \boldsymbol{x}^{n}\right)=\prod_{t=1}^{n} \boldsymbol{w}_{t}^{\prime} \cdot \boldsymbol{x}_{t}=\prod_{t=1}^{n} \sum_{j=1}^{m} w_{t j} x_{t j}
+$$
+
+where $\boldsymbol{x}^{n}=\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}\right)$ is the sequence of price relative vectors corresponding to the $n$ trading periods considered. The quantity $S_{n}\left(\boldsymbol{w}^{n}, \boldsymbol{x}^{n}\right)$ is the wealth factor achieved by $\boldsymbol{w}^{n}$ with respect to the sequence of market vectors $\boldsymbol{x}^{n}$.
+
+Example 8.2 At all times of investment, a $j$-th stock $(1 \leq j \leq m)$ is represented by the portfolio vector $\boldsymbol{e}_{j}=(0, \ldots, 1, \ldots, 0) \in \mathscr{W}$ (where 1 is in the $j$-th coordinate). It has a wealth factor for $n$ trading periods equal to the $n$-period simple gross return:
+$$
+S_{n}\left(\boldsymbol{e}_{j}, \boldsymbol{x}^{n}\right)=\prod_{t=1}^{n} x_{t j}=\prod_{t=1}^{n} \frac{P_{j}(t)}{P_{j}(t-1)}=R_{j}(n)+1
+$$
+Definition 8.1 A portfolio selection strategy for $n$ trading periods is a sequence of $n$ choices of portfolio vectors $w^{n}=\left(w_{1}, \ldots, w_{n}\right)$, where each $w_{t} \in \mathscr{W}$. A portfolio selection algorithm is an algorithm that produces a portfolio selection strategy.
+If $A L G$ is a portfolio selection algorithm, by identifying it with its output (a selection strategy $\left.\boldsymbol{w}^{n}\right)$, we can also use $S_{n}\left(A L G, \boldsymbol{x}^{n}\right)$ to denote the wealth factor of $A L G$ with respect to a sequence of market vectors $\boldsymbol{x}^{n}$.
+
+To evaluate the performance of a portfolio selection strategy (or algorithm), independently of any statistical property of returns, the common procedure is to compare its wealth factor against the wealth factor achieved by the best strategy in a class of reference investment strategies (a benchmark strategy). An alternatively is to compare their exponential growth rate, which for a selection algorithm $A L G$ is defined as
+$$
+W_{n}\left(A L G, x^{n}\right)=\frac{1}{n} \ln S_{n}\left(A L G, \boldsymbol{x}^{n}\right)
+$$
+We can rewrite the wealth factor $S_{n}\left(A L G, \boldsymbol{x}^{n}\right)$ in terms of the exponential growth rate as
+$$
+S_{n}\left(A L G, \boldsymbol{x}^{n}\right)=\exp \left(n W_{n}\left(A L G, \boldsymbol{x}^{n}\right)\right)
+$$
+
+Example $8.3$ (Buy and hold) This is the simplest strategy where an investor initially allocates all his wealth among $m$ securities according to portfolio vector $w_{1} \in \mathscr{W}$, and does not trade anymore. The wealth factor of this strategy after $n$ trading periods is
+$$
+S_{n}\left(\boldsymbol{w}_{1}, \boldsymbol{x}^{n}\right)=\sum_{j=1}^{m} w_{1 j} \prod_{t=1}^{n} x_{t j}
+$$
+Let $\boldsymbol{e}^{*} \in \mathscr{W}$ represent (as in Example 8.2) the best performing stock for the sequence of market vectors $\boldsymbol{x}^{n}$. This stock has a wealth factor of $S_{n}\left(\boldsymbol{e}^{*}, \boldsymbol{x}^{n}\right)=$ $\max _{1 \leq j \leq m} \prod_{t=1}^{n} x_{t j}$. If $\mathrm{BH}=\boldsymbol{w}_{1}$ is the buy and hold strategy, then $S_{n}\left(\mathrm{BH}, \boldsymbol{x}^{n}\right) \leq$ $S_{n}\left(\boldsymbol{e}^{*}, \boldsymbol{x}^{n}\right)$, and equality holds (i.e. BH achieves the wealth of the best performing stock) if the investors allocates all his wealth in $\boldsymbol{e}^{*}$ from the beginning. The problem is, of course, how could he know?
+
+Example $8.4$ (Constant Rebalanced Portfolios) A constant rebalanced portfolio (CRP) is a market timing strategy that uses the same distribution of weights throughout all trading periods. Let $\mathrm{CRP}_{w}$ be the CRP strategy with fixed weights $\boldsymbol{w}=\left(w_{1}, \ldots, w_{m}\right)$. The wealth factor achieved by applying this strategy for $n$ trading periods is
+$$
+S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{n}\right)=\prod_{t=1}^{n} \sum_{j=1}^{m} w_{j} x_{t j}
+$$
+
+Cover Gluss (1986) gave the following illustration of the power of the CRP strategy. In a market consisting of cash and one stock, consider the sequence of market vectors $(1,1 / 2),(1,2),(1,1 / 2),(1,2), \ldots$, where the first entry corresponds to cash (so its value is invariant through time) and the second entry corresponds to the stock (on odd days its value reduces one half, while on even days it doubles). Consider a constant rebalancing with $w=(1 / 2,1 / 2)$. Then, on each odd day the simple gross return of this $\operatorname{CRP}_{(1 / 2,1 / 2)}$ is $\frac{1}{2} 1+\frac{1}{2} \frac{1}{2}$ and on each even day it is $\frac{3}{2}$. Therefore the wealth achieved over $n$ days is $(9 / 8)^{n / 2}$. This means a $12.5 \%$ of wealth growth every two investment periods. Observe that no buy-and-hold will yield any gains.
+
+For a sequence of market vectors $\boldsymbol{x}^{n}$, the best constant rebalanced portfolio is given by the solution $w^{*}$ of the optimization problem:
+$$
+\max _{w \in \mathscr{W}} S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{n}\right)
+$$
+that is, $\boldsymbol{w}^{*}$ maximizes the wealth $S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{n}\right)$ over all portfolios $\boldsymbol{w}$ of $m$ fixed real positive values applied to the sequence of $n$ market vectors $\boldsymbol{x}^{n}$.
+
+The optimal strategy $\mathrm{CRP}_{w^{*}}$ outperforms the following common portfolio strategies:
+(1) Buy-and-Hold (BH): The wealth factor of $\mathrm{CRP}_{w^{*}}$ is at least the wealth factor of the best performing stock (i.e., $\left.S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}^{*}}, \boldsymbol{x}^{n}\right) \geq S_{n}\left(\boldsymbol{e}^{*}, \boldsymbol{x}^{n}\right)\right)$, since each stock $\boldsymbol{e}_{j} \in \mathscr{W}$ and $S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}^{*}}, \boldsymbol{x}^{n}\right)$ is the maximum over all $\mathscr{W}$.
+
+(2) Arithmetic mean of stocks: $S_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right) \geq \sum_{j=1}^{m} \alpha_{j} S_{n}\left(\boldsymbol{e}_{j}, \boldsymbol{x}^{n}\right)$, for $\alpha_{j} \geq 0$, $\sum_{j=1}^{m} \alpha_{j}=1$. In particular, the $\mathrm{CRP}_{w^{*}}$ strategy outperforms the DJIA index. (Prove as exercise.)
+(3) Geometric mean of stocks: $S_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right) \geq\left(\prod_{j=1}^{m} \alpha_{j} S_{n}\left(\boldsymbol{e}_{j}, \boldsymbol{x}^{n}\right)\right)^{1 / m}$. In particular, the $\mathrm{CRP}_{w^{*}}$ strategy outperforms the geometric Value Line (VLIC) (Exercise.).
+
+The best constant rebalanced portfolio strategy $\mathrm{CRP}_{w^{*}}$ is an extraordinary profitable strategy by the above properties; however, it is unrealistic in practice because it can only be computed with complete knowledge of future market performance. We shall explore more practical alternative strategies, and performing as well as $\mathrm{CRP}_{w^{*}}$, in Chap. $9 .$
+
+8.5.3: Find the formulae for the weights that maximizes $\tan \theta$ in Eq. (8.14). (Hint: write
+$$
+\tan \theta=\frac{E\left(R^{w}\right)-r_{f}}{s t d\left(R^{w}\right)}=\frac{\sum_{i=1}^{N} w_{i}\left(E\left(R_{i}\right)-r_{f}\right)}{\left(\sum_{1 \leq i, j \leq N} w_{i} w_{j} \sigma_{i j}\right)^{1 / 2}}
+$$
+Then set the derivatives of $\tan \theta$ with respect to each $w_{i}$ equal to zero, and solve the resulting system of linear equations.)
+
+8.5.3: Find the formulae for the weights that maximizes $\tan \theta$ in Eq. (8.14). (Hint: write
+$$
+\tan \theta=\frac{E\left(R^{w}\right)-r_{f}}{s t d\left(R^{w}\right)}=\frac{\sum_{i=1}^{N} w_{i}\left(E\left(R_{i}\right)-r_{f}\right)}{\left(\sum_{1 \leq i, j \leq N} w_{i} w_{j} \sigma_{i j}\right)^{1 / 2}}
+$$
+Then set the derivatives of $\tan \theta$ with respect to each $w_{i}$ equal to zero, and solve the resulting system of linear equations.)
+

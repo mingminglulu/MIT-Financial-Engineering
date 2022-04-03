@@ -1,0 +1,359 @@
+---
+title: "6.1 Technical Analysis"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+
+# 6.1.1 Dow’s Theory and Technical Analysis Basic Principles
+
+Charles Henry Dow is recognized as the forefather of Technical Analysis, a title he
+may not had the intention to bore as he was not apparently trying to forecast stock’s
+prices in his writings as a financial journalist. Dow founded, together with Edward
+Jones, The Wall Street Journal, and throughout the years 1900–1902 he wrote a series
+of articles in that journal which contain a set of observations on market behavior based
+primarily on the varying trends of the prices of stocks. It was William Peter Hamilton
+who after Dow’s death in 1902 succeeded to the editorial of The Wall Street Journal,
+and from that tribune, and in a later book (Hamilton 1922), presented Dow’s stocks
+market principles as investment rules and applied them over the period 1902–1929.
+It is fair then to say that Hamilton was indeed the first chartist in action. The axioms
+or principles that comprise what is known today as Dow’s Theory were laid down
+by Hamilton, and by a later prominent follower of Dow’s investment principles and
+student of Hamilton, Rhea (1932). Dow’s Theory can be summarized in the following
+principles (Edwards and Magee 1966):
+(1) The averages discount everything.
+(2) The market has three trends: primary or major, secondary, and minor. Subsequently, primary trends have three phases: (i) accumulation phase; (ii) public
+participation phase; (iii) distribution phase.
+(3) Stock market averages must confirm each other.
+(4) The volume confirms the trend.
+(5) Trends exist until a definitive reversal signal appears.
+By the averages, Dow was referring to the average indices that he composed together
+with E. Jones: the Industrial, comprised of twelve blue-chip stocks, and the Rail,
+comprised of twenty railroad stocks. Since Dow believe that stock’s prices reflect
+the flows of supply and demand, then the market averages discount and reflect everything that is known on stocks by market participants. The primary trends are the
+broad long-lasting upward movements, referred as Bull market, or the long periods
+of downward movements known as Bear market. The three phases dividing these primary trends are a reflection of public sentiment towards the market and their course
+of actions, bearing a lot of subjectivity. For example, for Bull markets Rhea writes
+(op. cit.): “first […] a revival of confidence in the future of business […] second is the
+response of stock prices to the known improvement in corporation earnings, and the
+third is the period when speculation is rampant and inflation apparent.” From these
+observations technical analysts infer the following investors actions: in the first phase
+only informed investors trade; in the second phase the common investors enter the
+game and speculation begins; and in the third and last phase the informed investors
+perceived the approach of a peak on prices and shift their investments, leaving the
+uninformed common investor alone in the market.
+Secondary trends are corrective trends, being of opposite direction to the major
+trends and of shorter duration in time; and the minor trends are much briefer fluctuations within secondary trends, all-in-all conforming to a sort of fractal construction.
+This minute division of the major trend may seem as an attempt to provide some
+criteria for removing the chaff from the wheat, the unimportant movements from the
+major and important one, to prevent investors from making false moves, as jumping
+out of the market at the wrong time due to a short swing in the trend. However, the
+recognition of short periods of trend reversal involve many vague proportional comparisons to previous similar trends or past price information, not being any of these
+informal arguments convincing enough for dispelling any doubt that the investors are
+possibly confronting a period of pause of the major trend that were recently riding,
+or are about to completely lose their investment. Thus, the algorithmic recognition
+of these different trends is an important subject of research.
+Among those signals that the specialists perceive as change in the market mood
+is the divergence of the trends of two different market sectors, as Dow’s two average
+indices, the Industrials and the Rails, and this is what Dow meant by the stock averages
+confirming each other. Likewise, Dow and later Hamilton (and succeeding technical
+analysts) have observed a linear relation between the trend of prices and the trend
+of transaction volume; e.g. an up-trend with low volume is doom to reversal. Later
+in the chapter we give a table representing the relation between price and volume
+as established by technical analysts. Finally, the market movements perceived as
+cyclical will then repeat certain patterns in the price histories of all stocks. The
+recording of those apparently recurring patterns and the observed correlation of
+those patterns with the market trend (aka chart analysis) is the bread and butter of
+Technical Analysis.
+The Dow, Hamilton and Rhea practice of investment evolved subsequently into a
+set of basic guiding principles for all technical investors, which can be summarized
+as the following facts:
+(1) The market price of a stock fully reflects its “real” value (i.e. only supply and
+demand determines market value).
+(2) Prices move in trends.
+(3) A trend is sustained through time until the balance of supply and demand changes.
+(4) The changes in supply and demand are reflected by meaningful patterns on the
+charts.
+(5) History repeats itself (and so do chart patterns!)
+
+We can appreciate that these investment principles are completely focus on price
+movements and volume figures of the stock, disregarding any other economic variable pertaining to the company, such as its income or liabilities. Having the focus
+primarily set on the history of prices, the bulk of the foundations of Dow’s Theory
+and subsequent methods of Technical Analysis revolve around qualitative descriptions of the elements of the market that influence the price and volume of stocks. It
+is under these foundational beliefs that the principles of Technical Analysis should
+be understood, and applied
+
+
+# 6.1.2 Charts, Support and Resistance Levels, and Trends
+
+Technical analysts view price histories in three graphic forms, each conveying more
+or less information about the behavior of the price in a given period of time. The
+types of charts representation for a price time series are:
+Line chart: This is the simplest plot, representing typically the closing price of the
+security with respect to time. It provides the quickest and easy view of price
+behavior. Figure 6.1 shows a daily line chart for a stock.
+Bars chart: This type of chart give more information than line charts on the evolution
+of the price. Each bar in a bars chart describes a single session, or period of time,
+and is depicted as a vertical line where the top indicates the highest value of the
+price in the period of time, the bottom indicates the lowest value, the closing price
+is marked on the right side of the bar, and the opening price is marked on the left
+side of the bar. Figure 6.2 depicts a daily bars chart for a stock.
+Candlesticks chart: The candlestick representation of stock prices has its origin in
+the 1600s in Japan. It is part of a charting technique applied originally to set future
+prices in the rice market, and then their use extended to all Japanese financial
+markets as they developed. It was introduced in the Western World around 1990
+by a professional technical analysts working at Merrill Lynch, Steve Nison, who
+wrote a complete manual for understanding and using these patterns (Nison 1991).
+A candlestick includes information on the high, low, opening and closing price
+in a period of time (most frequently daily, but also weekly or monthly) plus the
+relation of opening versus closing. This summaries are depicted in a candle with
+wicks (or “shadows”) at both ends, so that the top (bottom) of the upper (lower)
+wick marks the high (low), and the real body of the candle shows the opening
+and closing prices, together with information on the difference between these
+two. If the closing price is higher than the opening price, then the top (bottom)
+of the candle body marks the closing (opening) price, and the body is white
+(or green, for a more colorful representation). If the closing price is lower than
+the opening price, then the top (bottom) of the candle body marks the opening
+(closing) price, and the body is black (or red, to best pair with the green). Although
+their similarities with bars charts, candlesticks have become more popular among
+technical analysts for their employment in charting trading rules, some of which
+
+Support and resistance levels. On either graphic representation of the series of price,
+technical analysts draw horizontal lines that mark the balance of forces between sellers and buyers. A support level indicates the price where the majority of investors
+would be buyers (i.e., investors support the price), whereas a resistance level indi
+
+cates the price where the majority of investors would be sellers (i.e., investors are reluctant, or resist, to buy at that price). For a more formal definition, consider that a support (resistance) level of a price series is the lower (upper) end of its recent trading range. We will also see these level lines as special cases of the trend lines to be defined below. Figure $6.5$ shows support and resistance levels for a stock's price series. Observe that once the price breaks a resistance level, this becomes a support level, and vice versa.
+Trend lines. Let $\left\{P_{t}: t=0,1,2, \ldots, \tau\right\}$ be a stock's price series observed in a time period $\tau$. A trend line can be formally defined by considering two local maxima (or minima) points and tracing the line through those points. Let $P_{t_{a}}=P_{a}$ and $P_{t_{b}}=P_{b}$
+
+# 6.1.3 Technical Trading Rules
+
+The core of a technical trading rule is a mathematical indicator function that takes as input an asset's price (or price plus other information such as volume), and produces a value use to anticipate a change of price direction. ${ }^{1}$ We can classify the various forms of price history-based technical trading rules in three broad groups: moving averages, level crossings and pattern recognition rules. We shall give below succinct descriptions of each one of these groups of rules, and some examples. Then, in Sect. 6.1.4, we study some probability conditions to assess which of these groups of rules are well-defined and useful for predicting successfully exit and entry points. The point that this formalism illustrates is that technical trading rules can be mathematically defined and, consequently, algorithms can be devised for generating the buy and sell signals emitted by these rules. Our list of technical trading rules are far from exhaustive, and should be taken as an initiative to research, that can be expanded with the vast existing literature on this subject, of which we mention a few at the end of the chapter.
+
+Moving averages. The rules in this group consist on considering two or more moving averages of different lengths on the observed values of the price's history of a stock, $\left\{P_{t}: t \geq 0\right\}$, and the intersections of these averages are interpreted as signals for buying or selling. A moving average over $n$ periods of time and up to time $t$ can be defined as
+$$
+M A(n)_{t}=\frac{1}{n} \sum_{i=0}^{n-1} P_{t-i}
+$$
+Depending on the value of $n, M A(n)_{t}$ gives an indication of the short, mid, or long term tendency of the price series. Here is a classical representative of this group of rules.
+
+Dual Moving Average Crossover: For each time $t$, consider: (1) a short term Moving Average over $n$ days up to time $t, M A(n)_{t}=\frac{1}{n} \sum_{i=0}^{n-1} C_{t-i}$, where $C_{t}$ is the close
+
+price at time $t$; and (2) a long term Moving Average over $m$ days up to time $t$ (with $n<m), M A(m)_{t}=\frac{1}{m} \sum_{i=0}^{m-1} C_{t-i}$. Consider the process
+$$
+X_{t}=M A(n)_{t}-M A(m)_{t}
+$$
+which we begin observing at $t=t_{0}$, and through a sequence of times $t_{0}<t_{1}<$ $\cdots<t_{i}<\cdots$. Then, as soon as for some $i>0, X_{t_{i}}$ changes sign, we trade according to the following scheme:
+(1) If $X_{t_{i-1}}<0$ and $X_{t_{i}}>0$, go long at $O_{t_{i}+1}$, where $O_{t_{i}+1}$ is the open price at time $t_{i}+1$ (the following session).
+(2) If $X_{t_{i-1}}>0$ and $X_{t_{i}}<0$, go short at $O_{t_{i}+1}$.
+The general consensus of users of this rule is to take $n=20$ and $m=50$. This rule is often extended with a third $M A(r)_{t}$ of very short term (e.g. $r=9$ or $r=12$ ) and setting up trading rules according to the simultaneous crossings of the three moving averages. We give an example of the use of this rule in R Example 6.1.
+
+Level crossing. The rules in this group consist on considering a boundary (upper or lower) to the price observed through a period of time, and once the price crosses this limit a buy or sell signal is issued. Boundaries can be straight lines as uptrends, downtrends (as defined by Eq. (6.1)), support or resistance levels, or some curve given as a function of price. A common extension of level crossing rules is to jointly consider two boundaries of values enveloping a portion of the price, from the current time back to a specific point in the past: one of these limiting series of values runs above, the other below the price, drawing a band or window around the price values; crossing either of the boundary lines is taken as a signal to buy or sell. The general principles governing the trading signals are: if the crossing is through the upper boundary this means a strengthening in the upward trend, and hence one should go long on the asset; if the crossing is through the lower boundary then a continuation of the down trend will follow and one should go short on the asset. One simple, yet popular, member of this group of rules, the trend lines crossing, can be formalized as follows.
+
+Trend lines crossing: Let $\left\{P_{t}: t>t_{0}\right\}$ be a series of values of an asset's price, which we began observing after a turning point occurred at $t=t_{0}$. We draw an upper trend, if the desire is to buy the asset (looking for an entry point), or if we have bought the asset then draw a lower trend to alert us of an exit point. Suppose it is the latter case. For each time $t$ consider $T(t)$, the lower trend line drawn through two local minima attained at $t_{b}>t_{a}>t_{0}$ and defined by Eq. (6.1). Along the interval of time $\left[t_{a}, t_{b}\right], T(t) \leq P_{t}$, but the trend line extends further. As soon as the price $P_{t}$ crosses $T(t)$ we sell. Formally, consider the process
+$$
+X_{t}=P_{t}-T(t)
+$$
+which we monitor through times $t_{0}<t_{1}<t_{2}<\cdots$. At the first $i>0$ such that
+
+$$
+X_{t_{i-1}}>0 \text { and } X_{t_{i}}<0
+$$
+go short in $O_{t_{i}+1}$. For the case of buying as our objective, consider $T(t)$ as trend line passing through two local maxima, and the process $X_{t}=T(t)-P_{t}$. Then, for $i>0$ such that Eq. (6.5) holds, go long in $O_{t_{i}+1}$.
+Technical analysts assert that when either of these crossings occur, then prices will continue beyond the level line for a while; hence, new trend lines should be recomputed after a turning point located near $t_{i-1}$.
+
+On the subfamily of combined upper and lower crossings, or trading bands, we have the following simple rule.
+
+High-Low Envelopes: For a given $n>0$ and for each time $t$, consider a window of local extrema around the price $P_{t}$, build as follows: in the time interval $[t-n, t]$ take the highest high, $H H(t)=\max \left(H_{t-n}, \ldots, H_{t}\right)$, where $H_{t}$ is the High at time $t$; and the lowest low, $L L(t)=\min \left(L_{t-n}, \ldots, L_{t}\right)$, where $L_{t}$ is the Low at time $t$. Then:
+- Go long when price at time $t+1, P_{t+1}>H H(t)$.
+- Go short when $P_{t+1}<L L(t)$.
+
+A variation of this rule is to consider two moving averages in place of the highest high, $H H(t)$, and the lowest low, $L L(t)$. Bollinger bands, a well-known rule among professional traders, go a notch further by taking as the window two standard deviations around the 20 -day moving average $M A(20)_{t}$, at each time $t$.
+For all these envelopes or channels, the theory states that movement outside the bands should continue, and this supports the above trading decisions. In Note $6.3 .8$ at the end of the chapter, we present another interesting and much used technical rule of this family of envelope crossings, the Relative Strength Index (RSI).
+R Example 6.1 The quantmod package has many functions for calculating and drawing different technical indicators. The $\mathrm{R}$ commands below retrieve the historical quotes of Apple (AAPL) from Yahoo, and charts the price history from June, 2008 to April, 2009, using a candlestick representation for each daily tick, with positive candles in green (up. Col $=^{\prime}$ green' ) and negative candles in blue $\left(d n . c o l={ }^{\prime}\right.$ blue ${ }^{\prime}$ ); two moving averages $\left(M A(50)_{t}\right.$ in blue and $M A(10)_{t}$ in black), Bollinger bands on a 20 day moving average with bands at 2 standard deviations, and RSI indicator are also drawn.
+
+Pattern recognition. The rules in this group are based on recognizing some pattern drawn by a portion of the price curve ending at the current time, and issuing a buy or sell signal. Most of these patterns can be formally defined using local maxima and minima, a point that we shall illustrate through some meaningful examples. We consider three very popular western-world patterns, namely head and shoulders, triangles, and gaps, and two japanese candlesticks patterns, the hammer and the morning star.
+
+Head and Shoulders. A Head-and-Shoulders (HS) price pattern have been regarded among technical analysts as one of the "most important and reliable reversal pattern" (see Edwards and Magee (1966, Chap. VI) and (Achelis 2001, p. 246)). A HS pattern occurs when the price series, being in an uptrend, first describes a stair-step by marking a local maximum $E_{1}$, then a local minimum $E_{2}<E_{1}$, followed later by a higher local maximum $E_{3}>E_{1}$; then at this last point the trend reverses falling through a similar stair-step shape with new local minimum $E_{4}$, and finalizing at a local maximum $E_{5}<E_{3}$. The resulting figure consists of a left-shoulder, its top marked by $E_{1}$, a head, with its top marked by $E_{3}$, and a right-shoulder, marked by $E_{5}$. Let $t_{1}^{*}<t_{2}^{*}<t_{3}^{*}<t_{4}^{*}<t_{5}^{*}$ be the time instants (e.g. dates) at which the values $E_{1}, E_{2}, E_{3}, E_{4}$ and $E_{5}$ occurred. The straight line going through $\left(t_{2}^{*}, E_{2}\right)$ and $\left(t_{4}^{*}, E_{4}\right)$ is called the neck line. The trading rule for this pattern advises to sell (or go short) as soon as the price falls below the neck line. Figure $6.7$ presents an example of the HS pattern. Now, in order to completely formalize this pattern (and build an algorithm to recognize it), we need to impose two important restrictions on the extreme values $E_{1}, \ldots, E_{5}$.
+
+(1) Bandwidth: Practitioners of the HS trading rule, advise that the values of $E_{1}$ and $E_{5}$ (and of $E_{2}$ and $E_{4}$ ) should be similar. However, it is highly unlikely that each pair of extrema would be equal, so we consider slightly more relaxed conditions. We ask that
+$E_{1}$ and $E_{2}$ (also $E_{2}$ and $E_{4}$ ) be within a $b$ factor of their averages.
+Here $b$ should be small; the recommended value being $b=0.015$ (in percentage terms this corresponds to $1.5 \%$ ).
+(2) Time-window length: We should be precise about the width of the shoulders and the head, i.e., the number of dates (or sessions) that each part of the pattern expands throughout. It is sufficient to indicate the total width of all the HS pattern. Thus we must fix before hand the length $T$ of the time window where the pattern should be located, starting at current date $t$ and back $T$ time periods. We are asking then that the times $t_{1}^{*}, t_{2}^{*}, t_{3}^{*}, t_{4}^{*}, t_{5}^{*}$ at which the extremes $E_{1}, E_{2}$, $E_{3}, E_{4}, E_{5}$ occur, must be within the $T$ dates preceding the current date $t$ :
+$$
+\left\{t_{1}^{*}, \ldots, t_{5}^{*}\right\} \subset\left\{t_{0}, t_{1}, \ldots, t_{T}\right\}
+$$
+where $t_{0}<t_{1}<\cdots<t_{T}<t$.
+With the above provisos we can formally describe Head-and-Shoulders.
+HS: Let $t$ be the current time. Let $T>0$ be the time-window length, and $b$ the bandwidth (for daily observations of price, recommended values are: $T=35$ and $b=0.015)$. In the time spanned by the sequence, $t_{0}<t_{1}<\cdots<t_{T}<t$, find extrema $E_{1}, E_{2}, E_{3}, E_{4}$ and $E_{5}$, occurring at times $t_{1}^{*}<t_{2}^{*}<t_{3}^{*}<t_{4}^{*}<t_{5}^{*}$, verifying Eq. (6.6) and such that
+
+- $E_{1}$ is a local maximum.
+- $E_{3}>E_{1}$ and $E_{3}>E_{5}$.
+- For $E=\left(E_{1}+E_{5}\right) / 2$ and $E^{\prime}=\left(E_{2}+E_{4}\right) / 2$, we must have $\left|E-E_{1}\right|<b \cdot E$, $\left|E-E_{5}\right|<b \cdot E,\left|E^{\prime}-E_{2}\right|<b \cdot E^{\prime}$ and $\left|E^{\prime}-E_{4}\right|<b \cdot E^{\prime}$
+(Observe that a local maximum, with value $P_{s}$ occurring at time $s$, can be determined by checking if $P_{s-1}<P_{s}$ and $P_{s}>P_{s+1}$.)
+
+Triangles. Figure $6.8$ shows two trend lines converging to a common point describing what technicians know as a triangle. This pattern can be generated by considering a fixed number $k>1$ of consecutive local maxima appearing in descending order, and $k$ consecutive local minima, in the same time span, appearing in ascending order. Let $M_{1}>M_{2}>\cdots>M_{k}$ be local maxima appearing at times $t_{1}^{M}<$ $t_{2}^{M}<\cdots<t_{k}^{M}$, and $m_{1}<m_{2}<\cdots<m_{k}$ be local minima appearing at times $t_{1}^{m}<t_{2}^{m}<\cdots<t_{k}^{m}$. The rule for this triangle pattern is that for $t>\max \left(t_{k}^{m}, t_{k}^{M}\right)$, buy (go long) if $P_{t}>M_{k}$, or sell (go short) if $P_{t}<m_{k}$.
+Gaps. An up-gap occurs when the stock's lowest price of the date is above the highest of previous date; i.e., $L_{t}>H_{t-1}$. A down-gap is when $H_{t}<L_{t-1}$. Some technical investors buy (sell) after observing one up-gap (down-gap), others prefer to see two or three gaps of the same kind before trading. The fact is that one must fix a $k \in\{1,2,3\}$ ( $k$ must be small), and the rule for gaps says:
+- After observing $k$ up-gaps buy (or go long).
+- After observing $k$ down-gaps sell (or go short).
+In Fig. 6.6 one can observe a down-gap near Oct. 1, $2008 .$
+Candlesticks' charts. These chart patterns are composed of one or up to five consecutive candlesticks, corresponding to a sequence of days or sessions observed,where by comparing the sizes of their real bodies, the sizes of their upper and lower shadows, the colors, and their High, Low, Close and Open values, and observing certain relations among these parameters and the trend of past days, one obtains either a confirmation of the current trend or a signal of an imminent turning point. To algebraically express candlesticks patterns we need to mathematically formalize their parameters and set of relations. Let us fix some notation first. To simplify the exposition we consider the price observed in a daily basis. Let $C_{t}, O_{t}, L_{t}, H_{t}$ be the Close, Open, Low, and High of the price at day $t$.
+- The color of a candlestick real body is white $(w)$ or black $(b)$, and if the color is irrelevant we use $b w$. We use $\operatorname{col}(t)$ to indicate the color of the candlestick at day $t$. The real body is white (resp. black) if, and only if, $C_{t}>O_{t}$ (resp. $\left.C_{t}<O_{t}\right)$.
+- The size of the real body is calculated as $\left|C_{t}-O_{t}\right|$. However, technical analysts verbally classify the size into four categories: "doji" $(d)$, "small" $(s)$, "medium" $(m)$, and "tall" $(t)$. These qualitative descriptions of size can be given a numerical form as quartiles of the set of size of candlesticks of the $k$ most recent days (e.g. $k=22$ ) verifying $d<s<m<t$, and such that a candlestick of size $d$ has $C_{t} \approx O_{t}$ (i.e. the Close and Open are almost equal, and so the body looks almost flat); the remaining sizes $>d$ are assigned to the remaining three quantiles: $s$ for the first $25 \%$ of the sample, $m$ for the $50 \%$, and $t$ for the $75 \%$. We use size $(t)$ to indicate the size of the real body at day $t$.
+- The size of the upper (resp. lower) shadow is given by $H_{t}-C_{t}$ (resp. $\left.O_{t}-L_{t}\right)$ if $\operatorname{col}(t)=w$; otherwise is $H_{t}-O_{t}$ (resp. $C_{t}-L_{t}$ ). We use $u s(t)$ (resp. ls $(t)$ ) for the size of the upper (resp. lower) shadow at day $t$, and it should be clear from the context which equation we should use to compute its value.
+- The trend of the price for the past short term, say 12 days, previous to the candlesticks pattern, can be described by Eq. (6.1) and its slope be computed from that equation.
+
+With these general provisos, we can now define some particular patterns.
+Hammer. This pattern consist of a single candlestick, which should be observed at the current day $t$, although it needs a confirmation by observing the next day candlestick. The previous trend is downward (formalize this using the instructions above). The appearance of the hammer is an indication of a possible reversal of trend. Verbally, the hammer is defined as a candle where the color of its real body can be either black or white, with its lower shadow at least twice the size of its real body and its upper shadow at most one quarter of its real body. ${ }^{2}$ Next day confirmation must be a candlestick with closing price greater than the hammer's Close. This description can be formalized by the following equations:
+$$
+\begin{gathered}
+\operatorname{col}(t)=b w, \quad l s(t)>2 \cdot \operatorname{size}(t), \quad u s(t) \leq 0.25 \cdot \operatorname{size}(t) \\
+C_{t+1} \geq C_{t}
+\end{gathered}
+$$
+
+Morning Star. This pattern consist of three candlesticks observed at times $t-2$, $t-1$ and $t$. The previous trend is downward, and needs no confirmation; so it is a sure signal of a coming turning point, a possible change to an uptrend. Here is the formal definition of the morning star.
+$$
+\operatorname{col}(t-2)=b, \operatorname{size}(t-2)=t, \quad \operatorname{col}(t-1)=b w, \operatorname{size}(t-2)=s,
+$$
+$$
+\operatorname{col}(t)=w, \operatorname{size}(t)=t
+$$
+and $\quad C_{t-2}>\max \left(O_{t-1}, C_{t-1}\right), O_{t}>\max \left(O_{t-1}, C_{t-1}\right)$,
+$$
+C_{t}>C_{t-2}
+$$
+(As an exercise the reader should write this formal description verbally.)
+We believe that with this formal framework and the given examples, the reader would be able to program his own candlesticks patterns recognizer. We had done such a programming exercise in Arratia (2010).
+
+
+# 6.1.4 A Mathematical Foundation for Technical Analysis
+
+We present in this section some formal criteria to asses if a technical trading rule is mathematically sound and the extent to which these rules, although well-defined, are better forecasters than, say, some of the time series models presented in Chap. $4 .$ These criteria were developed by Salih Neftci in Neftci (1991) and are based on the theory of optimal stopping of stochastic processes (see Shiryaev (2007) for the necessary background). The key concept is the Markov time random variable.
+
+Definition 6.1 (Markov time) Let $\left\{X_{t}: t \geq 0\right\}$ be a stochastic process. A nonnegative integer-valued random variable $\tau$ is a Markov time for $\left\{X_{t}\right\}$ if for every $t \geq 0$, the event $\{\tau=t\}$ depends only on $\left\{X_{0}, X_{1}, \ldots, X_{t}\right\}$, and does not depend on $\left\{X_{t+s}: s \geq 1\right\}$.
+
+Thus, Markov times are random time periods independent of the future, as their values are determined only by current information. ${ }^{3}$
+
+Example 6.1 Let $\tau_{a}$ be the first time that a stochastic process $\left\{X_{t}: t \geq 0\right\}$ hits or passes the upper boundary $y(t)=a$, for some constant $a>X_{0}$. For example, $X_{t}$
+
+represents the price of a stock and $y(t)=a$ a resistance level. Then $\tau_{a}$ is a Markov time since, for any time $t \geq 0$,
+$$
+\tau_{a}=t \Longleftrightarrow X_{t}=a \text { and } X_{t-1} \neq a, \ldots, X_{1} \neq a
+$$
+and it is irrelevant to know the sign of $X_{t+s}-a$, for $s \geq 1$, to decide the event $\left\{\tau_{a}=t\right\}$.
+Example $6.2$ Let $\tau_{b}$ be the beginning of a Bull market; that is, $\tau_{b}$ is that random point in time where a market index (e.g. DJIA or S\&P 500) starts on an uptrend. This is not a Markov time, since in order to know $\tau_{b}=t$ one needs to know future events of any process $X_{t}$ indicating the possible Bull trend. For example, that a trend line drawn starting at $\tau_{b}=t$ extends with positive slope for a long period. To compute this slope we need to know a local extrema at some point $s>\tau_{b}$.
+
+It is then reasonable to say that a technical rule is well-defined if the sequence of buy or sell signals that generate is a Markov time, since this implies that the rule is using only current information. If a technical rule fails to be a Markov time, then it means that it is using future information to determine some (or all) of its signals, an unrealistic conclusion.
+
+Let us elaborate further on a theoretical framework for these sequences of buy or sell signals, produced by technical rules, to see how we can sort out their possible Markovian property. When we attempt to automatize a technical rule, we produce a program that on input a price series and other information (all together conforming a random process depending on time) outputs a sequence of signals at certain intervals of times. These are the occurring times for a technical rule.
+
+Definition 6.2 Given a real-valued random process $X_{t}$, and an interval of real numbers $A$, we define the times of $X_{t}$ occurring at $A$, or simply the occurring times if context is clear, as the sequence of positive integers
+$$
+\begin{aligned}
+\tau_{0} &=0 \\
+\tau_{i+1} &=\min \left\{t: X_{t} \in A, t>\tau_{i}\right\}, \text { for } i \geq 0
+\end{aligned}
+$$
+Thus, to show that a technical rule is well-defined, it is sufficient to show that its occurring times are Markov times. In fact, we prove below that it would be sufficient to show that the event of $X_{t}$ occurring at $A$ (i.e. $\left\{X_{t} \in A\right\}$ ) can be determined using only current information.
+
+Proposition 6.1 Let $\left\{X_{t}\right\}$ be a real-valued random process, and $A$ an interval of real numbers. If, for all $t \geq 0$, the event $\left\{X_{t} \in A\right\}$ depends on $\left\{X_{s}: 0 \leq s \leq t\right\} \cap A$ and not on $\left\{X_{t+s}: s \geq 1\right\}$, then the occurring times $\tau_{0}, \tau_{1}, \ldots$, of $X_{t}$ at $A$ are Markov times. ${ }^{4}$
+
+Proof Proceed by induction. Assume that for $i=0, \ldots, n, \tau_{i}$ is a Markov time. Fix $t>0$. Then
+$$
+\begin{aligned}
+\left\{\tau_{n+1}=t\right\} &=\left\{X_{t} \in A\right\} \cup\left\{\tau_{n}<t\right\} \\
+&=\left\{X_{t} \in A\right\} \cup\left\{\tau_{n} \leq t-1\right\} \\
+&=\left\{X_{t} \in A\right\} \cup \bigcup_{s=0}^{t-1}\left\{\tau_{n}=s\right\} .
+\end{aligned}
+$$
+The event $\left\{X_{t} \in A\right\}$ depends only on $X_{t}$ and $A$. By induction, each event $\left\{\tau_{n}=s\right\}$ depends only on $A$ and $\left\{X_{0}, \ldots, X_{s}\right\}$, for $s=0, \ldots, t-1$. The union of these sets of information is $A$ and $\left\{X_{0}, \ldots, X_{t-1}\right\}$. Therefore, $\left\{\tau_{n+1}=t\right\}$ depends only on $A$ and $\left\{X_{0}, \cdots, X_{t}\right\}$.
+As an example note that in Example $6.1 \tau_{a}$ can be written as
+$$
+\tau_{a}=\min \left\{t: t \geq 0, X_{t} \in[a, \infty)\right\}
+$$
+and the event $X_{t} \in[a, \infty)$ can be determined by comparing the value of $X_{t}$ with $a$, and no extra information ahead of time $t$ is needed; hence $\tau_{a}$, which is the occurring time $\tau_{1}$, is Markov time. Observe that without making any further assumptions about the process $\left\{X_{t}\right\}$ in Example 6.1, we can not guarantee that it will eventually hit the line $y(t)=a$, since the best we can say about the probability of the event $\left\{\tau_{a}=t\right\}$ occurring, for some $t$, is that is less than 1 (and so it could be 0 ). Then, what good is a technical rule, like "crossing a resistance line", that although being a Markov time (hence well-defined), it may never be realized? We need to impose a further test for the adequacy of technical rules.
+
+Definition 6.3 (Stopping time) A Markov time $\tau$ is a stopping time if it has probability one of being finite, i.e., $\mathbb{P}(\tau<\infty)=1$. Thus, a stopping time is a Markov time that almost surely has a finite sample value.
+
+Thus, a well-defined technical rule is one whose occurring times are Markov times, and it is adequate if further the occurring times are stopping times. We shall first sort out which of the technical rules presented in Sect. 6.1.3 are Markov times or not; afterwards we shall try to characterize the adequacy of some of these rules.
+The occurring times of technical trading rules and the Markov property.
+1. Moving averages rule. The process under consideration, given by Eq. (6.3), is
+$$
+X_{t}=M A(n)_{t}-M A(m)_{t}
+$$
+and a buy or sell signal is generated when the process changes sign from one time instant to the next. The change of sign is captured by the test $X_{t} \cdot X_{t-1}<0$. Thus, the occurring times for the moving average rule can be defined as
+
+$$
+\tau_{0}=0, \tau_{i}=\min \left\{t: X_{t} \cdot X_{t-1}<0, t>\tau_{i-1}\right\}, i>0 .
+$$
+The event $X_{t} \cdot X_{t-1}<0$ is determined from computing $M A(n)_{t}$ and $M A(m)_{t}$, which uses $\left\{X_{t}, X_{t-1}, \cdots, X_{t-n}\right\}$ as information set. By Prop. 6.1, the occurring times of moving averages rule are Markov times.
+2. Level crossings. Let us analyze first the trend lines crossing rule for taking short positions; the case for long positions being similar. The process considered is $X_{t}=P_{t}-T(t)$, and the signal is given by Eq. (6.5). The occurring times for this rule are also given by
+$$
+\tau_{i}=\min \left\{t: X_{t} \cdot X_{t-1}<0, t>\tau_{i-1}\right\}
+$$
+However, we argue that this sequence of times is not Markov. The problem is that whenever a signal occurs at time $\tau_{i-1}$, the trend $T(t)$ have to be recomputed with local minima attained at times $t_{a}, t_{b}$ in $\left(\tau_{i-1}, t\right]$. We have not specified a recipe for determining if the values $P_{t_{a}}$ and $P_{t_{b}}$ are local minima, since the "correct" application of this rule by experts considers, more often than not, the lowest of the low possible values found in the range of $\left(\tau_{i-1}, t\right]$, and to find these low values one probably needs to make comparisons with values attained beyond $t$. A deterministic solution like "consider $P_{s}$ to be a local minimum if $P_{s-1}>P_{s}$ and $P_{s}<P_{s+1}$, and then take the two consecutive local minima thus formed", is likely to produce a non desirable trend line for this rule.
+
+Another possible definite algorithm for computing $T(t)$, using only past information, could be: "take 8 time instants previous to $\tau_{i-1}$ and fit a straight line by least squares method". The problem with this fix is that technical analysts believe that as soon as a signal is produced, at the time $\tau_{i-1}$, the preceding trend is to suffer a reversal, then the proposed remedy will have worse effects than the originally ill-defined rule. Therefore, it seems inescapable to use some knowledge of the future to trace a technically correct trend line $T(t)$, and hence, in general the occurring times for this rule are not Markov times.
+
+On the contrary, the high-low envelope rule, and in general the family of envelope crossings, have occurring times that are Markov times, since one can see that the envelopes are computed using information previous to current time $t$ (e.g. the highest high and lowest low of $n$ previous days, or two standard deviations around the past 20-day moving average).
+3. Patterns. For the head-and-shoulders pattern, the process considered is
+$$
+X_{t}=P_{t}-N(t)
+$$
+where $P_{t}$ is the price and $N(t)$ is the neckline passing through the points $\left(t_{2}^{*}, E_{2}\right)$ and $\left(t_{4}^{*}, E_{4}\right)$. The rule is to sell once $X_{t}<0$, for $t>t_{T}$. The one time occurrence for this rule can be defined as
+$$
+\tau_{1}=\min \left\{t: X_{t}<0, t>t_{T}\right\}
+$$
+
+This time $\tau_{1}$ is a Markov time, since we apply a very simple test for determining local extrema, which consists of comparisons with immediate price values $P_{s-1}$ and $P_{s+1}$, for each $s<t_{T}$; in consequence, $E_{2}$ and $E_{4}$ (and $\left.N(t)\right)$ are computed with information known up to time $t_{T}$ (see Eq. (6.6)). However, we remark that the neckline obtained by the algorithm HS does not in general coincides with the neckline that technical analysts will draw by observing the price curve. We have not imposed any relation among the lines drawn by $\left\{\left(t_{2}^{*}, E_{2}\right),\left(t_{4}^{*}, E_{4}\right)\right\}$ and $\left\{\left(t_{1}^{*}, E_{1}\right),\left(t_{5}^{*}, E_{5}\right)\right\}$, whereas users of the head-and-shoulders rule feel more confident with it if these lines are parallel and considerably apart. Forcing this parallelism or spread among these lines implies to look at more values ahead to find better fit extrema. This turns the occurring time into a non Markov time.
+Triangles and gaps generate occurring times that are Markov time (we leave to the reader to define their occurring times $\tau_{i}$ ). For triangles we are looking at $k$ past and consecutive local extrema, and for gaps we are looking at $k$ jumps, defined by comparing the current High or Low with previous day Low or High. Nevertheless, observe that what makes the occurring times of these rules Markov is the a priori specification of the parameter $k$. For triangles this is a questionable issue, since it is not clear how many local minima and maxima have to be observed, in ascending and descending order respectively, to decide that a real triangle has formed. But if one starts adding requirements to realize some angle of incidence of the meeting lines, or similar qualities, then almost surely the occurring time will not be Markov time. For gaps there are no doubts, since almost every user is comfortable with applying $k=1$.
+
+Finally, candlesticks patterns do generate occurring times that are Markov times, provided the length of past observations used to compute the four quantiles describing size of real body, and the number of past days for computing the trend preceding the pattern, are previously fixed.
+
+Conditions for some technical rules to generate occurring times that are stopping times. We analyze the possible characteristics that the random process should have for some of the technical rules to be stopping times. The following lemma is adapted from a general result in Breiman (1992, Prop. 6.38), and it is a key tool for showing that certain Markov times produced by strictly stationary processes are stopping times (in Problem $6.35$ we give a hint for proving this important fact).
+
+Lemma 6.1 Let $\left\{Z_{t}: t \geq 0\right\}$ be a strictly stationary process, and A an interval of reals. If $\mathbb{P}\left(Z_{t} \in A\right.$, at least once $)=1$, then the occurring times $\tau_{i}, i \geq 0$, of $Z_{t}$ at $A$, are stopping times.
+
+We also need Proposition $2.2$ from Chap. 2, so the reader is advise to review that result. With all previous tools we can now show that stationarity and $m$-dependance are sufficient conditions for moving averages trading signals to be stopping times.
+Theorem 6.1 If $\left\{Y_{t}: t \geq 0\right\}$ is a strictly stationary and $m$-dependent process, then the Dual Moving Averages rule for $\left\{Y_{t}\right\}$ generates trading signals that are stopping times.
+
+Proof Let $M A(n)_{t}, M A(m)_{t}$ moving averages for $Y_{t}$ given by Eq. (6.2). By Prop. 2.2, both compositions of processes $X_{t}=M A(n)_{t}-M A(m)_{t}$ and $Z_{t}=X_{t} \cdot X_{t-1}$ are stationary. By stationarity $E\left[Z_{t}\right]=0$, hence $0<\mathbb{P}\left(Z_{t} \geq 0\right)<1$, for all $t$. We want to show that $\mathbb{P}\left(Z_{t} \in(-\infty, 0]\right.$, at least once $)=1$. Consider,
+$\mathbb{P}\left(Z_{t} \leq 0\right.$, at least once for $\left.t \leq n\right)=1-\mathbb{P}(Z(0)>0, Z(1)>0, \ldots, Z(n)>0)$
+Since $Z_{t}$ is $m$-dependent, taking $Z_{t}$ 's sufficiently apart will be independent. Hence, there exist an integer $u>0$, such that $Z_{t}$ and $Z_{t+u}$ are independent. Then, for large $n$,
+$$
+\begin{aligned}
+& \mathbb{P}\left(Z_{0}>0, Z_{1}>0, \ldots, Z_{n}>0\right) \\
+\leq & \mathbb{P}\left(Z_{0}>0\right) \cdot \mathbb{P}\left(Z_{u}>0\right) \ldots \mathbb{P}\left(Z_{k u}>0\right) \leq \mathbb{P}\left(Z_{0}>0\right)^{k}
+\end{aligned}
+$$
+by stationarity and $m$-dependence. As $k \rightarrow \infty, \mathbb{P}\left(Z_{0}>0\right)^{k} \rightarrow 0$, since $\mathbb{P}\left(Z_{0}>\right.$ $0)<1$. Thus $\mathbb{P}\left(Z_{t} \leq 0\right.$, at least once $)=1$, as desired. By Lemma $6.1$ the signals constitute a sequence of stopping times.
+
+The assumptions of stationary and $m$-dependance are necessary for the conclusion of the previous theorem to hold. Indeed, consider as a counter-example the following AR(1) process
+$$
+Y_{t}=\phi Y_{t-1}+\varepsilon_{t}, \quad t=1,2, \cdots
+$$
+with $\phi>2$ and $\varepsilon_{t}$ an iid random variable uniformly distributed over $[-1,1]$. An AR(1) process is not $m$-dependent for any finite $m$. Consider the moving averages $M A(1)_{t}$ and $M A(2)_{t}$ for $Y_{t}$, and the dual moving average rule:
+$$
+X_{t}=M A(1)_{t}-M A(2)_{t}=Y_{t}-(1 / 2)\left(Y_{t}+Y_{t-1}\right)=(1 / 2)\left[(\phi-1) Y_{t-1}+\varepsilon_{t}\right]
+$$
+Now, the event $\left\{Y_{t}>1\right.$, and tends to $\left.\infty\right\}$ has positive probability, and in consequence the occurring times for the rule $X_{t}$ (see Eq. (6.8)) is such that $\tau=\infty$, so it is not a stopping time.
+
+On the predictive power of technical analysis. Our next concern is the usefulness for forecasting of those technical rules which are well-defined and adequate. The question is under what conditions these rules can be more effective than other econometric models. This is an ample research question which admits many answers depending on the characteristics of each of the many classes of time series models. To begin, recall from Sect. $2.4$ that for a given stationary process $\left\{X_{t}\right\}$ the best predictor of $X_{t+s}$, based on past history $\left\{X_{t}, X_{t-1}, \ldots, X_{t-k}\right\}$, is precisely the conditional expectation $E\left(X_{t+s} \mid X_{t}, X_{t-1}, \ldots, X_{t-k}\right)$. Therefore, given a sequence of Markov times $\left\{\tau_{i}: i \geq 0\right\}$ obtained from a finite history of $\left\{X_{t}\right\}$, we have by definition that the values of $\left\{\tau_{i}\right\}$ are determined by $\left\{X_{t}, X_{t-1}, \ldots, X_{t-k}\right\}$, for some $k>0$, and in consequence
+
+$$
+\begin{aligned}
+&E\left(X_{t+s} \mid\left\{X_{t}, X_{t-1}, \ldots, X_{t-k}\right\},\left\{\tau_{i}: \tau_{i}<t\right\}\right) \\
+&=E\left(X_{t+s} \mid\left\{X_{t}, X_{t-1}, \ldots, X_{t-k}\right\}\right)
+\end{aligned}
+$$
+Consider now the case of $\left\{X_{t}\right\}$ being a Gaussian process. We know from Proposition $2.3$ that the conditional expectation
+$$
+E\left(X_{t+s} \mid\left\{X_{t}, X_{t-1}, \ldots, X_{t-k}\right\}\right)=\alpha_{0} X_{t}+\alpha_{1} X_{t-1}+\cdots+\alpha_{k} X_{t-k}
+$$
+and so the best predictor can be obtained by linear regression on $\left\{X_{t}, X_{t-1}, \ldots, X_{t-k}\right\}$, and in this case an autoregressive model does a better job in predicting than the technical rules producing the stopping times. There are other classes of processes that verify Eq. (6.9) and, in fact, the sub-Gaussian processes are characterize by this equation, as shown by Hardin (1982). So, in general, for any process whose best predictor (or conditional expectation on past history) has a linear form (e.g. Martingales, which are characterize by $\left.E\left(X_{t+1} \mid\left\{X_{t}, X_{t-1}, \ldots, X_{t-k}\right\}\right)=X_{t}\right)$, no sequence of finite Markov times produced by some technical analysis rules can be better in prediction than autoregressive model.
+
+Thus, if Technical Analysis is to have any success in forecasting this might be plausible on securities whose price time series is such that its conditional expectation, based on its past history, is a non linear function.
+
+
+
+

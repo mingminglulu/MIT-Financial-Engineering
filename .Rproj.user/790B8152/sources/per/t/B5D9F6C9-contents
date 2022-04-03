@@ -1,0 +1,77 @@
+---
+title: "2.3 Stationarity and Autocovariance"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Definition 2.3 A random process $\left\{X_{t}\right\}$ is strictly stationary if for any finite set of time instants $\left\{t_{1}, \ldots, t_{k}\right\}$ and any time period $\tau$ the joint distribution of $\left\{X_{t_{1}}, \ldots, X_{t_{k}}\right\}$ is the same as the joint distribution of $\left\{X_{t_{1}+\tau}, \ldots, X_{t_{k}+\tau}\right\}$, i.e.,
+$$
+F_{X_{t_{1}}, \ldots, X_{t_{k}}}\left(x_{1}, \ldots, x_{k}\right)=F_{X_{t_{1}+\tau}, \ldots, X_{t_{k}+\tau}}\left(x_{1}, \ldots, x_{k}\right) .
+$$
+One interesting property of strictly stationary processes is that once we have one we can produce many other strictly stationary processes by applying any "regular" operation on subsequences; e.g. moving averages, iterative products, and others. We state this important fact informally, and recommend the reading of Breiman (1992 Chap. 6, Prop. 6.6) for the precise mathematical details. ${ }^{5}$
+
+Proposition 2.2 Let $\left\{X_{t}\right\}$ be a strictly stationary process and $\Phi$ a function from $\mathbb{R}^{h+1}$ to $\mathbb{R}$. Then the process $\left\{Y_{t}\right\}$ defined by $Y_{t}=\Phi\left(X_{t}, X_{t-1}, \ldots, X_{t-h}\right)$ is strictly stationary.
+
+Stationary processes obtained as $Y_{t}=\Phi\left(X_{t}, X_{t-1}, \ldots, X_{t-h}\right)$ can be classified by the scope of their variable dependency, in the following sense.
+
+Definition 2.4 A random process $\left\{X_{t}\right\}$ is $m$-dependent, for an integer $m>0$, if $X_{s}$ and $X_{t}$ are independent whenever $|t-s|>m$.
+
+For example, an iid sequence is 0-dependent; $Y_{t}$ obtained as in Prop. $2.2$ is $h$-dependent.
+
+Example $2.5$ A white noise $\left\{W_{t}\right\}$ is a sequence of iid random variables with finite mean and variance. This is a strictly stationary process: independence implies that $F_{W_{1}, \ldots, W_{k}}\left(w_{1}, \ldots, w_{k}\right)=\prod_{i=1}^{k} F_{W_{i}}\left(w_{i}\right)$ (cf. Eq. (2.15)), while being identically distributed implies that $F_{W_{i}}(w)=F_{W_{i}+\tau}(w)=F_{W_{1}}(w)$, for all $i$; hence, both hypotheses give Eq. (2.38). Next, consider the processes
+
+
+- $Y_{t}=\alpha_{0} W_{t}+\alpha_{1} W_{t-1}$, with $\alpha_{0}, \alpha_{1} \in \mathbb{R}$ (moving average);
+- $Z_{t}=W_{t} W_{t-1}$
+By Prop. $2.2$ these are strictly stationary (and 1-dependent).
+It is not obvious that financial returns verify the strictly stationary hypothesis. However, it is a convenient assumption to ensure that one can estimate the moments of the returns by taking samples of data from any time intervals. Looking at some plots of returns (e.g., go back to Fig. 2.2), one often encounters that the mean is almost constant (and close to zero) and the variance bounded and describing a pattern that repeats through different periods of time. Therefore, an assumption perhaps more reasonable to the invariability in time of all moments of returns could be that the first moment is constant (hence invariant) and the second moment is in sync with its past (hence it can be well estimated from past data). To formalize this hypothesis we need as a first ingredient the notion of covariance.
+Definition 2.5 The covariance of two random variables $X$ and $Y$ is
+$$
+\operatorname{Cov}(X, Y)=E\left(\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\right)
+$$
+Note that $\operatorname{Cov}(X, Y)=E(X Y)-E(X) E(Y)=E(X Y)-\mu_{X} \mu_{Y}$, and $\operatorname{Cov}(X, X)$ $=\operatorname{Var}(X)=\sigma_{X}^{2}$. To be consistent with the $\sigma$ notation, it is customary to denote $\operatorname{Cov}(X, Y)$ by $\sigma_{X, Y}$.
+
+Remark $2.4$ The expected value of the product of continuous random variables $X$ and $Y$ with joint density function $f_{X, Y}$ is
+$$
+E(X Y)=\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} x y f_{X, Y}(x, y) d x d y
+$$
+
+Now observe that if $X$ and $Y$ are independent then $\operatorname{Cov}(X, Y)=0$. This follows directly from the definition of covariance and Eqs. (2.39) and (2.15). The converse is not true, for we can have $\operatorname{Cov}(X, Y)=0$ and $X$ and $Y$ being functionally dependent. The popular example is to consider $X$ uniformly distributed in $[-1,1]$, and $Y=X^{2}$. Then $X$ and $Y$ are dependent, but $\operatorname{Cov}\left(X, X^{2}\right)=E\left(X^{3}\right)-E(X) E\left(X^{2}\right)=0-0$. $E\left(X^{2}\right)=0$. Note that the dependency of $X$ and $Y=X^{2}$ is non-linear.
+
+We can estimate $\operatorname{Cov}(X, Y)$ from a given sample $\left\{\left(x_{i}, y_{i}\right): i=1, \ldots, m\right\}$ by the sample covariance:
+$$
+\widehat{\operatorname{Cov}}(X, Y)=\frac{1}{m-1} \sum_{i=1}^{m}\left(x_{i}-\widehat{\mu}_{X}\right)\left(y_{i}-\widehat{\mu}_{Y}\right)
+$$
+R Example $2.5$ In $\mathrm{R}$ the function $\mathrm{cov}(\mathrm{x}, \mathrm{y}, \ldots)$ computes the sample covariance of vectors $x$ and $y$, or if $x$ is a matrix or table (and $y=N U L L$ ) computes covariance
+
+
+Definition 2.6 For a random process $\left\{X_{t}\right\}$ with finite variance, its autocovariance function is defined by $\gamma_{X}(s, t)=\operatorname{Cov}\left(X_{s}, X_{t}\right)$.
+
+The autocovariance is the concept we need to narrow strict stationarity of returns to just some of its key moments. This gives us weak stationarity.
+
+Definition 2.7 A random process $\left\{X_{t}\right\}$ is weakly stationary (or covariance stationary) if it has finite variance $\left(\operatorname{Var}\left(X_{t}\right)<\infty\right)$, constant mean $\left(E\left(X_{t}\right)=\mu\right)$ and its autocovariance is time invariant: $\gamma_{X}(s, t)=\gamma_{X}(s+h, t+h)$, for all $s, t, h \in \mathbb{Z}$. In other words, the autocovariance only depends on the time shift, or lag, $|t-s|$, and not on the times $t$ or $s$. Hence, we can rewrite the autocovariance function of a weakly stationary process as
+$$
+\gamma_{X}(h)=\operatorname{Cov}\left(X_{t}, X_{t+h}\right)=\operatorname{Cov}\left(X_{t+h}, X_{t}\right), \quad h=0, \pm 1, \pm 2, \ldots
+$$
+$\gamma_{X}(h)$ is also called the lag- $h$ autocovariance.
+
+
+Remark $2.5$ A strictly stationary process $\left\{X_{t}\right\}$ with finite second moments is weakly stationary. The converse is not true: there are weakly stationary processes that are not strictly stationary. ${ }^{6}$ However, if $\left\{X_{t}\right\}$ is a weakly stationary Gaussian process (i.e., the distribution of $\left\{X_{t}\right\}$ is multivariate normal), then $\left\{X_{t}\right\}$ is also strictly stationary.
+Remark 2.6 Some obvious but important properties of the autocovariance function of any stationary process (strictly or weakly) are: $\gamma(0) \geq 0($ since $\gamma(0)=\operatorname{Var}(X))$, $|\gamma(h)| \leq \gamma(0)$ and $\gamma(h)=\gamma(-h)$, for all $h$.
+
+Example 2.6 Let $\left\{W_{t}\right\}$ be a white noise with mean zero and variance $\sigma^{2}$, and consider the following sequence: $S_{0}=0$, and for $t>0, S_{t}=W_{1}+W_{2}+\ldots+W_{t}$. Note that $S_{t}=S_{t-1}+W_{t}$. The process $S=\left\{S_{t}\right\}$ is a random walk. Compute the autocovariance for $S$. For $h>0$,
+$$
+\begin{aligned}
+\gamma_{S}(t, t+h) &=\operatorname{Cov}\left(S_{t}, S_{t+h}\right)=\operatorname{Cov}\left(\sum_{i=1}^{t} W_{i}, \sum_{j=1}^{t+h} W_{j}\right) \\
+&=\operatorname{Var}\left(\sum_{i=1}^{t} W_{i}\right)=t \sigma^{2}
+\end{aligned}
+$$
+The third equality follows from $\operatorname{Cov}\left(W_{i}, W_{j}\right)=0$, for $i \neq j$. The autocovariance depends on $t$; hence, the random walk $S$ is not weakly stationary (and not strictly stationary).
+
+

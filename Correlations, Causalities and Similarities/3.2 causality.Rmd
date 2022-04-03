@@ -1,0 +1,115 @@
+---
+title: "3.2 Causality"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 3.2.1 Granger Causality
+
+The kind of cause-effect relation that we are interested in should be one suited for time series; one that considers the random nature of the variables and the flow of time. It should be a concept based purely on observations of past and present values, and where there is no possibility of external intervention to alter these values, as it is the case in experimental sciences where the estimation of causal effect from observational data is measured by changes in the distribution of the variables. The measure of causality for time dependent random variables that we need is the one given by Clive Granger (1969).
+
+The basic idea of Granger causality, in the case of two random variables $X$ and $Y$, is the following:
+$X$ is said to (Granger) cause $Y$, if $Y$ can be better predicted using the histories of both $X$ and $Y$ than it can by using the history of $Y$ alone.
+
+
+This idea can be mathematically realized by computing a regression of variable $Y$ on the past values of itself and the past values of $X$, and testing the significance of coefficient estimates associated with $X$. There are various statistical tests of significance for this regression-based Granger causality. Geweke et al. (1983) analyze eight of the most popular such tests to conclude that the Wald variants are the more accurate. Toda and Yamamoto (1995) introduced a very simple Wald test statistic that asymptotically has a chi-square distribution, regardless of the variables being stationary or not (originally Granger assumed variables were strictly stationary for his test), and this version of causality testing has become one of the most widely applied (and as we shall see it is implemented in R). This form of Granger causality is the one we define below.
+
+To mathematically test whether $X$ (Granger) causes $Y$, one proceeds as follows:
+(1) Consider a bivariate linear autoregressive model on $X$ and $Y$, making $Y$ dependent on the history of $X$ and $Y$. This is the full model $M_{f}$. Additionally, consider a linear autoregressive model on $Y$, the restricted model $M_{r}$ :
+$$
+\begin{aligned}
+&M_{f}: Y_{t}=a_{0}+a_{1} Y_{t-1}+\cdots+a_{h} Y_{t-h}+b_{1} X_{t-1}+\cdots+b_{h} X_{t-h}+\varepsilon_{t} \\
+&M_{r}: Y_{t}=a_{0}+a_{1} Y_{t-1}+\cdots+a_{h} Y_{t-h}+\varepsilon_{t}
+\end{aligned}
+$$
+where $h$ is the maximum number of lagged observations (for both $X$ and $Y$ ). The coefficients $a_{i}, b_{i}$ are the contributions of each lagged observation to the predicted value of $Y_{t}$, and $\varepsilon_{t}$ is the residual or prediction error.
+(2) Consider the null hypothesis
+
+$H_{0}: X$ does not cause $Y$
+which is equivalent to $\quad H_{0}: b_{1}=b_{2}=\cdots=b_{h}=0$.
+Assuming a normal distribution of the data we can evaluate the null hypothesis through an $F$-test. This consists in doing the following:
+(3) Calculate both Residual Sums of Squares, ${ }^{2} R S S_{f}$ of the full model $M_{f}$ and $R S S_{r}$ of the restricted model $M_{r}$ (Presumably $R S S_{f}$ should fit the data better than $R S S_{r}$, this means that it should have lower error).
+(4) Compute $F=\frac{R S S_{r}-R S S_{f}}{R S S_{f}} \cdot \frac{n-2 h-1}{h}$. Under the null hypothesis $H_{0}$ (i.e. that model $M_{f}$ does not provide a significantly better fit than model $\left.M_{r}\right), F$ will have an $F$ distribution, with ( $h, n-2 h-1$ ) degrees of freedom. The null hypothesis $H_{0}$ is rejected, meaning that $X$ causes $Y$, if the $F$ calculated from the data is greater than the critical value of the $F$ distribution for some desired false-rejection probability (usually $0.05$ ).
+(5) As an alternative (and equivalent) significance test, statisticians compute the $p$-value for the $\mathrm{F}$ test, which is the probability, under the given null hypothesis, of observing an $\mathrm{F}$ at least as extreme as the one observed (i.e. the $F_{o b s}$ being the one calculated by the formula above). Formally, $p=\mathbb{P}_{H_{0}}\left(F>F_{o b s}\right)$. If the $p$-value is less than $0.05$, one rejects the null hypothesis, and hence $X$ causes $Y$. It is the $p$-value (and not the critical values of F distribution) what's usually computed numerically by statistics packages.
+
+A first application. Christopher Sims (1972) made one of the earliest econometric application of the Granger causality measure to corroborate a thesis by Milton Friedman and Anna Schwartz asserting that money growth cause changes in the GNP of the US. ${ }^{3}$ In the following R Example we reproduce Sims causality test of money to gross national product.
+$R$ Example $3.4$ (Granger test in $R$ ) $\mathrm{R}$ has a function grangertest for performing a test for Granger causality, included in the package lmtest, a package for testing linear regression models. One of the key functions in this package is $1 \mathrm{~m}$ which builds regression models. The grangertest function just takes $1 \mathrm{~m}$ and builds for you the models $M_{r}$ and $M_{f}$, with the lags given by the user; computes the residual sum of squares RSS; computes de $F$ value and $p$-value for the null hypothesis. The usage is $\operatorname{lm}(x \sim y)$ which outputs a linear regression of $\mathrm{x}$ as function of $\mathrm{y}((x \sim y)$ denotes that $x=f(y))$.
+
+To explore the possible causality direction between money and the GNP in the US we use the data USMoney in the package AER which contains a quarterly multiple time series from 1950 to 1983 with three variables: gnp (nominal GNP), $\mathrm{m} 1$ (M1 measure of money stock), deflator (implicit price deflator for GNP). By executing the following commands at your $R$ console, you will see the listed output.
+
+#  3.2.2 Non Parametric Granger Causality
+
+There are two major drawbacks on applying the (parametric) Granger test just explained to financial time series. These are:
+(1) it assumes a linear dependence on variables $X$ and $Y$;
+(2) it assumes data are normally distributed (the F-test works under this distribution).
+
+
+These are seldom the cases for time series of financial returns. Thus a non-linear and nonparametric test for Granger causality hypothesis is desirable. (The crux of nonparametric testing is that does not rely on any assumption about the distribution of the data.)
+
+The most frequently used nonparametric test of Granger causality is the Hiemstra and Jones (1994) test (HJ). However, a more recent work of Diks and Panchenko (2006) presents an improvement of the HJ test after having shown that the HJ test can severely over-reject if the null hypothesis of noncausality is not true. Hence the nonparametric causality test that we shall adopt is the one by Diks and Pachenko (DP), and it is this test which is explained below.
+
+Let us begin with a more general formulation of the Granger causality in terms of distributions of the random variables. To say that $\left\{X_{t}\right\}$ Granger causes $\left\{Y_{t}\right\}$ is to say that the distribution of future values $\left(Y_{t+1}, \ldots, Y_{t+k}\right)$ conditioned to past and current observations $X_{s}$ and $Y_{s}, s \leq t$, is not equivalent to the distribution of $\left(Y_{t+1}, \ldots, Y_{t+k}\right)$ conditioned to past and current $Y$-values alone. In practice it is often assume that $k=1$; that is, to test for Granger causality comes down to comparing the one-step ahead conditional distribution of $\left\{Y_{t}\right\}$ with and without past and current values of $\left\{X_{t}\right\}$. Also, in practice, tests are confined to finite orders in $\left\{X_{t}\right\}$ and $\left\{Y_{t}\right\}$. Thus, to mathematically formalize all this, consider some time lags $l_{X}, l_{Y} \geq 1$ and define delay vectors $X_{t}^{l_{X}}=\left(X_{t-l_{X}+1}, \ldots, X_{t}\right)$ and $Y_{t}^{l_{Y}}=\left(Y_{t-l_{Y}+1}, \ldots, Y_{t}\right)$. Then it is said that $\left\{X_{t}\right\}$ Granger causes $\left\{Y_{t}\right\}$ if
+$$
+Y_{t+1}\left|\left(X_{t}^{l_{X}} ; Y_{t}^{l_{Y}}\right) \nsucc Y_{t+1}\right| Y_{t}^{l_{Y}}
+$$
+
+
+Observe that this definition of causality does not involve model assumptions, and hence, no particular distribution.
+
+As before the null hypothesis of interest is that " $\left\{X_{t}\right\}$ is not Granger causing $\left\{Y_{t}\right\}$ ", which for the general formulation (3.9) translates to
+$$
+H_{0}: Y_{t+1}\left|\left(X_{t}^{l_{X}} ; Y_{t}^{l_{Y}}\right) \sim Y_{t+1}\right| Y_{t}^{l_{Y}}
+$$
+For a strictly stationary bivariate time series $\left\{\left(X_{t}, Y_{t}\right)\right\}$, Eq. (3.10) is a statement about the invariant distribution of the $\left(l_{X}+l_{Y}+1\right)$-dimensional vector $W_{t}=\left(X_{t}^{l_{X}}, Y_{t}^{l_{Y}}, Z_{t}\right)$, where $Z_{t}=Y_{t+1}$. To simplify notation, and to bring about the fact that the null hypothesis is a statement about the invariant distribution of $W_{t}$, drop the time index $t$, and further assume that $l_{X}=l_{Y}=1$. Then just write $W=(X, Y, Z)$, which is a 3-variate random variable with the invariant distribution of $W_{t}=\left(X_{t}, Y_{t}, Y_{t+1}\right)$.
+
+Now, restate the null hypothesis (3.10) in terms of ratios of joint distributions. Under the null the conditional distribution of $Z$ given $(X, Y)=(x, y)$ is the same as that of $Z$ given $Y=y$, so that the joint probability density function $f_{X, Y, Z}(x, y, z)$ and its marginals must satisfy
+
+
+$$
+\frac{f_{X, Y, Z}(x, y, z)}{f_{Y}(y)}=\frac{f_{X, Y}(x, y)}{f_{Y}(y)} \cdot \frac{f_{Y, Z}(y, z)}{f_{Y}(y)}
+$$
+for each vector $(x, y, z)$ in the support of $(X, Y, Z)$. Equation (3.11) states that $X$ and $Z$ are independent conditionally on $Y=y$, for each fixed value of $y$. Then Diks and Pachenko show that this reformulation of the null hypothesis $H_{0}$ implies
+$$
+q \equiv E\left[f_{X, Y, Z}(X, Y, Z) f_{Y}(Y)-f_{X, Y}(X, Y) f_{Y, Z}(Y, Z)\right]=0
+$$
+and from this equation they obtained an estimator of $q$ based on indicator functions: let $\widehat{f}_{W}\left(W_{i}\right)$ denote a local density estimator of a $d_{W}$-variate random vector $W$ at $W_{i}$ defined by
+$$
+\widehat{f}_{W}\left(W_{i}\right)=\frac{\left(2 \varepsilon_{n}\right)^{-d_{W}}}{n-1} \sum_{j \neq i} I_{i j}^{W}
+$$
+where $I_{i j}^{W}=I\left(\left\|W_{i}-W_{j}\right\|<\varepsilon_{n}\right)$ with $I(\cdot)$ the indicator function and $\varepsilon_{n}$ the bandwidth, which depends on the sample size $n$. Given this estimator, the test statistic for estimating $q$ is
+$$
+T_{n}\left(\varepsilon_{n}\right)=\frac{n-1}{n(n-2)} \sum_{i}\left(\widehat{f}_{X, Y, Z}\left(X_{i}, Y_{i}, Z_{i}\right) \widehat{f}_{Y}\left(Y_{i}\right)-\widehat{f}_{X, Y}\left(X_{i}, Y_{i}\right) \widehat{f}_{Y, Z}\left(Y_{i}, Z_{i}\right)\right)
+$$
+It is then shown that for $d_{X}=d_{Y}=d_{Z}=1$ and letting the bandwidth depend on sample size as $\varepsilon_{n}=C n^{-\beta}$, for $C>0$ and $1 / 4<\beta<1 / 3$, the test statistic $T_{n}$ satisfies
+$$
+\sqrt{n} \frac{\left(T_{n}\left(\varepsilon_{n}\right)-q\right)}{S_{n}} \stackrel{d}{\longrightarrow} N(0,1)
+$$
+
+where $\stackrel{d}{\longrightarrow}$ denotes convergence in distribution and $S_{n}$ is an estimator of the asymptotic variance $\sigma^{2}$ of $T_{n}$.
+
+Practical issues. To apply the $T_{n}$ test use $C=7.5$, and $\beta=2 / 7$, to get $\varepsilon_{n}$. However, for small values of $n$ (i.e. $<900$ ) we can get unrealistically large bandwidth; hence Panchenko (2006) recommend truncating the bandwidth as follows:
+$$
+\varepsilon_{n}=\max \left(C n^{-2 / 7}, 1.5\right)
+$$
+See Table 1 of Diks and Panchenko (2006) for suggested values of $\varepsilon_{n}$ for various values of $n$. Lags for both time series should be taken equal: $l_{X}=l_{Y}$ (although asymptotic convergence has only been proven for lag 1). See Sect. $3.5$ for a description of a C program publicly available for computing $T_{n}$.
+
+Example $3.1$ (A list of applications of Granger causality for your consideration) There is a wealth of literature on uncovering causality relationships between different financial instruments, and a large amount of these works have been done
+
+employing the original parametric causality test of Granger, or at best with the nonlinear nonparametric HJ test, which, as has been pointed out, can over reject. Therefore, it is worth to re-explore many of these causality tests with the improved nonparametric causality test DP just explained, and further investigate improvements (for as we mentioned, the test statistic (3.12) has been shown to converge in distribution only for lag 1). Here is a short list of causality relations of general interest, and that you can explore with the tools exposed in this section.
+- Begin with the classic money and GNP relation, considered by Sims and contemporary econometrists. Further explore the relation between money, inflation and growth through different epochs and for different countries.
+- In stock markets, explore the price-volume relationship. It has been observed a positive correlation between volume and price. The question is, does volume causes price? The paper of Hiemstra and Jones (1994) deals with this question.
+- The transmission of volatility or price movements between international stock markets. The question is, does the volatility of the index of a stock market (e.g. SP500) causes the volatility of the index of another stock market (e.g. Nikkei). This observed phenomenon is sometimes termed volatility spillover, and has been explored many times and with several markets. More recently it has been tested for a set of developed and emerging markets, using the DP test, in Gooijer and Sivarajasingham (2008).
+- Between exchange rates.
+- Between monetary fundamentals and exchange rates.
+- Between high-frequent SP500 futures and cash indexes. ${ }^{4}$
+
+
+
+
+

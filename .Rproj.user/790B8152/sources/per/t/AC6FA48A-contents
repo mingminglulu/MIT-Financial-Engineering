@@ -1,0 +1,163 @@
+---
+title: "5.1 Continuous Time Processes"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Brownian motion is formally represented by a continuous time Gaussian process,
+and has as a discrete time counterpart the random walk. By continuous time process
+it is meant that the process (e.g. the price, if we are modeling a stock) evolves
+continuously in time, although we generally observe its values at discrete times.
+The assumption of continuity has many advantages. An important one, is that the
+continuous model is independent of the timing intervals, and closed formulas for
+pricing might be possible (as opposed to recursive numerical procedures). Also the
+assumption of continuously evolving prices is fundamental for the derivation of the
+Black–Scholes option pricing formula, which we will study in Sect. 5.2.1, since it
+relies on the possibility of adjusting the positions in a portfolio continuously in time,in order to replicate an options payoff exactly. In the Black–Scholes option pricing
+model the price of stocks are assumed to follow a geometric Brownian motion.
+The mathematical formalization of Brownian motion is due to Norbert Wiener,
+and for that reason it is known as Wiener process. We present Brownian motion as
+a Wiener process, and extensions of this family of continuous Gaussian processes
+which have been fundamental in the development of stocks and options pricing
+formulas.
+
+
+# 5.1.1 The Wiener Process
+
+The Wiener process $w(t), t \in \mathbb{R}$ is a Gaussian centered process, with $w(0)=0$, characterized by the following properties:
+(i) the increments $\{w(t)-w(s): t<s\}$ are stationary and independent;
+(ii) their variance $E(w(t)-w(s))^{2}=|t-s|$, for $s, t \in \mathbb{R}$.
+One consequence of these properties is that $w(t)-w(s) \sim N(0, t-s)$.
+The Wiener process is a mathematical model for describing the erratic move of particles suspended in fluid, a physical phenomenon observed and documented first by the botanist Robert Brown from whom it takes the name of (standard) Brownian motion, and so often denoted $B(t)$ instead of $w(t)$ as above. The sample paths of a Brownian motion $B(t)$ can be simulated in an interval of time $[0, T]$ by partitioning the interval in finitely many time instants, $0=t_{0}<t_{1}<\cdots<t_{n}=T$, and recursively compute
+$$
+\Delta B\left(t_{i}\right)=B\left(t_{i}\right)-B\left(t_{i-1}\right)=\varepsilon_{i} \sqrt{\Delta t_{i}}
+$$
+
+with $\varepsilon_{i} \sim N(0,1)$ and iid random variables (a white noise), and $\Delta t_{i}=t_{i}-t_{i-1}$. Note that the discrete-time random process $\left\{B_{t}=B(t): t=t_{0}, \ldots, t_{n}\right\}$ verifies all the properties of a Wiener process in the continuum.
+
+One possible way to extend the Wiener process to other random processes (so called stochastic processes), is with the use of the Wiener integral. The Wiener integral of a function $f$ with continuous derivative $f^{\prime}$ over the interval $[a, b]$ is defined by
+$$
+\int_{a}^{b} f(s) d w(s)=[f(s) w(s)]_{a}^{b}-\int_{a}^{b} w(s) f^{\prime}(s) d s
+$$
+The generalized Wiener process, or arithmetic Brownian motion, is now defined for constants $\alpha$ and $\sigma$ as the process $X(t)$ satisfying the following differential equation
+$$
+d X(t)=\alpha d t+\sigma d w(t)
+$$
+
+with $w(t)$ a Wiener process. This is a stochastic differential equation (SDE), very different from an ordinary differential equation. For example, note that the ratio of the increments of the Wiener with respect to time, namely $(w(t+h)-$ $w(t)) / h$ does not converge to a well-defined random variable as $h$ goes to 0 , since $\operatorname{Var}\left(\frac{(w(t+h)-w(t)}{h}\right)=\frac{|h|}{h^{2}}$. Therefore, the derivative of the Wiener (and consequently $d X(t))$ does not exist in the ordinary sense. Equation (5.3) is solved taking Wiener integrals in the interval $[0, t]$, so that $\int_{0}^{t} d X(s)=\alpha \int_{0}^{t} d t+\sigma \int_{0}^{t} d w(s)$, and we obtain
+$$
+X(t)=X(0)+\alpha t+\sigma w(t)
+$$
+This process has the following properties, inherited from the Wiener process:
+(i) For any $s$ and $t, s<t$,
+$$
+X(t)-X(s) \sim N\left(\alpha(t-s), \sigma^{2}(t-s)\right)
+$$
+(ii) The increments $\{X(t)-X(s): s<t\}$ are stationary and statistically independent.
+(iii) The sample paths of $X(t)$ are everywhere continuous, but nowhere differentiable with probability $1 .$
+
+By the first property, the value $\alpha$ measures the expected drift rate and $\sigma^{2}$ the variance rate of increments of $X(t)$ per time step. The other two properties imply that the sample paths of the generalized Wiener process are not smooth, jiggling up and down in unpredictable way: due to the independence of increments one can not tell the magnitude of $X(t+h)-X(t)$ from previous observed increment $X(t)-$ $X(t-h)$. These properties make the generalized Wiener process a likely candidate for modeling the behavior of stock prices. But from now on, we will stick to the name Brownian motion in place of Wiener process, following common usage in econometrics and finance.
+
+We can simulate an approximate sample path of an arithmetic Brownian motion over a time interval $[0, T]$, with given $\alpha$ and $\sigma$, using the discrete model (5.1) as follows. Partition $[0, T]$ in $n>0$ uniform parts, each of length $T / n$, and beginning with $X(0)=0$ iterate for $i=1, \ldots, n$ steps the recursive formula
+$$
+X(i)=X(i-1)+\alpha \frac{T}{n}+\sigma \varepsilon_{i} \sqrt{\frac{T}{n}}
+$$
+with $\varepsilon_{i}$ a randomly generated number, normally distributed with mean 0 and variance 1. A plot of the resulting sequence of values, namely $\{(i T / n, X(i)): i=0,1, \ldots, n\}$, will show the erratic trajectory characteristic of Brownian motion. Running the simulation again with same input values will create a different path, due to the random component $\varepsilon_{i} \sim N(0,1)$.
+
+# 5.1.2 Itô’s Lemma and Geometric Brownian Motion
+
+A limitation for considering the arithmetic Brownian motion as a model for the price of a stock is that in this model the variation of prices over any time period is normally distributed, and this implies that prices can take negative value with positive probability, since the support of the normal distribution is all the reals (observe in Fig. $5.1$ that the process takes negative values). This can be fixed, as argued in Chap. 2 , by considering prices log normally distributed instead. Therefore, if $\{P(t)\}_{t \geq 0}$ is a continuous process naturally extending discrete observations of the price of a stock, we want to model $P(t)$ as $e^{X(t)}$, with $X(t)$ an arithmetic Brownian motion. This gives $X(t)=\ln P(t)$, and so the price is now being considered log-normally distributed, and furthermore, the log returns
+$$
+r_{t}=\ln \left(\frac{P(t)}{P(t-1)}\right)=X(t)-X(t-1)
+$$
+are stationary and independent. The continuous model $P(t)=e^{X(t)}$, with $X(t)$ an arithmetic Brownian motion, is called geometric Brownian motion, and in order to obtain a SDE that describes the dynamics of this process, obtained by composition of functions, we need an important tool in stochastic calculus known as Itô's Lemma. We state this lemma without proof and show how to use it in the case of $P(t)=e^{X(t)}$.
+
+Lemma $5.1$ (Itô's Lemma (1951)) If $X(t)$ is a continuous time stochastic process satisfying
+$$
+d X(t)=a(X) d t+b(X) d B(t),
+$$
+where $B(t)$ is a Brownian motion, and if $G=G(X, t)$ is a differentiable function of $X(t)$ and $t$, then
+$$
+d G=\left(a(X) \frac{\partial G}{\partial X}+\frac{\partial G}{\partial t}+b(X)^{2} \frac{1}{2} \frac{\partial^{2} G}{\partial X^{2}}\right) d t+b(X) \frac{\partial G}{\partial X} d B(t)
+$$
+The differential equation (5.7) extends the arithmetic Brownian motion by allowing the expected drift rate and variance rate $(a(X)$ and $b(X))$ to depend on $X$, and in such a form is known as Itô's differential equation. A process $X(t)$ satisfying Eq. (5.7) is called an Itô's process. Thus, an arithmetic Brownian motion $X(t)$ is an Itô's process satisfying $d X=\alpha d t+\sigma d B$, and considering $P(t)=e^{X(t)}$ as the differentiable function $G(X, t)$ in Itô's Lemma, we have that
+$$
+\frac{\partial P}{\partial X}=\frac{\partial^{2} P}{\partial X^{2}}=P \text { and } \frac{\partial P}{\partial t}=0
+$$
+and consequently
+
+$$
+\begin{aligned}
+d P &=\left(\alpha \frac{\partial P}{\partial X}+\frac{\partial P}{\partial t}+\sigma^{2} \frac{1}{2} \frac{\partial^{2} P}{\partial X^{2}}\right) d t+\sigma \frac{\partial P}{\partial X} d B \\
+&=\alpha P d t+\sigma^{2} \frac{1}{2} P d t+\sigma P d B=\left(\alpha+\frac{1}{2} \sigma^{2}\right) P d t+\sigma P d B
+\end{aligned}
+$$
+Thus the geometric Brownian motion model for the price, $P(t)=e^{X(t)}$, satisfies the SDE
+$$
+d P=\mu P d t+\sigma P d B
+$$
+with $\mu=\alpha+\frac{1}{2} \sigma^{2}$, while the logarithm of $P(t)$, namely $\ln P(t)=X(t)$, follows the arithmetic Brownian motion dynamics
+$$
+d \ln P=d X=\left(\mu-\frac{1}{2} \sigma^{2}\right) d t+\sigma d B
+$$
+Rewrite Eq. (5.9) in the form
+$$
+\frac{d P}{P}=\mu d t+\sigma d B
+$$
+and this makes evident that the instantaneous return $d P / P$ behaves like an arithmetic Brownian motion. Furthermore, if we consider a discrete version of Eq. (5.11),
+$$
+\frac{\Delta P}{P}=\frac{P_{t+\Delta t}-P_{t}}{P_{t}}=\mu \Delta t+\sigma \varepsilon_{t} \sqrt{\Delta t}, \quad \varepsilon_{t} \sim N(0,1)
+$$
+
+then $E\left(\frac{\Delta P}{P}\right)=\mu \Delta t$ and $\operatorname{Var}\left(\frac{\Delta P}{P}\right)=\sigma^{2} \Delta t$, so it is clear that the parameter $\mu$ represents the expected rate of return per unit of time, and $\sigma$ is the standard deviation of the return per unit of time, that is, the volatility of the asset. Both parameters are expressed in decimal form. Now, consider a discrete version of Eq. (5.10) which has the form
+$$
+\Delta \ln P=\ln \left(\frac{P_{t+\Delta t}}{P_{t}}\right)=\left(\mu-\frac{\sigma^{2}}{2}\right) \Delta t+\sigma \varepsilon_{t} \sqrt{\Delta t}, \quad \varepsilon_{t} \sim N(0,1)
+$$
+This shows that $\Delta \ln P$ is normally distributed (i.e. the return is log normal) with mean $\left(\mu-\sigma^{2} / 2\right) \Delta t$, variance $\sigma^{2} \Delta t$ and standard deviation $\sigma \sqrt{\Delta t}$. If $t=0$ and $t+\Delta t=T$ is some future time, then
+$$
+\ln P_{T} \sim N\left(\ln P_{0}+\left(\mu-\frac{\sigma^{2}}{2}\right) T, \sigma^{2} T\right)
+$$
+which implies that $\ln P_{T}$ has mean $\ln P_{0}+\left(\mu-\frac{\sigma^{2}}{2}\right) T$ and standard deviation $\sigma \sqrt{T}$. By the same argument as in Example $2.4$ based on the Central Limit Theorem, we
+
+can find equations for the bounds of the price $P_{T}$ which hold with a $95 \%$ confidence. These bounds are given by
+$$
+\left(\mu-\frac{\sigma^{2}}{2}\right) T-1.96 \sigma \sqrt{T}<\ln \left(\frac{P_{T}}{P_{0}}\right)<\left(\mu-\frac{\sigma^{2}}{2}\right) T+1.96 \sigma \sqrt{T}
+$$
+or, equivalently
+$$
+P_{0} \exp \left(\left(\mu-\frac{\sigma^{2}}{2}\right) T-1.96 \sigma \sqrt{T}\right)<P_{T}<P_{0} \exp \left(\left(\mu-\frac{\sigma^{2}}{2}\right) T+1.96 \sigma \sqrt{T}\right)
+$$
+Remark $5.1$ The reader should be aware of the subtle difference between Eq. (5.15) and Eq. $2.34$ of Chap. 2. Here $\mu$ and $\sigma^{2}$ are the mean and variance of the simple return, while there $\mu_{r}$ and $\sigma_{r}$ are the mean and variance of the continuously compounded return. The relations between each pair of moments are given by Eq. 2.32; for example, $\mu_{r}=\ln (\mu+1)-\sigma_{r}^{2} / 2$. Hull (2009, Sect. 13.3) provides a practical illustration from the mutual funds industry on the difference between $\mu$ and $\mu_{r}$. In practice it is preferable to use Eq. (5.15) for the estimation of price bounds, since we are usually given the information on expected returns and volatility.
+
+Example $5.1$ Consider a stock with an initial price $P_{0}=40$, expected return of $16 \%$ per annum, and volatility of $20 \%$ per annum. Using Eq. (5.15) we can estimate the range of values for the stock price in 1 month time, with $95 \%$ confidence: the lower bound: $L_{T}=40 \cdot \exp \left(\left(0.16-\frac{0.2^{2}}{2}\right)(1 / 12)-1.96 \cdot 0.2 \sqrt{1 / 12}\right)=36.14$; the upper bound: $U_{T}=40 \cdot \exp \left(\left(0.16-\frac{0.2^{2}}{2}\right)(1 / 12)+1.96 \cdot 0.2 \sqrt{1 / 12}\right)=$ 45.32.
+
+Additionally, from the discretization (5.13) we get, for $t=0$ and $t+\Delta t=T$,
+$$
+P_{T}=P_{0} \exp \left(\left(\mu-\frac{\sigma^{2}}{2}\right) T+\sigma \varepsilon_{t} \sqrt{\Delta t}\right), \quad \varepsilon_{t} \sim N(0,1)
+$$
+This is the discrete version of the geometric Brownian motion continuous model for the price in the time interval $[0, T]$, which is
+$$
+P_{T}=P_{0} \exp \left(\left(\mu-\frac{\sigma^{2}}{2}\right) T+\sigma B(T)\right)
+$$
+with $B(t)$ a Brownian motion. Note that Eq. (5.17) is the integral solution in $[0, T]$ of the SDE (5.10).
+
+The discrete geometric Brownian motion model (5.16) allows us to simulate possible paths for the price of a stock, beginning at some known initial price $P_{0}$, with known expected return $\mu$ and volatility $\sigma$, and forward to a given time horizon $T$,
+
+Estimating $\mu$ and $\sigma$. If we do not know before hand the expected return $\mu$ and volatility $\sigma$ of the price, we can approximate these values from sample data as follows. Let $r=\left\{r_{1}, \ldots, r_{n}\right\}$ be a sample of $n$ log returns, taken at equally spaced time period $\tau$. Assuming the price $P_{t}$ follows a geometric Brownian motion then the return $r_{t}$ is normally distributed with mean $\left(\mu-\sigma^{2} / 2\right) \tau$ and variance $\sigma^{2} \tau$; that is,
+$$
+E\left(r_{t}\right)=\left(\mu-\sigma^{2} / 2\right) \tau \quad \text { and } \operatorname{Var}\left(r_{t}\right)=\sigma^{2} \tau
+$$
+If $m_{r}=\frac{1}{n} \sum_{t=1}^{n} r_{t}$ is the sample mean and $s_{r}^{2}=\frac{1}{n-1} \sum_{t=1}^{n}\left(r_{t}-m_{r}\right)^{2}$ is the sample variance of the data, then estimates $\widehat{\mu}$ and $\widehat{\sigma}$ of $\mu$ and $\sigma$ can be obtained from Eq. (5.18) as follows,
+
+$$
+\begin{aligned}
+&\widehat{\sigma}=\frac{s_{r}}{\sqrt{\tau}}=\frac{1}{\sqrt{\tau}}\left(\frac{1}{n-1} \sum_{t=1}^{n}\left(r_{t}-m_{r}\right)^{2}\right)^{1 / 2} \\
+&\widehat{\mu}=\frac{1}{\tau} m_{r}+\frac{\widehat{\sigma}^{2}}{2}=\frac{1}{\tau}\left(\frac{1}{n} \sum_{t=1}^{n} r_{t}+\frac{s_{r}^{2}}{2}\right)
+\end{aligned}
+$$
+Finally, keep in mind that since the factors $\mu$ and $\sigma$, under continuous compounding, represent annualized quantities, then if we are observing returns every month, we set $\tau=1 / 12$; every week, $\tau=1 / 52$; daily, $\tau=1 / 252$. We propose as an exercise to do a GBM simulation of the price of a stock from real data, estimating beforehand the expected return and volatility with the equations above (see Exercise 5.4.7).

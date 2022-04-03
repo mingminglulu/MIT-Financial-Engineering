@@ -1,0 +1,306 @@
+---
+title: "4.2 Linear Processes and Autoregressive Moving Averages Models"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+A time series $\left\{X_{t}\right\}$ is a linear process if it has the form
+$$
+X_{t}=\sum_{k=-\infty}^{\infty} \psi_{k} W_{t-k}
+$$
+for all $t$, where $\left\{\psi_{k}\right\}$ is a sequence of constants with $\sum_{k=-\infty}^{\infty}\left|\psi_{k}\right|<\infty$, and $\left\{W_{t}\right\}$ is a (weak) white noise (uncorrelated random variables) with zero mean and variance $\sigma^{2}$; in symbols $\left\{W_{t}\right\} \sim W N\left(0, \sigma^{2}\right)$. The condition $\sum_{k=-\infty}^{\infty}\left|\psi_{k}\right|<\infty$ is to ensure that the series in Eq. (4.3) converges. A particular case of Wold's decomposition theorem asserts that any weakly stationary process $\left\{X_{t}\right\}$ has a linear representation of the form
+$$
+X_{t}=\sum_{k=0}^{\infty} \psi_{k} W_{t-k}+V_{t}
+$$
+where $\psi_{0}=1, \sum_{k=0}^{\infty} \psi_{k}^{2}<\infty,\left\{W_{t}\right\} \sim W N\left(0, \sigma^{2}\right), \operatorname{Cov}\left(W_{s}, V_{t}\right)=0$ for all $s$ and $t$, and $\left\{V_{t}\right\}$ is deterministic. ${ }^{2}$ Note that the linear process in the previous equation has $\psi_{k}=0$, for all $k<0$. This particular linear process is a (infinite order) moving average. From Wold's decomposition of $\left\{X_{t}\right\}$ in Eq. (4.4), one can obtain the structure of autocovariances for $X_{t}$ in terms of the coefficients $\psi_{k}$ (the moving average weights), as follows:
+
+$$
+\begin{aligned}
+&\gamma(0)=\operatorname{Var}\left(X_{t}\right)=\sigma^{2} \sum_{k=0}^{\infty} \psi_{k}^{2} \\
+&\gamma(h)=\operatorname{Cov}\left(X_{t+h}, X_{t}\right)=\sigma^{2} \sum_{k=0}^{\infty} \psi_{k} \psi_{k+h}
+\end{aligned}
+$$
+From these equations one obtains the autocorrelations $\rho(h)=\frac{\gamma(h)}{\gamma(0)}=\frac{\sum_{k=0}^{\infty} \psi_{k} \psi_{k+h}}{\sum_{k=0}^{\infty} \psi_{k}^{2}}$, and we will see that for particular cases of linear processes (such as the ARMA below), the deterministic component $V_{t}$ equals the mean $E\left(X_{t}\right)$ times some constant.
+Thus, Wold's representation is convenient for deducing properties of a stationary process. However, it is not of much use for modeling the behavior of the process, since estimation of $\left\{\psi_{k}\right\}$ from the infinite sums in Eq. (4.5) is not feasible. A class of models that can be seen as approximations to the Wold's form of a stationary process and for which estimation is possible are the autoregressive and moving averages (ARMA) processes.
+
+Definition $4.1$ (The class of ARMA processes) Consider a weak white noise, $\left\{W_{t}\right\} \sim W N\left(0, \sigma^{2}\right)$, and let integers $p \geq 1$ and $q \geq 1$. A time series $\left\{X_{t}\right\}$ is
+$\mathbf{A R}(p) \quad$ (autoregressive of order $p$ ) if
+$$
+X_{t}=W_{t}+\phi_{1} X_{t-1}+\phi_{2} X_{t-2}+\cdots+\phi_{p} X_{t-p}
+$$
+MA $(q)$ (moving average of order $q)$ if
+$$
+X_{t}=W_{t}+\theta_{1} W_{t-1}+\cdots+\theta_{q} W_{t-q}
+$$
+$\mathbf{A R M A}(p, q) \quad$ (autoregressive and moving average of order $p, q)$ if
+$$
+X_{t}=\phi_{1} X_{t-1}+\cdots+\phi_{p} X_{t-p}+W_{t}+\theta_{1} W_{t-1}+\cdots+\theta_{q} W_{t-q}
+$$
+where $\phi_{1}, \ldots, \phi_{p}, \theta_{1}, \ldots, \theta_{q}$ are real numbers, in all three equations.
+
+Remark 4.1 We are considering the series with zero mean to simplify notation, but there is no loss of generality in this assumption, since if a process $Y_{t}$ has mean $E\left(Y_{t}\right)=\mu$, then fit the ARMA models to $X_{t}=Y_{t}-\mu$, which has zero mean. Note that this just adds a constant to the model. For example, suppose that $Y_{t}$ follows an $A R$ (1) process, so that $Y_{t}-\mu=W_{t}+\phi_{1}\left(Y_{t-1}-\mu\right)$, and this is equivalent to $Y_{t}=W_{t}+\phi_{1} Y_{t-1}+\phi_{0}$, where $\phi_{0}=\left(1-\phi_{1}\right) \mu$. If, on the other hand, $Y_{t}$ follows a MA(1) process, then $Y_{t}=\mu+W_{t}+\theta_{1} W_{t-1}$.
+
+Any finite $q$-order moving average (MA $(q)$ ) process is easily seen to be weakly stationary for any values of $\theta_{k}$, since their autocovariances are finite versions of the sums in Eq. (4.5), and independent of $t$ :
+$$
+\begin{aligned}
+&\gamma(0)=\sigma^{2}\left(1+\theta_{1}^{2}+\cdots+\theta_{q}^{2}\right) \\
+&\gamma(h)= \begin{cases}\sigma^{2}\left(\theta_{h}+\theta_{1} \theta_{h+1}+\cdots+\theta_{q-h} \theta_{q}\right) & \text { for } h=1, \ldots, q \\
+0 & \text { otherwise }\end{cases}
+\end{aligned}
+$$
+Thus, a time series can be recognized as a $\operatorname{MA}(q)$ process if its ACF is non-zero up to lag $q$ and is zero afterwards. In $\mathrm{R}$ use the function acf to estimate autocovariances and autocorrelations $\rho(h)$ (cf. Example 3.2). An infinite order moving average process $(\mathrm{MA}(\infty))$ is the special case of the general linear process in Eq. (4.3), with $\psi_{k}=0$ for all $k<0$. It is stationary provided $\sum_{k=0}^{\infty} \psi_{k}^{2}<\infty$, and its autocovariance function is given by Eq. (4.5).
+
+R Example 4.1 A natural finite order moving average process arises when one considers continuously compounded $\tau$-period returns, for a given $\tau$. Recall from Def. $2.2$ that for a given series of continuously compounded returns $\left\{r_{t}\right\}$ and a given time period $\tau$, the $\tau$-period return $r_{t}(\tau)$ is expressed as a sum of log returns:
+
+$$
+r_{t}(\tau)=r_{t}+r_{t-1}+\cdots+r_{t-\tau+1}
+$$
+Assuming that $\left\{r_{t}\right\}$ is white noise, more precisely, iid random variables with $r_{t} \sim$ $W N\left(\mu, \sigma^{2}\right)$, then the second order moments of $r_{t}(\tau)$ satisfy
+$$
+\begin{aligned}
+&\gamma(0)=\operatorname{Var}\left(r_{t}(\tau)\right)=\tau \sigma^{2} \\
+&\gamma(h)=\operatorname{Cov}\left(r_{t}(\tau), r_{t-h}(\tau)\right)= \begin{cases}(\tau-h) \sigma^{2} & \text { for } h<\tau \\
+0 & \text { for } h \geq \tau\end{cases}
+\end{aligned}
+$$
+and $E\left(r_{t}(\tau)\right)=\tau \mu$. This shows that the structure of finite moments of $\left\{r_{t}(\tau)\right\}$ is like a MA $(\tau-1)$ process, and so it can be simulated as such a type of processes:
+$$
+r_{t}(\tau)=\tau \mu+W_{t}+\theta_{1} W_{t-1}+\cdots+\theta_{\tau-1} W_{t-\tau+1}
+$$
+with $W_{t} \sim W N\left(0, \sigma^{2}\right)$. One can observe this empirically in R. Build the series of daily log returns from the price history of your favorite stock; check that there are no significant autocorrelations for any lag (using the acf function, or the Ljung-Box statistics-see Eq. (3.6)); build a series of $\tau$-period returns, for say $\tau=20$ (a monthly period), and compute the ACF of this series. An important lesson is learned from this example, and that is while $\left\{r_{t}\right\}$ might be white noise (iid random variables), the $\tau$-period series $\left\{r_{t}(\tau)\right\}$ is not, and in fact has a smoother behavior.
+
+Now, to deal with the AR and ARMA models, it is better to rewrite their representation in a compact form using lag operators.
+Lag operators and polynomials. The lag operator, or backward shift, acts on a time series by moving the time index back one time unit:
+
+$$
+L X_{t}=X_{t-1}
+$$
+Note that $L^{2} X_{t}=L\left(L X_{t}\right)=L X_{t-1}=X_{t-2}$, and in general, the $d$-power of $L$ moves $X_{t}$ to its $d-$ lag : $L^{d} X_{t}=X_{t-d}$. We can then define the polynomials in the lag operator,
+$$
+\theta(L)=1+\theta_{1} L+\cdots+\theta_{q} L^{q} \text { and } \phi(L)=1-\phi_{1} L-\cdots-\phi_{p} L^{p}
+$$
+With these polynomials in $L$, we can express the autoregressive and moving averages models in the following succinct forms:
+$$
+\begin{aligned}
+\operatorname{AR}(p) & \phi(L) X_{t}=W_{t} \\
+\operatorname{MA}(q) & X_{t}=\theta(L) W_{t} \\
+\operatorname{ARMA}(p, q) &: \phi(L) X_{t}=\theta(L) W_{t}
+\end{aligned}
+$$
+
+These representations allow to transform an $\operatorname{AR}(p)$ process into a MA( $\infty)$, and a $\operatorname{MA}(q)$ into an $\operatorname{AR}(\infty)$, from where one can deduce conditions on the coefficients $\phi_{k}$ implying the stationarity of the AR (and ARMA) processes.
+Going from AR to MA. The lag polynomials expressions suggest that to transform an $\operatorname{AR}(p)$ process into a MA we just have to multiply by the inverse polynomial $\psi(L)^{-1}$, so that, $X_{t}=\psi(L)^{-1} W_{t}$. But what is the inverse of $\psi(L)$ (if it exists)?
+Consider and AR(1) process
+$$
+X_{t}-\phi_{1} X_{t-1}=\left(1-\phi_{1} L\right) X_{t}=W_{t}
+$$
+To invert $\left(1-\phi_{1} L\right)$, recall the Taylor polynomial expansion of $1 /(1-z)$ :
+$$
+\frac{1}{1-z}=1+z+z^{2}+\cdots=\sum_{k=0}^{\infty} z^{k}
+$$
+defined for $|z|<1$. This fact suggests that
+$$
+X_{t}=\left(1-\phi_{1} L\right)^{-1} W_{t}=\left(1+\phi_{1} L+\phi_{1}^{2} L^{2}+\cdots\right) W_{t}=\sum_{k=0}^{\infty} \phi_{1}^{k} W_{t-k}
+$$
+provided $\left|\phi_{1}\right|<1$. Although this is an informal argument (we have not said much about the operator $L$, and are assuming that $\left|\phi_{1}\right|<1$ implies $\left|\phi_{1} L\right|<1$ ), one can verify that the obtained MA( $\infty)$ process, $X_{t}=\sum_{k=0}^{\infty} \phi_{1}^{k} W_{t-k}$, is the (unique) stationary solution of (4.13). Thus, the zero mean $\mathrm{AR}(1)$ process (4.13) is stationary if $\left|\phi_{1}\right|<1$, in which case it has the moving average (or Wold) representation given by Eq. (4.14).
+Autocovariances and autocorrelations of an $\mathbf{A R}(1)$. From Eq. (4.14), one can compute
+
+Autocovariances and autocorrelations of an $\mathbf{A R}(1)$. From Eq. (4.14), one can compute
+$$
+\begin{aligned}
+&\gamma(0)=\operatorname{Var}\left(X_{t}\right)=\sigma^{2} \sum_{k=0}^{\infty} \phi_{1}^{2 k}=\frac{\sigma^{2}}{1-\phi_{1}^{2}} \\
+&\gamma(h)=\sigma^{2} \sum_{k=0}^{\infty} \phi_{1}^{k} \phi_{1}^{k+h}=\sigma^{2} \phi_{1}^{h} \sum_{k=0}^{\infty} \phi_{1}^{2 k}=\frac{\sigma^{2} \phi_{1}^{h}}{1-\phi_{1}^{2}}
+\end{aligned}
+$$
+and the autocorrelations, $\rho(0)=1$ and $\rho(h)=\gamma(h) / \gamma(0)=\phi_{1}^{h}$. This last equation says that the ACF of an AR(1) process decays exponentially with rate $\phi_{1}$ and starting value $\rho(0)=1$. Thus observing an inverse exponential curve in the plot of the (sample) ACF of a given time series is a sign of the existence of an underlying AR(1) process.
+
+There are many financial time series that can be well modeled by an $\mathrm{AR}(1)$ process. Examples are interest rates, real exchange rates, and various valuation ratios, such as price-to-earning, dividend-to-price and others that will be studied in Chap. $6 .$
+
+Autocovariances and autocorrelations of an $\mathbf{A R}(1)$. From Eq. (4.14), one can compute
+$$
+\begin{aligned}
+&\gamma(0)=\operatorname{Var}\left(X_{t}\right)=\sigma^{2} \sum_{k=0}^{\infty} \phi_{1}^{2 k}=\frac{\sigma^{2}}{1-\phi_{1}^{2}} \\
+&\gamma(h)=\sigma^{2} \sum_{k=0}^{\infty} \phi_{1}^{k} \phi_{1}^{k+h}=\sigma^{2} \phi_{1}^{h} \sum_{k=0}^{\infty} \phi_{1}^{2 k}=\frac{\sigma^{2} \phi_{1}^{h}}{1-\phi_{1}^{2}}
+\end{aligned}
+$$
+and the autocorrelations, $\rho(0)=1$ and $\rho(h)=\gamma(h) / \gamma(0)=\phi_{1}^{h}$. This last equation says that the ACF of an AR(1) process decays exponentially with rate $\phi_{1}$ and starting value $\rho(0)=1$. Thus observing an inverse exponential curve in the plot of the (sample) ACF of a given time series is a sign of the existence of an underlying AR(1) process.
+
+There are many financial time series that can be well modeled by an $\mathrm{AR}(1)$ process. Examples are interest rates, real exchange rates, and various valuation ratios, such as price-to-earning, dividend-to-price and others that will be studied in Chap. $6 .$
+
+Now, in order to apply a similar idea for transforming an $\operatorname{AR}(p)$ process, given in the form of Eq. (4.10), into a MA( $(\infty)$ process, factor the lag polynomial $\phi(L)=$ $1-\phi_{1} L-\phi_{2} L^{2}-\cdots-\phi_{p} L^{p}$ into a product of linear factors
+$$
+\phi(L)=\left(1-\lambda_{1} L\right)\left(1-\lambda_{2} L\right) \cdots\left(1-\lambda_{p} L\right)
+$$
+where the $\lambda_{k}$ can be complex numbers. Assuming that $\lambda_{1}, \cdots, \lambda_{p}$ are all different, we have
+$$
+\phi(L)^{-1}=\frac{1}{\left(1-\lambda_{1} L\right)\left(1-\lambda_{2} L\right) \cdots\left(1-\lambda_{p} L\right)}=\frac{A_{1}}{\left(1-\lambda_{1} L\right)}+\frac{A_{2}}{\left(1-\lambda_{2} L\right)}+\cdots+\frac{A_{p}}{\left(1-\lambda_{p} L\right)}
+$$
+where the coefficients $A_{1}, \ldots, A_{p}$ are obtained by a partial fractions decomposition, and depend on $\lambda_{1}, \ldots, \lambda_{p}$. If we assume that for $h=1, \ldots, p,\left|\lambda_{h}\right|<1$, we can write each factor $\frac{1}{\left(1-\lambda_{h} L\right)}=\sum_{k=0}^{\infty} \lambda_{h}^{k} L^{k}$. Then, the $\operatorname{AR}(p)$ process
+
+$$
+\begin{aligned}
+X_{t}=\phi(L)^{-1} W_{t} &=\left(A_{1} \sum_{k=0}^{\infty} \lambda_{1}^{k} L^{k}+\cdots+A_{p} \sum_{k=0}^{\infty} \lambda_{p}^{k} L^{k}\right) W_{t} \\
+&=\sum_{k=0}^{\infty}\left(\sum_{h=0}^{p} A_{h} \lambda_{h}^{k}\right) W_{t-k}
+\end{aligned}
+$$
+is a $\mathrm{MA}(\infty)$ stationary process, provided $\left|\lambda_{1}\right|<1, \ldots,\left|\lambda_{p}\right|<1$. This last condition can be shown to be equivalent to
+$$
+\left|\phi_{1}+\phi_{2}+\cdots+\phi_{p}\right|<1
+$$
+Thus, the $\operatorname{AR}(p)$ process (4.10) is stationary if Eq. (4.18) holds, and a solution has the general form (4.17). It will be very instructive for the reader to work out the details for the $\operatorname{AR}(2)$ process, and obtain the explicit values for $\lambda_{1}, \lambda_{2}, A_{1}$ and $A_{2}$ in terms of $\phi_{1}$ and $\phi_{2}$, see Problem 4.7.2.
+
+Remark 4.2 If there are repeated factors $(1-z)^{k}=(1-\lambda L)^{k}$ of degree $k>1$ in Eq. (4.16), then in the partial fraction decomposition appear terms $A_{1} /(1-z)+$ $A_{2} /(1-z)^{2}+\cdots+A_{k} /(1-z)^{k}$. Each term $1 /(1-z)^{s}$, for $s>1$, is the derivative of order $s$ of $1 /(1-z)$ times some constant; hence taking derivatives to the Taylor expansion of $1 /(1-z)$ we get the desired series for the powers of this fraction; specifically $\frac{(s-1) !}{(1-z)^{s}}=\sum_{k>s} k(k-1) \cdots(k-s) z^{k-s+1}$.
+
+Autocovariances of an $\mathbf{A R}(p)$ and Yule-Walker equations. The structure of the autocovariance function for a process $\operatorname{AR}(p), p>1$, is not as easy to get directly from its MA( $\infty)$ (or Wold) expression (Eq. (4.17)) as in the AR(1) case. Here the trick is to consider the $\operatorname{AR}(p)$ process in its original form
+$$
+X_{t}-\phi_{1} X_{t-1}-\phi_{2} X_{t-2}-\cdots-\phi_{p} X_{t-p}=W_{t}, \text { with }\left\{W_{t}\right\} \sim W N\left(0, \sigma^{2}\right)
+$$
+and note that since $E\left(X_{t}\right)=0$, the autocovariances $\gamma(h)=E\left(X_{t} X_{t-h}\right)$. Then multiplying each side of (4.19) by $X_{t-h}, h=0, \ldots, p$, taking expectations and using that $X_{t}=\sum_{k=0}^{\infty} \psi_{k} W_{t-k}$, where $\psi_{k}=\sum_{h=0}^{p} A_{h} \lambda_{h}^{k}$ (Eq. (4.17)), to evaluate the right-hand sides (i.e., to compute $E\left(X_{t-h} W_{t}\right)$ ), we obtain the following system of equations for the moments of the $\operatorname{AR}(p)$ process
+$$
+\begin{aligned}
+&\gamma(0)=\phi_{1} \gamma(1)+\phi_{2} \gamma(2)+\cdots \phi_{p} \gamma(p)+\sigma^{2} \\
+&\gamma(h)=\phi_{1} \gamma(h-1)+\phi_{2} \gamma(h-2)+\cdots \phi_{p} \gamma(h-p), \quad \text { for } h=1,2, \ldots, p
+\end{aligned}
+$$
+These are the Yule-Walker equations. In matrix form,
+$$
+\begin{aligned}
+\gamma(0) &=\Phi_{p}^{t} \boldsymbol{\gamma}_{p}+\sigma^{2} \\
+\boldsymbol{\gamma}_{p} &=\Gamma_{p} \Phi_{p}
+\end{aligned}
+$$
+
+where $\gamma_{p}=(\gamma(1), \ldots, \gamma(p))^{t}, \Phi_{p}=\left(\phi_{1}, \ldots, \phi_{p}\right)^{t}$ and $\Gamma_{p}=[\gamma(i-j)]_{1 \leq i, j \leq p}$ is the autocovariance matrix (recall from Remark $2.36$ that $\gamma(h)=\gamma(-h)$ ).
+
+The Yule-Walker equations are a useful tool to estimate the coefficients $\phi_{1}, \ldots, \phi_{p}$ of an $\operatorname{AR}(p)$ model to fit to a given observed process $\left\{X_{t}\right\}_{t \geq 0}$. Consider the sample autocovariance,
+$$
+\widehat{\gamma}(h)=\widehat{\operatorname{Cov}}\left(X_{t}, X_{t-h}\right)=\frac{1}{m-1} \sum_{t=h}^{m}\left(X_{t}-\widehat{\mu}_{X}\right)\left(X_{t-h}-\widehat{\mu}_{X}\right)
+$$
+for $h=0,1, \ldots, p$. Then, we have that the sample covariance matrix
+$$
+\widehat{\Gamma}_{p}=\left(\begin{array}{cccc}
+\widehat{\gamma}(0) & \widehat{\gamma}(1) & \cdots & \widehat{\gamma}(p-1) \\
+\widehat{\gamma}(1) & \widehat{\gamma}(0) & \cdots & \widehat{\gamma}(p-2) \\
+\vdots & \vdots & \ddots & \vdots \\
+\widehat{\gamma}(p-1) & \widehat{\gamma}(p-2) & \cdots & \widehat{\gamma}(0)
+\end{array}\right)
+$$
+is invertible, ${ }^{3}$ and from Eq. (4.21) we have
+$$
+\widehat{\Phi}_{p}=\widehat{\Gamma}_{p}^{-1} \widehat{\gamma}_{p}
+$$
+The solution $\widehat{\Phi}_{p}$ is an unbiased estimation of $\Phi_{p}$ provided the sample size $m$ is taken large enough, and $h<m$. A rough guide is to take $m \geq 50$ and $h \leq m / 4$ (Box and Jenkins 1976).
+
+Forecasting with AR $(p)$. The reader should have noticed the similarities of the Yule-Walker equations with the linear equations (2.45) in Sect. $2.4$ verified by the coefficients of a one-step linear forecaster. The procedures to derive both systems of equations are exactly the same. Indeed, if we consider an $\operatorname{AR}(p+1)$ process
+$$
+X_{t+1}=\phi_{0} X_{t}+\phi_{1} X_{t-1}+\phi_{2} X_{t-2}+\cdots+\phi_{p} X_{t-p}+W_{t}
+$$
+the coefficients $\phi_{0}, \phi_{1}, \ldots, \phi_{p}$ satisfy the Yule-Walker equations (4.20) with $p+1$ variables, which can be written as
+$$
+\gamma(h+1)=\phi_{0} \gamma(h)+\phi_{1} \gamma(h-1)+\cdots+\phi_{p} \gamma(h-p), \quad h=0,1, \ldots, p
+$$
+On the other hand, the best linear forecaster of $X_{t+1}$ in terms of $\left\{X_{t}, X_{t-1}, \ldots, X_{t-p}\right\}$ is
+$$
+L\left(X_{t+1}\right)=\alpha_{0} X_{t}+\alpha_{1} X_{t-1}+\cdots+\alpha_{p} X_{t-p}
+$$
+where $\alpha_{0}, \ldots, \alpha_{p}$ satisfy the linear equations (2.45):
+$$
+\gamma(h+1)=\alpha_{0} \gamma(h)+\alpha_{1} \gamma(h-1)+\cdots+\alpha_{p} \gamma(h-p), \quad h=0,1, \ldots, p
+$$
+
+By the unicity of the solutions to these equations, it must be
+$$
+\alpha_{0}=\phi_{0}, \alpha_{1}=\phi_{1}, \ldots, \alpha_{p}=\phi_{p}
+$$
+Therefore, for an $\operatorname{AR}(p)$ process, the best linear forecaster of $X_{t+1}$ in terms of $\left\{X_{t}, X_{t-1}, \ldots, X_{t-p}\right\}$ is
+$$
+L\left(X_{t+1}\right)=\phi_{0} X_{t}+\phi_{1} X_{t-1}+\cdots+\phi_{p} X_{t-p}
+$$
+(i.e., it is determined by the same coefficients that define the autoregressive process). The mean square error of the prediction, $E\left(X_{t+1}-L\left(X_{t+1}\right)\right)^{2}$, is given by Eq. (2.47).
+The particular case of forecasting with an $\mathrm{AR}(1)$ process is quite simple. The best linear one-step forecaster of an AR(1) process $X_{t}=\phi X_{t-1}+W_{t}$ (where $|\phi|<1$ and $\left.W_{t} \sim W N\left(0, \sigma^{2}\right)\right)$ in terms of its past is
+$$
+L\left(X_{t+1}\right)=\phi X_{t}
+$$
+and using Eq. (4.15) we can express the mean square error of the prediction as
+$$
+E\left(X_{t+1}-L\left(X_{t+1}\right)\right)^{2}=\gamma(0)-2 \phi \gamma(1)+\phi^{2} \gamma(0)=\frac{\sigma^{2}}{1-\phi^{2}}-\phi \gamma(1)=\sigma^{2}
+$$
+
+A rule to determine the order $p$. What remains to know is a method to determine the order $p$ of the $\operatorname{AR}(p)$ model. Just as in an $\operatorname{AR}(1)$ process, a plot of the ACF function will show a sinuous shape, a mixture of sines, cosines and exponential decay, and this gives an indication that an AR model of certain order is possible. But to actually determine the order $p$ of the autoregressive model use the partial autocorrelation function (PACF), which is based on setting up the following AR models listed in increasing orders:
+$$
+\begin{aligned}
+X_{t}=& \phi_{11} X_{t-1}+W_{1 t} \\
+X_{t}=& \phi_{21} X_{t-1}+\phi_{22} X_{t-2}+W_{2 t} \\
+& \vdots \\
+X_{t}=& \phi_{p 1} X_{t-1}+\phi_{p 2} X_{t-2}+\cdots+\phi_{p p} X_{t-p}+W_{p t}
+\end{aligned}
+$$
+and solve this multiple linear regression by the least squares method. Then the rule for fitting an $\operatorname{AR}(p)$ model is that the first $p$ coefficients $\phi_{i i}, i=1, \ldots, p$ are non-zero and for the rest $i>p, \phi_{i i}=0$. The PACF criterion is programmed in $\mathrm{R}$ with the function pacf (and we have already use it in R Example 4.1). The $\operatorname{AR}(p)$ model estimation based on the Yule-Walker equations (Eq. (4.22)) is done in R with the function $\operatorname{ar}()$.
+$R$ Example $4.2$ (Continue from $R$ Example 4.1) The EUR/USD exchange rates behave as an AR(1) process: its ACF function showed an exponential decay and
+
+Going from MA to AR. Applying similar ideas as the transformation of a finite order $\mathrm{AR}$ process into an infinite order MA, we can go from a $\mathrm{MA}(q)$ process to $\operatorname{AR}(\infty)$ process by inverting the polynomial $\theta(L)$ in Eq. (4.11), so that $\theta(L)^{-1} X_{t}=W_{t}$ becomes an autoregressive process of infinite order. The polynomial $\theta(L)$ is invertible if $\left|\theta_{i}\right|<1$ holds for all $i=1, \ldots, q$. The MA process is invertible if the polynomial $\theta(L)$ is invertible. Let us illustrate this transformation explicitly for the case of moving averages of order $1 .$
+$R$ Example 4.2 We are given a MA(1) process in lag operator form,
+$$
+X_{t}=W_{t}+\theta W_{t-1}=(1+\theta L) W_{t}
+$$
+Using the Taylor expansion for the function $f(z)=1 /(1+z)$, which is defined for $|z|<1$ as follows
+$$
+\frac{1}{1+z}=1-z+z^{2}-z^{3}+\cdots=\sum_{k=0}^{\infty}(-1)^{k} z^{k}
+$$
+we obtain
+$$
+W_{t}=\frac{1}{1+\theta L} X_{t}=\sum_{k=0}^{\infty}(-1)^{k} \theta^{k} X_{t-k}=X_{t}+\sum_{k=1}^{\infty}(-1)^{k} \theta^{k} X_{t-k}
+$$
+or equivalently, $X_{t}=\sum_{k=1}^{\infty}(-1)^{k+1} \theta^{k} X_{t-k}+W_{t}$, which is clearly an $\operatorname{AR}(\infty)$ process.
+
+What we can observe from this representation is that the PACF for an invertible MA process has an exponential decay towards zero.
+ARMA $(p, q)$ autocovariances and model estimation. From the back-and-forth transformations between AR and MA process, what we can readily say about the autocorrelation functions of an $\operatorname{ARMA}(p, q)$ process is that for $p>q$ the ACF behaves similarly to the ACF of an $\operatorname{AR}(p)$ process, while for $p<q$ the PACF behaves like the PACF of a MA $(q)$ process, and, consequently, both ACF and PACF of the ARMA $(p, q)$ process decay exponentially for large $p$ and $q$. To compute an instrumental expression for the $\mathrm{ACF}$ of an $\operatorname{ARMA}(p, q)$ process we proceed with an analysis similar to the AR case (i.e., a derivation like Yule-Walker's). Consider $\left\{X_{t}\right\}$ an $\operatorname{ARMA}(p, q)$ process with zero mean or mean-corrected (i.e., the mean has been subtracted from the series), written in the form
+$$
+X_{t}-\phi_{1} X_{t-1}-\cdots-\phi_{p} X_{t-p}=W_{t}+\theta_{1} W_{t-1}+\cdots+\theta_{q} W_{t-q}
+$$
+with $\left\{W_{t}\right\} \sim W N\left(0, \sigma^{2}\right)$. Multiply both sides of this equation by $X_{t-h}$, for $h=0,1,2, \cdots$, and take expectations. Using the Wold representation, $X_{t}=$ $\sum_{k=0}^{\infty} \psi_{k} W_{t-k}$, and that $\gamma(h)=E\left(X_{t} X_{t-h}\right)$ since $E\left(X_{t}\right)=0$, we obtain from the previous operations the following equations:
+$$
+\gamma(h)-\phi_{1} \gamma(h-1)-\cdots-\phi_{p} \gamma(h-p)=\sigma^{2} \sum_{k=0}^{\infty} \theta_{h+k} \psi_{k}, \text { for } 0 \leq h<m
+$$
+
+and
+$$
+\gamma(h)-\phi_{1} \gamma(h-1)-\cdots-\phi_{p} \gamma(h-p)=0, \text { for } h \geq m
+$$
+where $m=\max (p, q+1), \psi_{k}=0$ for $k<0, \theta_{0}=1$, and $\theta_{k}=0$ for $k \notin\{0, \ldots, q\}$. Assuming that the lag polynomial, $\phi(z)=1-\phi_{1} z-\cdots-\phi_{p} z$, has $p$ distinct roots, then the system of homogeneous linear difference Eq. (4.24) has a solution of the form
+$$
+\gamma(h)=\alpha_{1} \xi_{1}^{-h}+\alpha_{2} \xi_{2}^{-h}+\cdots+\alpha_{p} \xi_{p}^{-h}, \text { for } h \geq m-p
+$$
+where $\xi_{1}, \ldots, \xi_{p}$ are the distinct solutions of $\phi(z)=0$, and $\alpha_{1}, \ldots, \alpha_{p}$ are arbitrary constants. ${ }^{4}$ Since we want a solution of Eq. (4.24) that also satisfies Eq. (4.23), substitute the general solution (4.25) into Eq. (4.23) to obtain a set of $m$ linear equations that uniquely determine the constants $\alpha_{1}, \cdots, \alpha_{p}$, the autocovariances $\gamma(h)$, for $h=0, \ldots, m-p$, and consequently, the autocorrelations $\rho(h)=\gamma(h) / \gamma(0)$.
+The procedure just described to compute the autocorrelations of an $\operatorname{ARMA}(p, q)$ process is implemented by the function ARMAacf of the stats package in R.
+
+Now, to fit an ARMA $(p, q)$ model to a given zero-mean time series $\left\{X_{t}\right\}$ one first chooses a desired order pair $(p, q)$, and assuming that the observed data is stationary and Gaussian one uses the maximum likelihood estimation (MLE) method with respect to parameters $\boldsymbol{\phi}=\left(\phi_{1}, \ldots, \phi_{p}\right)$,
+$\sigma^{2}$, to find estimators $\widehat{\boldsymbol{\phi}}, \widehat{\boldsymbol{\theta}}$ and $\widehat{\sigma}^{2}$. These maximum likelihood estimators can be obtained as solutions to the following system of equations:
+$$
+\widehat{\sigma}^{2}=\frac{1}{n} S(\widehat{\boldsymbol{\phi}}, \widehat{\boldsymbol{\theta}}),
+$$
+where
+$$
+S(\widehat{\boldsymbol{\phi}}, \widehat{\boldsymbol{\theta}})=\sum_{j=1}^{n}\left(X_{j}-\widehat{X}_{j}\right)^{2} / r_{j-1}
+$$
+and $\widehat{\boldsymbol{\phi}}, \widehat{\boldsymbol{\theta}}$ are the values of $\boldsymbol{\phi}$ and $\boldsymbol{\theta}$ that minimize
+$$
+l(\boldsymbol{\phi}, \boldsymbol{\theta})=\ln \left(n^{-1} S(\boldsymbol{\phi}, \boldsymbol{\theta})\right)+n^{-1} \sum_{j=1}^{n} \ln r_{j-1}
+$$
+
+where $n$ is the size of the sample observations, $\left\{X_{1}, \ldots, X_{n}\right\} ; \widehat{X}_{1}=0$ and $\widehat{X}_{j}=E\left(X_{j} \mid X_{1}, \ldots, X_{j-1}\right)$, for $j \geq 2$, are the one-step predictors; the $r_{j}$ are obtained from the covariances of $\left\{X_{t}\right\}$ and are independent of $\sigma^{2} . l(\boldsymbol{\phi}, \boldsymbol{\theta})$ is a "reduced log-likelihood". The derivation of this system of equations is not difficult but involved, and can be studied in full details in Brockwell and Davis (1991, Chap. 8). The MLE for ARMA is a nonlinear optimization problem and so it requires a numerical procedure to iteratively find the values of the parameters that minimized the square prediction error. It needs to be given some initial values for the parameters $\phi_{1}, \ldots, \phi_{p}, \theta_{1}, \ldots, \theta_{q}$ to start, and convergence and correctness will depend to some extend on these initial values. Hence, some appropriate approximation methods should be employed to find good initial $p+q$ values. Two such initialization methods are the innovation algorithm and Hannan-Rissanen algorithm (again see Brockwell and Davis op. cit.).
+
+Finally, to select appropriate values for the orders $p$ and $q$ one uses the Akaike information criterion (AIC), which consists on choosing $p, q, \phi$ and $\boldsymbol{\theta}$ that minimize
+$$
+A I C=-2 \ln L\left(\boldsymbol{\phi}, \boldsymbol{\theta}, S(\boldsymbol{\phi}, \boldsymbol{\theta}) n^{-1}\right)+2(p+q+1) n /(n-p-q-2)
+$$
+
+where $L\left(\boldsymbol{\phi}, \boldsymbol{\theta}, \sigma^{2}\right)$ is the Gaussian likelihood for an $\operatorname{ARMA}(p, q)$ process. Thus, in practice the AIC criterion works as follows: choose some upper bounds, $P$ and $Q$, for the AR and MA order respectively. Then fit all possible $\operatorname{ARMA}(p, q)$ models for $p \leq P$ and $q \leq Q$, on the same sample series of size $T$, and keep the model whose parameters $p, q, \phi$ and $\boldsymbol{\theta}$ minimize AIC. Beware though that this criterion asymptotically overestimates the order, that is, as $T \rightarrow \infty$ larger values of $p$ and $q$ are chosen. It can also be a time-consuming optimization procedure for high orders $p$ and $q$. However, the general wisdom asserts that in financial applications small values of $p$ and $q$ (say, less than 5) are sufficient. In the following $\mathrm{R}$ Example we program the AIC criterion and use it to fit an ARMA model to financial data.
+$R$ Example 4.4 We consider adjusting an ARMA model to Robert Shiller's Priceto-Earning (P/E) ratio 5 for the S\&P 500. This series, also known as Shiller's PE 10 , is based on the average inflation-adjusted earnings of the S\&P 500 taken over the past 10 years, and computed every month since 1881 . The data is publicly available from Shiller's webpage, ${ }^{6}$ and we've saved it in our disk with the label SP500_shiller.csv. We implement the AIC criterion by setting up a double loop to apply for all pairs of $(p, q)$, from $(0,0)$ to upper bound in $(5,5)$, the armaFit method on the data, and keep the model with minimum AIC. To extract the AIC value computed in each execution of armaFit one uses the expression tsARMA@f it \$aic, where tsARMA is the name of the variable that saves the current computed ARMA. Because the method armaFit might fail to compute a model, in which case it returns an error or warning message producing an interruption of the loop, we execute armaFit within tryCatch to handle these error messages. The full $R$ program follows.
+
+

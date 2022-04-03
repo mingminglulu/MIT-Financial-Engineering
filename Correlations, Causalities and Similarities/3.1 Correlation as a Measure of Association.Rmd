@@ -1,0 +1,123 @@
+---
+title: "3.1 Correlation as a Measure of Association"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 3.1.1 Linear Correlation
+
+Definition 3.1 (Pearson's $\rho$ ) The Pearson's correlation coefficient $\rho$ of two random variables $X$ and $Y$ is defined as
+$$
+\rho(X, Y)=\frac{\operatorname{Cov}(X, Y)}{\sqrt{\operatorname{Var}(X) \operatorname{Var}(Y)}}=\frac{E\left[\left(X-\mu_{X}\right)\left(Y-\mu_{Y}\right)\right]}{\sqrt{E\left[\left(X-\mu_{X}\right)^{2}\right] E\left[\left(Y-\mu_{Y}\right)^{2}\right]}}
+$$
+Formally, $\rho$ is a measure of the strength of linear dependence between $X$ and $Y$. To see this, it is best to look at the following equivalent form of $\rho(X, Y)$ :
+$$
+\rho(X, Y)^{2}=1-\frac{1}{\sigma_{X}^{2}} \min _{a, b} E\left[(Y-(a X+b))^{2}\right]
+$$
+
+- It is easy to estimate from a sample $\left\{\left(x_{i}, y_{i}\right): i=1, \ldots, m\right\}$ of $(X, Y)$ by combining the formulas for sample variance and covariance, to get the sample linear correlation
+$$
+\widehat{\rho}(X, Y)=\frac{\sum_{i=1}^{m}\left(x_{i}-\widehat{\mu}(X)\right)\left(y_{i}-\widehat{\mu}(Y)\right)}{\sqrt{\sum_{t=1}^{m}\left(x_{t}-\widehat{\mu}(X)\right)^{2} \sum_{t=1}^{m}\left(y_{t}-\widehat{\mu}(Y)\right)^{2}}}
+$$
+This $\widehat{\rho}$ is an unbiased estimator of $\rho$ in the sense stated in Remark $2.2$.
+
+- It is invariant under changes of scale and location in $X$ and $Y$ :
+$$
+\rho(a X+b, c Y+d)=\operatorname{sgn}(a \cdot b) \rho(X, Y)
+$$
+where $\operatorname{sgn}(\cdot)$ is the sign function. ${ }^{1}$
+- It gives an elegant expression for the variance of a linear combination of random variables (see Problem 2 under Sect. 3.5).
+We can now rewrite the covariance of $X$ and $Y$ as
+$$
+\operatorname{Cov}(X, Y)=\sigma_{X} \sigma_{Y} \rho(X, Y)
+$$
+and this shows how the possible interdependency of $X$ and $Y$ is affected by their individual standard deviations. Thus, while covariance signals a possible dependence of one variable to the other, it is the correlation that determines the strength of this dependence.
+
+
+Autocorrelation function (ACF). When dealing with time series of returns of financial assets, for which we assume are weakly stationary, it is of interest to assess the linear dependence of the series with its past; i.e., we look for autocorrelation. For a return time series $\left\{r_{t}: t=1, \ldots, m\right\}$, the lag-k autocorrelation of $r_{t}$ is the correlation coefficient between $r_{t}$ and $r_{t-k}$, and is usually denoted by $\rho(k)$,
+$$
+\rho(k)=\frac{\operatorname{Cov}\left(r_{t}, r_{t-k}\right)}{\sqrt{\operatorname{Var}\left(r_{t}\right) \operatorname{Var}\left(r_{t-k}\right)}}=\frac{\operatorname{Cov}\left(r_{t}, r_{t-k}\right)}{\operatorname{Var}\left(r_{t}\right)}=\frac{\gamma(k)}{\gamma(0)}
+$$
+
+Note that the hypothesis of weakly stationarity is needed in order to have $\operatorname{Var}\left(r_{t}\right)=$ $\operatorname{Var}\left(r_{t-k}\right)$ and hence, $\rho(k)$ is only dependent on $k$ and not of $t$, which also guarantees second moments are finite and $\rho(k)$ well-defined. The function $\rho(k)$ is referred to as the ACF of $r_{t}$.
+
+For a given sample of returns $\left\{r_{t}: t=1, \ldots, m\right\}$ and $0 \leq k<m$, the sample lag- $k$ autocorrelation of $r_{t}$ is
+$$
+\widehat{\rho}(k)=\frac{\sum_{t=k+1}^{m}\left(r_{t}-\widehat{\mu}_{m}\right)\left(r_{t-k}-\widehat{\mu}_{m}\right)}{\sum_{t=1}^{m}\left(r_{t}-\widehat{\mu}_{m}\right)^{2}}=\frac{\widehat{\gamma}(k)}{\widehat{\gamma}(0)}
+$$
+where $\widehat{\mu}_{m}=(1 / m) \sum_{t=1}^{m} r_{t}$ is the sample mean of $r_{t}$.
+Testing autocorrelation. There are various statistical tests to check whether the data are serially correlated. One such test is the Ljung-Box test, a so-called portmanteau test in the sense that takes into account all sample autocorrelations up to a given lag $h$. For a sample of $m$ returns, the statistic is given by
+$$
+Q(h)=m(m+2) \sum_{k=1}^{h} \frac{(\widehat{\rho}(k))^{2}}{m-k}
+$$
+
+as a test for the null hypothesis $H_{o}: \rho(1)=\cdots=\rho(h)=0$ against the alternative $H_{a}: \rho_{i} \neq 0$ for some $i \in\{1, \ldots, h\} . H_{o}$ is rejected if $Q(h)$ is greater than the $100(1-\alpha)$ th percentile of a chi-squared distribution with $h$ degrees of freedom. Alternatively, $H_{o}$ is rejected if the $p$-value of $Q(h)$ is $\leq \alpha$, the significance level. For $m$ time periods a good upper bound for the choice of lag is $h \approx \ln (m)$. Further details on this and other tests of autocorrelation can be learned from (Tsay 2010).
+In $\mathrm{R}$ the function $\operatorname{acf}(\mathrm{x}, \ldots)$ computes and plots estimates of the autocorrelation (by default) or autocovariance of a matrix of $N>1$ time series or one time series object $\mathrm{x}$, up to lag $5 \ln (m / N)$. This bound is justified by the Ljung-Box test and it is the default value; to give a specific number of lags use the parameter lag.max. The Ljung-Box test is implemented in $R$ by the function Box. test ().
+
+Deficiencies of linear correlation as dependency measure. A serious deficiency of the linear correlation $\rho$ is that it is not invariant under all transformations of random variables $X$ and $Y$ for which order of magnitude is preserve. That is, for two real-valued random variables and arbitrary transformations $h, g: \mathbb{R} \rightarrow \mathbb{R}$, we have in general
+
+$$
+\rho(h(X), g(Y)) \neq \rho(X, Y)
+$$
+For example, for normally-distributed vectors $(X, Y)$ and the standard normal distribution function $h(x)=\Phi(x)$, we have
+$$
+\rho(h(X), h(Y))=(6 / \pi) \arcsin (\rho(X, Y) / 2)
+$$
+(see Joag-dev (1984, 1$)$ ). In general, under the normal distribution,
+$$
+|\rho(h(X), g(Y))| \leq|\rho(X, Y)|
+$$
+for arbitrary real-valued transformations $h, g$ (cf. Embrechts et al. 2002). The quality of been invariant under arbitrary order-preserving transformations is desirable in order to obtain a distribution-free measure of dependency (and hence, nonparametric), since inferences can be made by relative magnitudes as opposed to absolute magnitudes of the variables. An additional deficiency of linear correlations is that the variances of $X$ and $Y$ must be finite for the correlation to be defined. This is a problem when working with heavy-tailed distributions, which is often the case for financial time series.
+
+
+# 3.1.2 Properties of a Dependence Measure
+
+Thus, what can be expected from a good dependency measure? Following the consensus of various researchers, summarized in Joag-dev (1984), Embrechts et al. (2002) and Gibbons and Chakraborti (2003, Chap. 11), among others, a "good" dependency measure $\delta: \mathbb{R}^{2} \rightarrow \mathbb{R}$, which assigns a real number to any pair of real-valued random variables $X$ and $Y$, should satisfy the following properties:
+(1) $\delta(X, Y)=\delta(Y, X)$ (symmetry).
+(2) $-1 \leq \delta(X, Y) \leq 1$ (normalization).
+(3) $\delta(X, Y)=1$ if and only if $X, Y$ are co-monotonic; that is, for any two independent pairs of values $\left(X_{i}, Y_{i}\right)$ and $\left(X_{j}, Y_{j}\right)$ of $(X, Y)$
+$X_{i}<X_{j}$ whenever $Y_{i}<Y_{j}$ or $X_{i}>X_{j}$ whenever $Y_{i}>Y_{j}$.
+This property of pairs is termed perfect concordance of $\left(X_{i}, Y_{i}\right)$ and $\left(X_{j}, Y_{j}\right)$.
+(4) $\delta(X, Y)=-1$ if and only if $X, Y$ are counter-monotonic; that is, for any two independent pairs of values $\left(X_{i}, Y_{i}\right)$ and $\left(X_{j}, Y_{j}\right)$ of $(X, Y)$
+$X_{i}<X_{j}$ whenever $Y_{i}>Y_{j}$ or $X_{i}>X_{j}$ whenever $Y_{i}<Y_{j}$.
+In this case, it is said that the pairs $\left(X_{i}, Y_{i}\right)$ and $\left(X_{j}, Y_{j}\right)$ are in perfect discordance.
+(5) $\delta$ is invariant under all transformations of $X$ and $Y$ for which order of magnitude is preserve. More precisely, for $h: \mathbb{R} \rightarrow \mathbb{R}$ strictly monotonic on the range of $X$,
+
+$$
+\delta(h(X), Y)= \begin{cases}\delta(X, Y) & \text { if } h \text { is increasing } \\ -\delta(X, Y) & \text { if } h \text { is decreasing }\end{cases}
+$$
+The linear correlation $\rho$ satisfies properties (1) and (2) only. A measure of dependency which satisfies all five properties (1)-(5) is Kendall's $\tau$. The trick is to based the definition on the probabilities of concordance and discordance of the random variables.
+
+
+# 3.1.3 Rank Correlation
+
+Definition 3.2 (Kendall's $\tau$ ) Given random variables $X$ and $Y$, the Kendall correlation coefficient $\tau$ (also known as rank correlation) between $X$ and $Y$ is defined as
+$$
+\tau(X, Y)=p_{c}-p_{d}
+$$
+where, for any two independent pairs of values $\left(X_{i}, Y_{i}\right),\left(X_{j}, Y_{j}\right)$ from $(X, Y)$,
+$$
+p_{c}=\mathbb{P}\left(\left(X_{j}-X_{i}\right)\left(Y_{j}-Y_{i}\right)>0\right) \quad \text { and } \quad p_{d}=\mathbb{P}\left(\left(X_{j}-X_{i}\right)\left(Y_{j}-Y_{i}\right)<0\right)
+$$
+$p_{c}$ and $p_{d}$ are the probabilities of concordance and discordance, respectively.
+Thus, Kendall's measure of dependency reflects the agreement in monotonicity between two random variables. To estimate $\tau(X, Y)$ from $n$ pairs of sample random values $\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \ldots,\left(x_{n}, y_{n}\right)$, define
+$$
+A_{i j}=\operatorname{sgn}\left(x_{j}-x_{i}\right) \operatorname{sgn}\left(y_{j}-y_{i}\right)
+$$
+Then $A_{i j}=1$ if these pairs are concordant; $A_{i j}=-1$ if the pairs are discordant; or 0 if the pairs are neither concordant nor discordant. An unbiased estimation of $\tau(X, Y)$ is given by
+$$
+\widehat{\tau}_{n}(X, Y)=2 \sum_{1 \leq i<j \leq n} \frac{A_{i j}}{n(n-1)}
+$$
+
+The distribution of $\widehat{\tau}_{n}$ under the null hypothesis of no association $(\tau(X, Y)=$ 0 ) is known. Tables for values of $\widehat{\tau}_{n}$ for $n \leq 30$ can be found in Gibbons and Chakraborti (2003). Moreover, $\widehat{\tau}_{n}$ is asymptotically normal with zero mean and variance $2(2 n+5) / 9 n(n-1)$.
+$R$ Example 3.3 The function cor $(\mathrm{x}, \mathrm{y}, \ldots)$ can also compute correlation with the sample estimator of Kendall's tau by setting method= " kendall ". We use the same data as in R Example $3.1$ to compare with Pearson's linear correlation.
+
+
+
+

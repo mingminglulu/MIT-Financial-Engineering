@@ -1,0 +1,91 @@
+---
+title: "1.3 Notes, Computer Lab and Problems"
+author: "minglu"
+date: '2022-04-02'
+output: word_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# 1.3.1 Bibliographic remarks
+
+: For a global view of modern corporate finance, theory and practice,
+read Brealey et al. (2011), a renown textbook in business schools. For a
+deeper mathematical analysis and detailed account of derivatives see
+Hull (2009), Cox and Rubinstein (1985) and Neftci (2000). A more
+practical view of options, their history and a long list of trading
+strategies is in The Options Institute (1995). A review of the Efficient
+Market Hypothesis is given by Fama (1991) and Park and Irwin (2007), and
+can be complemented with the discussion on the subject found in Campbell
+et al. (1997, §1.5). For an in-depth treatment of the theory of
+Computational Complexity see Papadimitriou (1994). To complement the
+topics treated here see Rubinstein (2006) chronological review of the
+most influential research papers in the financial theory of investments.
+From this source one learns, for example, the historical development of
+the DCF models (Eqs. (1.17) and (1.20)) and gets the authorship record
+straight: the formulas are often attributed to Gordon and Shapiro,23 but
+they were first developed in 1938 by Williams in his PhD thesis
+(Williams 1938). For more on the history of derivatives and asset
+pricing models read Bernstein (1992Ch. 11). It is from this source where
+we learned about the possibly first option contract in history (see
+following note). Finally, for your bedtime reading we recommend the
+financial chronicle of Paulos (2007)
+
+# 1.3.2 Possibly the First Option Contract in History
+
+Aristotle reports in his book of Politicsthat the Greek mathematician
+and philosopher Thales the Milesian, incited by their common fellow's
+belief of the inutility of his maths, set out to prove them all wrong
+and worked on a financial scheme based on his knowledge of astronomy.
+Reading the stars one winter, Thales was able to foresee that by the
+coming year the olive harvest would be larger than usual; so he took his
+savings and paid all the owners of olive presses in Chios and Miletus
+for the right to use their presses in the upcoming harvest-time. He was
+able to negotiate this reservation of presses at a low price since no
+one could know what the harvest would be that much time ahead, and hence
+no one bid against his offer. Aristotle ends this anecdote as follows:
+"When the harvest-time came, and many [presses] were wanted all at once
+and of a sudden, he let them out at any rate which he pleased, and made
+a quantity of money. Thus he showed the world that philosophers can
+easily be rich if they like, but that their ambition is of another sort"
+
+# 1.3.3 On Short Selling
+
+Short selling a stock is a bet for the future decrease of the price. If
+the short seller is a well-known investment corporation, and since these
+short positions are communicated to the public by the market
+authorities, the knowledge of this news can induce the stampede from the
+stock by many small investors, which would indeed knock down the price.
+The European Commission has adopted a series of regulatory technical
+standards on short selling that can be read at <http://ec.europa>.
+eu/internal_market/securities/short_selling_en.htm. See also what the US
+Securities and Exchange Commission writes about short sales at
+<http://www.sec.gov/answers/> shortsale.htm
+
+
+
+```{r}
+symbols=c(’ˆVLIC’,’GE’,’KO’,’AAPL’,’MCD’}
+getSymbols(symbols,src=’yahoo’,from="2012-02-01",to="2013-02-01")
+#obtain adjusted closed
+VLICad = VLIC$VLIC.Adjusted; GEad= GE$GE.Adjusted;
++ KOad=KO$KO.Adjusted; AAPLad=AAPL$AAPL.Adjusted;
++ MCDad = MCD$MCD.Adjusted
+#compute cumulative sum (cumsum) of daily returns (Delt)
++ #Remove first term of the series, with [-1,],
++ #since cumsum is not defined for it.
+vl = cumsum((Delt(VLICad)*100)[-1,])
+ge = cumsum((Delt(GEad)*100)[-1,])
+ko = cumsum((Delt(KOad)*100)[-1,])
+ap = cumsum((Delt(AAPLad)*100)[-1,])
+md = cumsum((Delt(MCDad)*100)[-1,])
+###range of values for the plot
+lim = c(min(vl,ge,ko,ap,md),max(vl,ge,ko,ap,md))
+###the plot
+plot(vl,main="",ylim=lim,xlab="dates",ylab="% benefits")
+lines(ge,col="green"); lines(ko,col="red")
+lines(ap,col="violet"); lines(md,col="yellow")
+legend(x="topleft",cex=0.4,c("VLIC","GE","KO","AAPL","MCD"),
++ lty=1, col=c("black","green","red","violet","yellow"))
+```

@@ -1,0 +1,210 @@
+---
+title: "6.2 Fundamental Analysis"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+Consider the following raison d’être for the security analyst
+The security analysts develops and applies standards of safety by which we can conclude
+whether a given bond or preferred stock may be termed sound enough to justify purchase
+for investment. These standards relate primarily to [the company’s] past average earnings,
+but they are also concerned with capital structure, working capital, asset values, and other
+matters (Graham 2003, p. 281)
+Benjamin Graham can be rightly considered as a founding father of Fundamental
+Analysis, and elaborating further from his investment policy, summarized in the
+previous quotation, a fundamental analyst is someone who should strive to determine
+a security’s value by focusing on the economic fundamentals that affect a company’s
+actual business and its future prospects, such as its revenue growth, its profits and
+debts, and other business indicators, as opposed to just analyzing its price movements
+in the stock market. In the next sections we study the core elements and methods of
+investment of Fundamental Analysis.
+
+# 6.2.1 Fundamental Analysis Basic Principles
+
+Those applying Fundamental Analysis in their investments (aka fundamental
+investors), act according to three basic principles inherited from Benjamin Graham
+and David Dodd’s approach to investment (Graham and Dodd 1934; Graham 2003):
+
+(1) The market price of a stock does not fully reflect its “real” value. The real value
+of a stock is intrinsic to the value of the issuing company, termed the intrinsic
+value.
+(2) The market price and the intrinsic value of a stock often diverge, but in the long
+run will align to each other.
+(3) Shares of a stock should be bought with a “margin of safety”. This means to buy
+a stock when its market price is significantly below its intrinsic value (ideally,
+about a factor of one-half).
+
+# 6.2.2 Business Indicators
+
+There are three basic financial statements that a company publishes on a quarterly
+or annual basis, that serve as different sources for estimating the intrinsic value of
+its stock. These are:
+
+The balance sheet.
+• The income statement.
+• The cash flow statement.
+The balance sheet gives a snapshot of a company’s assets, liabilities and shareholders’ equity at a particular point in time. The assets refer to resources own by
+the company, and are grouped into current assets (cash, marketable securities and
+inventories, and in general anything that can be quickly converted to cash), and fixed
+assets(properties, equipment, and any tangible valuable asset, not easily converted to
+cash). The liabilities are basically the unpaid bills, also grouped into two categories:
+current, for short termed bills, and non-current, for bills with no payment deadline
+or time negotiable. The shareholders (or ownership) equity is cash contributed to the
+company by the owner’s or shareholders. The figures in this financial statement have
+to balance according to the equation:
+All Assets = All Liabilities + Shareholder equity
+
+This shows the amount of debt incurred and owner’s money used to finance the
+assets. A fundamental measure that can be extracted from this information is the
+company’s book value (BV): the cash that would be obtained by selling all assets
+free of liabilities; that is, the result of subtracting liabilities from assets. By comparing
+this quantity with shareholders’ equity, investors can estimate their benefits or losses
+if the company were to be liquidated.
+The income statement provides information on the company’s revenues and
+expenses, during an specific period (usually quarterly or yearly). The revenue is
+basically the amount of money received from sales in the given period. The expenses
+are divided into: production costs (cost of revenue), operational costs (for marketing,
+administration, or any non-recurring event), loan interests and taxes, and depreciation (the lost of value of fixed assets used in production). From these figures one gets
+the company’s net income over the period, computed as:
+Net Income = Revenues − All Expenses
+However, for a more accurate measure of how profitable is the company, financial
+analysts look at the income without deducting the payments for loan interests and
+taxes. This is the EBIT, or earnings before interests and taxes, given by
+EBIT = Revenues − (production + operational + depretiation)
+Put another way, Net Income = EBIT − (loan interests + taxes).
+The cash flow statement represents a record of a company’s cash inflows and
+outflows over a period of time. These flows of cash are reported from the investing,
+operating and financing activities of the company. The main purpose of this financial
+statement is to report the company’s liquidity and solvency, and provides a measure
+of the ability of the company to change cash flows to meet future expenses.
+
+# 6.2.3 Value Indicators
+
+What do we do with all the business' financial data? We use it to compute financial ratios to gauge the value of a stock and, by and large, the value of the company behind. Let us begin reviewing some common fundamental ratios to value a stock with respect to the business.
+
+Earnings per Share $(E P S)$ : is the portion of the company's profit allocated to each outstanding share of its stock, for a given period of time $\tau$ (which by default is the last twelve months). Calculated as:
+$$
+E P S_{\tau}=\frac{N I_{\tau}-D i v P_{\tau}}{W N S O_{\tau}}
+$$
+where $N I_{\tau}$ is the net income perceived in the period of time $\tau, \operatorname{Div} P_{\tau}$ is the total amount of dividends on preferred stock, and $W N S O_{\tau}$ is the weighted average number of shares outstanding for the period considered. $5^{5}$ Thus, $E P S$ represent that portion of the profits that a company could use to pay dividends to common stockholders or to reinvest in itself. A positive $E P S$ is an indication of a profitable company.
+Price to Earnings $(\boldsymbol{P} / \boldsymbol{E}$ or $\boldsymbol{P E R})$ : is the ratio of a company's current share price with respect to its earnings per share for the trailing twelve months (the period by default). Formally, if $P_{t}$ is the price per share of a company's stock at time $t, \tau$ is the twelve months time period ending at $t$, then the price to earnings at time $t$ is
+$$
+P / E_{t}=\frac{P_{t}}{E P S_{\tau}}
+$$
+
+This is the most used factor by financial specialists.6 It gives a measure of the
+multiple amount per euro of earnings that an investor pays for a share of the
+company. In this regard, it is useful to compare the values of two stocks in
+the same industry. For example, if the P/E of the shares of bank A is lower than
+the shares of bank B, and the remaining fundamentals for both banks are quite
+similar, then the shares of A are the better deal. Benjamin Graham recommends as
+a reasonable P/E for a value stock an amount that is 20% below the multiplicative
+
+inverse of the current high grade bond rate (Graham 2003, p. 350). If quantities are given in percentage terms this can be expressed mathematically by
+$\operatorname{good} P / E \approx 80 /$ AAbond
+where AAbond equals a AA corporate bond yield. For example, if the one year yield of a AA-rated corporate bond (or high-grade corporate bond index) is of $6.43 \%$, then a good P/E for a stock (that is, for the stock to be considered of some value) is $80 / 6.43=12.44$. The $\mathrm{P} / \mathrm{E}$ makes sense for a company with positive earnings. If $E P S \leq 0$ then financial analysts give a value of 0 or NA (Not Applicable) to the P/E.
+Price to Book $(\boldsymbol{P} / \boldsymbol{B})$ : is the ratio of a company's current share price with respect to the company's book value per share. In mathematical terms, the price to book at time $t$ is
+$$
+\mathrm{P} / \mathrm{B}_{t}=\frac{P_{t}}{B V P S}
+$$
+where $B V P S$ is the most recent quarter's book value of the company for each outstanding share, calculated as $B V P S=B V /$ (number of outstanding shares) $=$ (Assets - Liabilities)/(number of outstanding shares), and $P_{t}$ is the price of a share at time $t$. Note that this is the same as
+(market capitalization) / (book value)
+
+and that is why is also known as the Market to Book ratio (M/B). We have seen that for a financially well-balanced company, its book value represents the shareholders equity; hence, a P/B close to 1 means a fair price for the share since it is close to its "price in books". A P/B much higher than 1 means that market investors are overvaluing the company by paying for its stocks more than the price in reference to the company's value. Conversely, a low P/B (lower than 1 ) means that the market is undervaluing the company, and either the stock is a bargain with respect to its book value or has been oversold for reasons extrinsic to the company and perceived by the market.
+
+Regarding the value assessment of business, the most commonly used measurements factors are organized into four groups pertaining to the following attributes: financial performance, the efficient use of resources, financial leverage, and liquidity. $^{7}$
+
+Performance measures: We seek to know, How well is the company doing? How profitable it is? Besides the raw Net Income and EBIT, there are also the following metrics.
+
+Return on equity $(\boldsymbol{R O E})$ : (net income)/(shareholder's equity)
+It measures a company's profitability by revealing how much profit it generates with the money shareholders have invested. Note that for a company that pays dividend only for common stock, this measure becomes $R O E=E P S /$ Equity, which is the most frequent used form. Many analysts use this $R O E$ to estimate the long term dividend growth rate: the parameter $g$ in the perpetual growth DCF model for computing present value (Chap. 1, Eq. (1.120)). The estimation is done with the equation $g=\left(1-\frac{D I V}{E P S}\right) \cdot R O E$, which expresses the dividend growth rate $g$ as the ratio of reinvesment after payment of dividends per share's earnings $(D I V / E P S)$ multiply by the factor of return on equity.
+Return on capital $(\boldsymbol{R} \boldsymbol{O}$ C): (net income $+$ after-tax interest)/(total capital)
+The total capital is the sum of shareholder's equity and long-term debt. Thus, the ROC measures the proportion of return obtained from investing the money borrowed or owned. It is also useful for calculating the economic value added (EVA) for a company, which is the profit obtained after deducting all costs, including the expected return on all the company's securities (known as cost of capital). This is the case, since
+$$
+\mathrm{EVA}=(\mathrm{ROC}-(\text { cost of capital })) \times(\text { total capital })
+$$
+
+Return on assets $(\boldsymbol{R O A})$ : (net income $+$ after-tax interest)/(total assets)
+The proportion of the return obtained from operations financed with the company's total liabilities plus shareholder's equity (i.e. its total assets).
+
+Efficiency measures: These measures are answers to the question: Is the company allocating resources efficiently?
+Asset turnover: (sales)/(total assets at start of year)
+A profit ratio of the amount of sales for each euro invested in resources.
+Inventory turnover: (costs of assets sold)/(inventory at start of year)
+A factor of how rapidly a company turns inventories into cash. A low value (e.g. $<1$ ) means poor sales and excess of inventory.
+Profit margin: (net income)/(sales)
+The proportion of sales that actually turn into profits.
+Leverage measures: with this class of indicators we want to determine the level of debt.
+Debt ratio: (total liabilities)/(total assets)
+A high ratio means a high leveraged company.
+Times-interest-earned ratio: EBIT/(interest payments)
+A factor of coverage of interest obligations by earnings. Values below 2 may indicate lack of money to pay interests.
+Cash-coverage ratio: (EBIT + depretiation)/(interest payments)
+A factor of coverage of interest obligations by all the operating cash.
+Liquidity measures: What's the company's capability of changing the flow of cash? (e.g., converting assets into cash, paying short term bills)
+
+Working capital: (current assets) - (current liabilities)
+This is the most basic measure of a company's liquidity; it gives the amount of cash that the company can have immediately.
+Working-capital to assets: (working capital)/(total assets)
+The proportion of all resources that represent working capital.
+Current ratio: (current assets)/(current liabilities)
+A value $<1$ shows liquidity problems, a negative working capital.
+
+
+# 6.2.4 Value Investing
+
+How to use the value indicators to construct a set of criteria for good stock selection?
+Different value investing professionals have his or her own particular combination of
+financial ratios, selected from the ones listed in the previous section, or others drawn
+from their own research and experience, to make a selection of potentially profitable
+6.2 Fundamental Analysis 203
+stocks. But all, more or less, will coincide to some extend with Graham’s own set of
+guiding principles for acquiring value stock. So let us review Graham’s fundamental
+investment policies (updated to today’s market conditions) from (Graham 2003,
+Chap. 14):
+(1) Adequate size of the enterprise. The recommendation is to exclude companies
+with low revenues. Graham advises to consider companies with more than $100
+million of annual sales. But that was back in 1973, so to adjust that lower bound
+to our times, compound that basic amount with a reasonable yearly interest rate,
+say 7%, for the number of years from that date to today, to get 100(1+0.07)40 =
+1497.45, that is $1.5 billions in revenues.
+(2) Strong financial condition. The company’s current assets should be at least twice
+current liabilities (a 2-to-1 current ratio), and must have a positive working
+capital.
+(3) Earnings stability. The company should have positive earnings in each of the
+past ten years.
+(4) Dividend record. Uninterrupted payments of dividends for at least the past 20
+years.
+(5) Earnings growth. An increase of 33% on the last three-years average of earnings
+per share (EPS), with respect to the three-years average EPS of a decade ago.
+This really amounts to a 3% average annual increase, which is not a very hard
+test to pass.
+(6) Moderate P/E ratio. Graham recommends a P/E in between 10 and 15 (or for a
+precise quantity apply Eq. (6.10)).
+(7) Moderate price-to-book ratio. The price-to-book ratio should be no more than
+1.5.
+(8) The last two tests can be combined, as we shall explain, if it is the case that
+the P/E ratio is in the lower bound (and possibly below) or the price-to-book
+ratio is slightly above 1.5. The combined P/E and P/B test suggested by Graham,
+consists on calculating the product of the P/E times the P/B ratio, and this should
+not exceed 22.5 (this figure corresponds to 15 times earnings and 1.5 times book
+value). This alternative admits stocks selling at, for example, 9 times earnings
+
+and $2.5$ times book value. Note that equating the combined ratio with the upper bound of $22.5$ we get $\frac{P_{t}^{2}}{E P S \cdot B V P S}=P / E \cdot P / B=22.5$, from where one obtains the Graham number
+$$
+P_{t}=\sqrt{22.5 \cdot E P S \cdot B V P S}
+$$
+an estimate of the price of a stock under the value test by Graham. Any stock that passes the tests (1)-(5) and with a market price below the value calculated by Eq. (6.11) is considered a buying opportunity by Graham's criteria.
+
+By the end of 1970 the DJIA passed Graham's test (1)-(7), but only five individual stocks from this market passed the test: American Can, ATT, Anaconda, Swift,
+
+and Woolworth, and this group performed better than the index.8 This reinforces
+the advantages of diversification: a large and well diversified portfolio has greater
+chance of being conservative and profitable; on the other hand, stock picking with
+a conservative criteria which primes intrinsic value, may optimize the portfolio in
+size and profits. Doing a likewise screening and valuation of 4700 NYSE and NASDAQ stocks in 2013 gives also a very small amount of issues meeting Graham’s
+test.9 There are several internet sites that perform stock market valuation based on
+Graham’s criteria, or other combination of indicators established by some of his
+notable disciples.10 Alternative the reader can build his or her own stock screener
+and fundamental valuation in R, using the tools exhibited in R Example 6.2.

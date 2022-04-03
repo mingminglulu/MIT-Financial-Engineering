@@ -1,0 +1,62 @@
+---
+title: "2.6 Volatility"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+One of the most important features of financial assets, and possibly the most relevant for professional investors, is the asset volatility. In practice volatility refers to a degree of fluctuation of the asset returns. However it is not something that can be directly observed. One can observe the return of a stock every day, by comparing the change of price from the previous to the current day, but one can not observe how the return fluctuates in a specific day. We need to make further observations of returns (and of the price) at different times on the same day to make an estimate of the way returns vary daily (so that we can talk about daily volatility), but these might not be sufficient to know precisely how returns will fluctuate. Therefore volatility can not be observed but estimated from some model of the asset returns. A general perspective, useful as a framework for volatility models, is to consider volatility as the conditional standard deviation of the asset returns.
+
+Definition 2.8 Let $r_{t}$ be the log-return of an asset at time $t$, and denote by $F_{t-1}$ the information set available at time $t-1$. The conditional mean and variance of $r_{t}$ given $F_{t-1}$ are
+$$
+\mu_{t}=E\left(r_{t} \mid F_{t-1}\right) \quad \text { and } \quad \sigma_{t}^{2}=\operatorname{Var}\left(r_{t} \mid F_{t-1}\right)=E\left(\left(r_{t}-\mu_{t}\right)^{2} \mid F_{t-1}\right)
+$$
+The volatility of the asset at time $t$ is $\sigma_{t}=\sqrt{\operatorname{Var}\left(r_{t} \mid F_{t-1}\right)}$.
+
+
+Now, to compute $\operatorname{Var}\left(r_{t} \mid F_{t-1}\right)$ we need to make some assumptions on the nature of $F_{t-1}$, and according to these assumptions we obtain different categories of volatilities. A common assumption is to consider $F_{t-1}=\left\{r_{t-1}, \ldots, r_{t-m}\right\}$; that is, $F_{t-1}$ consists of finitely many past returns. If we assume further that the returns $\left\{r_{t}\right\}$ are iid and normal, then we can take for estimation sample returns in any time interval, which implies that the variance is considered constant in time, and in this case the best estimate is given by the maximum likelihood estimate of the sample variance (cf. Example 2.7):
+$$
+\widehat{\sigma}^{2}=\frac{1}{m} \sum_{k=1}^{m}\left(r_{t-k}-\widehat{\mu}\right)^{2}
+$$
+where $\widehat{\mu}$ is the sample mean of the series. Because we are interested in quantifying the variability of returns, we might as well consider a non-centered variance $(\mu=0)$, and thus take as the (constant) volatility the non-centered sample standard deviation of returns ${ }^{10}$ :
+$$
+\sigma_{o}=\sqrt{\frac{1}{m} \sum_{k=1}^{m} r_{t-k}^{2}}
+$$
+This is a form of volatility known as historical volatility, since the standard deviation, estimated from $m$ past observations of a time series of continuously compounded returns, measures the historical degree of fluctuation of financial returns.
+
+Scaling the volatility. Because we have assumed $r_{t}=\ln P_{t}-\ln P_{t-1} \sim N\left(\mu, \sigma^{2}\right)$, then for $h>0$ successive equally spaced observations of the price, $r_{t+h} \sim$ $N\left(\mu h, \sigma^{2} h\right)$. Therefore, to annualize the historical volatility estimate we must multiply it by the scaling factor $\sqrt{h}$, for $h$ being the number of time periods in a year. Thus the annualized historical volatility with respect to $h$ periods per year is given by
+$$
+\sigma_{a n n}=(\sqrt{h}) \sigma_{o}
+$$
+In practice, if daily data is used then we take $h=252$; if weekly data is used (i.e. prices are sample every week), then $h=52$; and for monthly data, $h=12$.
+
+Range-based volatility estimates. Note that in practice the return $r_{t}$ is computed by taking the closing prices of successive days, i.e. $r_{t}=\ln \left(C_{t} / C_{t-1}\right)$, where $C_{t}$ is the Close price of day $t$. A sharper estimate of daily volatility would be obtained if one considers variation of prices within the same day. The best one can do with publicly available data is to consider the daily range of prices, which is defined as the difference between the High and Low prices of the day, i.e., $H_{t}-L_{t}$. One such range-based estimator was defined by Parkinson (1980) as follows:
+
+$$
+\sigma_{p}=\sqrt{\frac{1}{4 \ln 2} \cdot \frac{1}{m} \sum_{k=1}^{m} \ln \left(\frac{H_{k}}{L_{k}}\right)^{2}}
+$$
+Another range-based estimator was given by Garman and Klass (1980), defined as
+$$
+\sigma_{g k}=\sqrt{\frac{1}{m} \sum_{k=1}^{m}\left[\frac{1}{2}\left(\ln \frac{H_{k}}{L_{k}}\right)^{2}-(2 \ln 2-1)\left(\ln \frac{C_{k}}{O_{k}}\right)^{2}\right]}
+$$
+
+- Time dependent weighted volatility. Now, volatility is not constant. We will argue on this theme in Chap. 4 , Sect. $4.3$, but right now we will give a first simple and intuitive approach to an estimation of volatility, in a scenario where returns are not necessarily iid, and their influence to the current variance is in some form diluted by how far away in the past they are. This idea can be modeled with the following weighted estimate of the variance
+
+$$
+\sigma_{w}^{2}(t)=\sum_{k=1}^{m} \alpha_{k} r_{t-k}^{2}
+$$
+with $\sum_{k=1}^{m} \alpha_{k}=1$ and so that $\alpha_{1}>\alpha_{2}>\ldots>\alpha_{m}$. In this way the values of returns that are further away in the past contribute less to the sum in Eq. (2.57). A standard assignment of weights that verify the strict decreasing property is to take $\alpha_{k}=(1-\lambda) \lambda^{k-1}$, for $k=1, \ldots, m$, where $0<\lambda<1$ and is known as the decay factor. This is the Exponential Weighted Moving Average (EWMA) model for the variance
+$$
+\sigma_{e w m a}^{2}(t)=(1-\lambda) \sum_{k=1}^{m} \lambda^{k-1} r_{t-k}^{2}
+$$
+and it is this form which is usually considered at financial institutions. A good decay factor for developed markets has been estimated by J. P. Morgan's RiskMetrics methodology to be $\lambda=0.94$. Observe that $\sigma_{\text {ewma }}^{2}$ can be obtained also from the following recursion, which is easily derived from Eq. (2.58)
+$$
+\sigma_{\text {ewma }}^{2}(t)=\lambda \sigma_{e w m a}^{2}(t-1)+(1-\lambda) r_{t-1}^{2}
+$$
+This recurrence has the computational advantage of only needing to keep in memory the previous day return $r_{t-1}$ and the previous estimate of $\sigma_{\text {ewma }}^{2}$. Therefore it is also suitable for on-line computation of volatility. In the R Lab 2.7.10 we propose to do a EWMA estimate of the volatility of AAPL and compare to the estimates done with previous methods.
+
+

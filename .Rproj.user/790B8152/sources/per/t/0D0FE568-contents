@@ -1,0 +1,116 @@
+---
+title: "8.1 The Mean-Variance Model"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+# 8.1.1 The Mean-Variance Rule and Diversification
+
+The departing hypothesis of Markowitz for his portfolio selection model is that
+investors should consider expected return a desirable thing and abhor the variance
+of return. This mean of returns versus variance of returns rule of investors behavior
+has, as a first important consequence, a clear mathematical explanation to the widely
+
+accepted belief among investors on the importance of diversification in portfolio selection. The formalization of diversification can be done as follows.
+
+Let $\mathscr{P}$ be a portfolio of $N$ risky assets. We learned in Chap. 2, Sect. $2.1$, that the $\tau$-period simple return of $\mathscr{P}$ at time $t$ is
+$$
+R_{t}^{\mathscr{P}}(\tau)=\sum_{i=1}^{N} w_{i} R_{i, t}(\tau)
+$$
+where $R_{i, t}(\tau)$ is the $\tau$-period return of asset $i$ at time $t$, and $w_{i}$ is the weight of asset $i$ in $\mathscr{P}$. It should be clear that a portfolio is totally determined by the vector of weights $\boldsymbol{w}=\left(w_{1}, \ldots, w_{N}\right)$ : a weight $w_{i}=0$ means that there are no positions taken on the $i$-th asset; positive weights signifies long positions, and negative weights stand for short positions in the portfolio. Thus, from now on we shall refer to a portfolio by its vector of weights, and use $R_{t}^{w}(\tau)$ instead of $R_{t}^{\mathscr{P}}(\tau)$ to denote its $\tau$-period return at time $t$. To simplify notation we will omit $\tau$ and $t$ wherever possible, provided both parameters are clear from context.
+
+From Eq. (8.1) the mean value (or expected return) at time $t$ of the portfolio $w$ is
+
+and the variance of portfolio $w$ is (cf. Exercise $3.5 .2$ of Chap. 3)
+$$
+\sigma_{w}^{2}=\operatorname{Var}\left(R_{t}^{w}\right)=\sum_{i=1}^{N} \sum_{j=1}^{N} w_{i} w_{j} \sigma_{i} \sigma_{j} \rho_{i j}=\sum_{i=1}^{N} \sum_{j=1}^{N} w_{i} w_{j} \sigma_{i j}
+$$
+where $\sigma_{i}$ is the standard deviation of $R_{i, t} ; \rho_{i j}$ the correlation coefficient of the returns of assets $i$ and $j ; \sigma_{i j}=\operatorname{Cov}\left(R_{i, t}, R_{j, t}\right)$ is the covariance of returns of assets $i$ and $j$; and note that $\sigma_{i i}=\operatorname{Cov}\left(R_{i, t}, R_{i, t}\right)=\sigma_{i}^{2}$. Now, consider the following two extreme cases:
+
+Case 1: The returns of the $N$ assets in the portfolio are pairwise uncorrelated, i.e., $\forall i \neq j, \rho_{i j}=0$. Then $\operatorname{Var}\left(R_{t}^{w}\right)=\sum_{i=1}^{N}\left(w_{i}\right)^{2} \sigma_{i}^{2}$. If we further assume that all assets are equally weighted, that is, for all $i, w_{i}=1 / N$, we have
+$$
+\operatorname{Var}\left(R_{t}^{w}\right)=\frac{1}{N^{2}} \sum_{i=1}^{N} \sigma_{i}^{2} \leq \frac{\sigma_{M}^{2}}{N}
+$$
+where $\sigma_{M}=\max \left[\sigma_{i}: i=1, \ldots, N\right]$. We can see that as $N$ grows to infinity, $\operatorname{Var}\left(R_{t}^{w}\right)$ tends to 0 . This means that the greater the number of pairwise uncorrelated assets, the smaller the risk of the portfolio.
+
+Case 2: The returns of the assets in the portfolio are similarly correlated. This can be realized by considering that all assets' returns have same constant variance $\sigma^{2}$, and the correlation of any pair of distinct returns is some constant $c \leq 1$. Also consider again all assets equally weighted. Then, for all $i \neq j, \sigma_{i j}=\operatorname{Cov}\left(R_{i, t}, R_{j, t}\right)=c \sigma^{2}$ and
+$$
+\begin{aligned}
+\operatorname{Var}\left(R_{t}^{w}\right) &=\sum_{i=1}^{N} \sum_{j=1}^{N} w_{i} w_{j} \sigma_{i j}=\frac{1}{N^{2}} \sum_{i=1}^{N} \sum_{j=1}^{N} \sigma_{i j} \\
+&=\frac{1}{N^{2}}\left(\sum_{1 \leq i \leq N} \sigma_{i i}+\sum_{1 \leq i<j \leq N} \sigma_{i j}\right) \\
+&=\frac{\sigma^{2}}{N}+\left(1-\frac{1}{N}\right) c \sigma^{2}=\frac{(1-c)}{N} \sigma^{2}+c \sigma^{2}
+\end{aligned}
+$$
+This shows that no matter how large $N$ is made it is impossible to reduce the variance of the portfolio below $c \sigma^{2}$. The conclusion is that the greater the presence of similarly correlated assets, the closer is the risk of the portfolio to a risk common to all assets (e.g., some weighted average of individual assets' risks).
+
+Therefore, diversification in a mean-variance world is accomplished by considering highly uncorrelated assets in some reasonable number. By plotting the variance of the portfolio as a function of $N$, given by either of the above cases, one sees that from 15 to 20 are reasonable numbers for the size of a portfolio.
+
+# 8.1.2 Minimum Risk Mean-Variance Portfolio
+
+Given a portfolio of $N$ risky assets, determined by its vector of weights $\boldsymbol{w}=$ $\left(w_{1}, \ldots, w_{N}\right)$, define its covariance matrix $\mathbf{C}=\left[\sigma_{i j}\right]_{1 \leq i, j \leq N}$, where $\sigma_{i j}=\operatorname{Cov}\left(R_{i, t}\right.$, $\left.R_{j, t}\right)=\sigma_{i} \sigma_{j} \rho_{i j}$, and define its expected return vector $\boldsymbol{\mu}=\left(\mu_{1}, \ldots, \mu_{N}\right)$, where $\mu_{i}=E\left(R_{i, t}\right)$ is the expected return of the $i$-th asset in the portfolio. With this vectorial notation we can rewrite the expressions for the expected return and the variance of the portfolio $w$ as
+$$
+E\left(R_{t}^{w}\right)=\boldsymbol{w}^{\prime} \boldsymbol{\mu} \quad \text { and } \quad \operatorname{Var}\left(R_{t}^{w}\right)=\boldsymbol{w}^{\prime} \mathbf{C} \boldsymbol{w}
+$$
+Here $\boldsymbol{w}^{\prime}$ denotes the transpose of $\boldsymbol{w}$. According to the Markowitz's mean of returns versus variance of returns rule, investors' main concern is to obtain a certain level of benefits under the smallest possible amount of risk. Therefore the Markowitz portfolio selection problem amounts to:
+
+Find weights $\boldsymbol{w}=\left(w_{1}, \ldots, w_{N}\right)$ such that, for a given expected rate of return $r^{*}$, the expected return of the portfolio determined by $w$ is $r^{*}$, i.e., $E\left(R^{w}\right)=r^{*}$, while its variance $\operatorname{Var}\left(R^{w}\right)$ is minimal.
+
+This minimum variance for given return portfolio optimization problem can be mathematically formulated as follows:
+$$
+\min _{w} w^{\prime} \mathbf{C} w
+$$
+subject to: $\boldsymbol{w}^{\prime} \boldsymbol{\mu}=r^{*}$,
+and $\sum_{i=1}^{N} w_{i}=1$
+This is a quadratic programming problem, since the objective is quadratic and the constraints are linear, which we will see can be reduced to a linear system of equations and solve. Constraint (8.6) means that the investor uses all his budget for the $N$ assets. Observe that the model imposes no restrictions on the values of the weights (i.e. there could be either long or short positions). Under these relaxed conditions on weights (and assuming extended no arbitrage ${ }^{2}$ ) this portfolio optimization problem can be solved analytically using Lagrange multipliers. This method consists in defining the Lagrangian
+
+$$
+\begin{aligned}
+L &=\boldsymbol{w}^{\prime} \mathbf{C} \boldsymbol{w}-\lambda_{1}\left(\boldsymbol{w}^{\prime} \boldsymbol{\mu}-r^{*}\right)-\lambda_{2}\left(\boldsymbol{w}^{\prime} \mathbf{1}-1\right) \\
+&=\sum_{1 \leq i, j \leq N} w_{i} w_{j} \sigma_{i j}-\lambda_{1}\left(\sum_{i=1}^{N} w_{i} \mu_{i}-r^{*}\right)-\lambda_{2}\left(\sum_{i=1}^{N} w_{i}-1\right)
+\end{aligned}
+$$
+where $\lambda_{1}$ and $\lambda_{2}$ are the Lagrange multipliers. Then, differentiating $L$ with respect to each $w_{i}$ and setting these partial derivatives to zero, one obtains the following $N$ linear equations in addition to the two equations for the constrains (Eqs. (8.5) and (8.6)), for a total of $N+2$ equations for the $N+2$ unknowns $w_{1}, \ldots, w_{N}, \lambda_{1}, \lambda_{2}$ :
+$$
+\begin{gathered}
+2 \sum_{j=1}^{N} w_{j} \sigma_{i j}-\lambda_{1} \mu_{i}-\lambda_{2}=0, \quad \text { for } i=1, \ldots, N, \\
+\sum_{i=1}^{N} w_{i} \mu_{i}=r^{*} \text { and } \sum_{i=1}^{N} w_{i}=1
+\end{gathered}
+$$
+Solving this linear system one obtains the weights for a portfolio with mean $r^{*}$ and the smallest possible variance. This solution is termed efficient in the sense of being the portfolio with that expected return $r^{*}$ and minimum variance, and such that any other portfolio on the same set of securities with same expected return $r^{*}$ must have a higher variance.
+
+# 8.1.3 The Efficient Frontier and the Minimum Variance Portfolio
+
+For a set of $N$ assets for constituting a portfolio, consider different values of $r^{*}$ for the expected return of the portfolio, and for each of these values solve the system (8.4)-(8.6) to get the efficient solution of weights $w^{*}$, from which obtain the corresponding minimum variance, and consequently the standard deviation of the portfolio determined by $w^{*}$
+$$
+\sigma^{*}=\operatorname{std}\left(R^{w^{*}}\right)=\sqrt{\left(w^{*}\right)^{\prime} \mathbf{C} w^{*}}
+$$
+The locus of points $\left(\sigma^{*}, r^{*}\right)$ in the $\sigma-\mu$ plane, or the risk-mean plane, is the right branch of a hyperbola. The vertex of this hyperbola has as coordinates the standard deviation and mean values of the minimum variance portfolio (mvp). Let us denote these values by $\sigma_{m v p}$ and $r_{m v p}$, respectively. The part of the curve above the point $\left(\sigma_{m v p}, r_{m v p}\right)$, that is, the locus of points $\left(\sigma^{*}, r^{*}\right)$ for $r^{*}>r_{m v p}$ obtained from solutions $w^{*}$ of (8.4)-(8.6), is called the efficient frontier (and the symmetric reflexion curve below is called the minimum variance locus). Figure $8.1$ shows the efficient frontier, the mvp and the positions in the risk-mean graph of five stocks used to build efficient portfolios in the forthcoming R Example 8.1.
+
+The minimum variance portfolio corresponds to the solution for the particular case where $\lambda_{1}=0$ in Eq. (8.7). This is the Lagrangian for the system of equations (8.4) and (8.6) only, which is asking to find the minimum variance for the portfolio regardless of expected returns. In fact, one could have started by solving this case first to get the point $\left(\sigma_{m v p}, r_{m v p}\right)$, and then continue solving the system (8.4)-(8.6) for $r^{*}>r_{m v p}$ to get the efficient frontier, then draw the lower border by symmetry.
+
+The region enclosed by the right branch of hyperbola (i.e., below and including the efficient frontier and above the minimum variance locus) is the feasible set of mean-variance portfolios. Any point in this region is a pair $\left(\sigma_{w}, r_{w}\right)$ corresponding to the standard deviation and the expected return of a portfolio $w$ with covariance matrix $\mathbf{C}$ and mean vector $\mu$. In other words, only the points $\left(\sigma_{w}, r_{w}\right)$ in the feasible set verify the equations
+$$
+\sigma_{\boldsymbol{w}}=\boldsymbol{w}^{\prime} \mathbf{C} \boldsymbol{w}, \quad r_{\boldsymbol{w}}=\boldsymbol{w}^{\prime} \boldsymbol{\mu} \quad \text { and } \quad \sum_{i=1}^{N} w_{i}=1
+$$
+
+# 8.1.4 General Mean-Variance Model and the Maximum Return Portfolio
+
+In the mean-variance model given by Eq. (8.4) we have to choose the desired mean $r^{*}$. But if we don't know the mean $r_{m v p}$ for the minimum variance portfolio we might choose $r^{*}$ below $r_{m v p}$ and get an inefficient portfolio with low mean and unnecessarily high variance. This can be fixed, without recurring to the computation of $r_{m v p}$, by extending the objective function of minimizing the variance with the objective of maximizing the mean. Since maximizing a function $f$ is the same as minimizing $-f$, and by the convexity of the efficient frontier, we can express the mean-variance portfolio model as the following more general problem. For a given $\gamma \in[0,1]$, solve
+$$
+\min _{w}(1-\gamma) \boldsymbol{w}^{\prime} \mathbf{C} \boldsymbol{w}-\gamma \boldsymbol{w}^{\prime} \boldsymbol{\mu}
+$$
+Note that when $\gamma=0$ we are back in the case of minimizing risk regardless of expected returns; that is, we are seeking for the minimum variance portfolio with mean $r_{m v p}$ and standard deviation $\sigma_{m v p}$. When $\gamma=1$ we are now eliminating risk from the equation (hence, completely ignoring it) and seeking for the portfolio with maximum return. This can be made more evident by rewriting Eq. (8.8) in the equivalent form:
+$$
+\max _{\boldsymbol{w}} \gamma \boldsymbol{w}^{\prime} \boldsymbol{\mu}-(1-\gamma) \boldsymbol{w}^{\prime} \mathbf{C} \boldsymbol{w}
+$$
+Therefore, the global maximum return portfolio corresponds to the solution of the problem
+$$
+\max _{w} \boldsymbol{w}^{\prime} \boldsymbol{\mu} \quad \text { subject to } \sum_{i=1}^{N} w_{i}=1
+$$
+
+which is a linear programming problem (linear objective and linear constraints), solvable by some efficient optimization method (e.g. the simplex method). In $\mathrm{R}$ we can use the function lp contained in the package lpSolve. We show how to do this in R Example 8.1.
+
+The parameter $\gamma$ can be interpreted as the degree of an investor's tolerance to risk: If $\gamma \mapsto 1$ then the investor seeks to maximize expected return regardless of risk; if $\gamma \mapsto 0$ then the investor seeks to subtract as much variance as possible, hence avoiding as much risk as possible at the expense of obtaining less benefits. The efficient frontier can now be drawn by taking different values of $\gamma \in[0,1]$ and solving the optimization problem (8.8) for each one of these values.
+
+

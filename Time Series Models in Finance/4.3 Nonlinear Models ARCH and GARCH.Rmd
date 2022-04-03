@@ -1,0 +1,118 @@
+---
+title: "4.3 Nonlinear Models ARCH and GARCH"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Financial time series often exhibit daily returns with similar high variance for a succession of time periods and similar low variance for other string of periods. We have empirically observed this dependance of the return's variance with its past by computing the ACF function of squared returns and obtained significant lag values. These observations motivates models of financial returns where their variance evolves over time, or what are known as conditional heteroscedastic models. In the general structure of stationary random time series model given by Eq. (4.2), we want $\sigma_{t}^{2}=$ $\operatorname{Var}\left(Y_{t} \mid F_{t-1}\right)$ to vary with $F_{t-1}$.
+
+
+# 4.3.1 The ARCH Model
+
+The Autoregressive Conditional Heteroscedastic model of order $p, \operatorname{ARCH}(p)$, was conceived by Robert Engle under the premise that the conditional variance is a linear function of the past $p$ squared innovations. ${ }^{7}$ Thus,
+$$
+\begin{aligned}
+Y_{t} &=\mu_{t}+a_{t} \\
+\sigma_{t}^{2} &=\omega+\alpha_{1} a_{t-1}^{2}+\cdots+\alpha_{p} a_{t-p}^{2}
+\end{aligned}
+$$
+For this model to be well defined and the conditional variance to be positive, the parameters must satisfy $\omega>0$ and $\alpha_{1} \geq 0, \ldots, \alpha_{p} \geq 0$. Defining $W_{t}=a_{t}^{2}-\sigma_{t}^{2}$, we can rewrite Eq. (4.30) as
+$$
+a_{t}^{2}=\omega+\sum_{k=1}^{p} \alpha_{k} a_{t-k}^{2}+W_{t}
+$$
+and since $E\left(W_{t} \mid F_{t-1}\right)=0$, the above equation says that the $\mathrm{ARCH}(p)$ models corresponds to an $\operatorname{AR}(p)$ model for the squared innovations, $a_{t}^{2}$. Therefore the process
+
+is weakly stationary if and only if $\left|\alpha_{1}+\cdots+\alpha_{p}\right|<1$ (cf. Eq. (4.18)), in which case the unconditional variance (hence, constant variance) is, taking expectation in (4.31),
+$$
+\sigma^{2}=\operatorname{Var}\left(a_{t}\right)=\frac{\omega}{1-\alpha_{1}-\cdots-\alpha_{p}}
+$$
+Remark 4.4 For making inference with ARCH type models it is often assumed that $a_{t}=\sigma_{t} \varepsilon_{t}$, where $\left\{\varepsilon_{t}\right\}$ is a sequence of iid random variables with $\varepsilon_{t} \sim N(0,1) .$ Observe that although this realization of $a_{t}$ is serially uncorrelated, by Eq. (4.31) is clearly not independent through time. We have then that large (small) values of volatility are to be followed by other large (small) values of volatility. Thus, the ARCH model is in accordance with the stylized fact termed volatility clustering (cf. Sect. 3.4).
+
+Steps to build an ARCH model. Given a sample return series $\left\{r_{t}: t=1, \ldots, T\right\}$ that we want to fit to an ARCH model, the first step is to determine the order of the model. Consider the residuals $a_{t}=r_{t}-\mu_{t}$ of the mean Eq. (4.30) (with $Y_{t}=r_{t}$ ), and since the ARCH model is an autoregression on the squared residuals (Eq. (4.31)), we can compute the PACF for $\left\{a_{t}^{2}\right\}$ to determine the order $p$. The next step is to estimate the parameters $\omega, \alpha_{1}, \ldots, \alpha_{p}$ of the model. This is done with the maximum likelihood estimation method. Assuming that the probability distribution of $a_{t}$ conditional on the variance is normal (i.e., $a_{t} \sim N\left(0, \sigma_{t}^{2}\right)$ ), then the likelihood function is ${ }^{8}$
+$$
+L\left(\omega, \alpha_{1}, \ldots, \alpha_{p}\right)=\prod_{t=p+1}^{T}\left[\frac{1}{\sqrt{2 \pi \sigma_{t}^{2}}} \exp \left(\frac{-a_{t}^{2}}{2 \sigma_{t}^{2}}\right)\right]
+$$
+Maximizing this function is the same as maximizing the logarithm
+
+$$
+-\frac{1}{2} \sum_{t=p+1}^{T}\left(\ln (2 \pi)+\ln \sigma_{t}^{2}+\frac{a_{t}^{2}}{\sigma_{t}^{2}}\right)
+$$
+The values that maximize the above formula are the same for the formula without additive constants. Thus, the log-likelihood function to consider is
+$$
+l\left(\omega, \alpha_{1}, \ldots, \alpha_{p}\right)=-\frac{1}{2} \sum_{t=p+1}^{T}\left(\ln \sigma_{t}^{2}+\frac{a_{t}^{2}}{\sigma_{t}^{2}}\right)
+$$
+One proceeds to search iteratively for the values of $\omega, \alpha_{1}, \ldots, \alpha_{p}$ that when substituted in the model (4.30) for $\sigma_{t}^{2}$ maximize the value of $l\left(\omega, \alpha_{1}, \ldots, \alpha_{p}\right)$, beginning with the variance at time $t=p+1$ estimated with past $p$ times residuals $a_{1}, \ldots, a_{p}$, that
+
+is, $\sigma_{p+1}^{2}=\omega+\alpha_{1} a_{p}^{2}+\alpha_{2} a_{p-1}^{2}+\cdots+\alpha_{p} a_{1}^{2}$, where $a_{i}^{2}=\left(r_{i}-\widehat{\mu}\right)^{2}(\widehat{\mu}$ being the sample mean).
+
+Forecasting with $\mathbf{A R C H}(p)$ model. This is done similarly as with an $\operatorname{AR}(p)$. Considering the origin of the forecast at time $t$, the one-step ahead forecast of the variance $\sigma_{t+1}^{2}$, denoted $\sigma_{t+1 \mid t}^{2}$ is given by
+$$
+\sigma_{t+1 \mid t}^{2}=\omega+\alpha_{1} a_{t}^{2}+\cdots+\alpha_{p} a_{t+1-p}^{2}
+$$
+By Remark $4.4$, the square of future residuals $a_{t+1}$ can be approximated by $\sigma_{t+1 \mid t}^{2}$. Then the 2-step ahead forecast of the variance is
+$$
+\sigma_{t+2 \mid t}^{2}=\omega+\alpha_{1} \sigma_{t+1 \mid t}^{2}+\alpha_{2} a_{t}^{2}+\cdots+\alpha_{p} a_{t+2-p}^{2}
+$$
+and continuing this way, the $h$-step ahead forecast is
+$$
+\sigma_{t+h \mid t}^{2}=\omega+\alpha_{1} \sigma_{t+1 \mid t}^{2}+\alpha_{2} \sigma_{t+2 \mid t}^{2}+\cdots+\alpha_{h-1} \sigma_{t+h-1 \mid t}^{2}+\alpha_{h} a_{h}^{2}+\cdots+\alpha_{p} a_{t+h-p}^{2}
+$$
+To fit an ARCH model to a sample return series and make predictions of future variance in R, we use garchFit () and the associated suite of functions from the package fGarch.
+
+# 4.3.2 The GARCH Model
+
+The Generalized Autoregressive Conditional Heteroscedasticity model of order p
+and q, GARCH(p,q), was proposed by Tim Bollerslev in 1986 to circumvent the
+estimation of ARCH(p) models for large values of p, which often arise in practice.
+
+Bollerslev's idea was to make the variance also dependent on its $q$ recent past values, hence obtaining the following recursive formula for $\sigma_{t}^{2}$ :
+$$
+\begin{aligned}
+Y_{t} &=\mu_{t}+a_{t} \\
+\sigma_{t}^{2} &=\omega+\sum_{i=1}^{p} \alpha_{i} a_{t-i}^{2}+\sum_{j=1}^{q} \beta_{j} \sigma_{t-j}^{2}
+\end{aligned}
+$$
+For the conditional variance in this $\operatorname{GARCH}(p, q)$ model to be well defined and positive, and the process be weakly stationary, the coefficients must satisfy
+$\omega>0, \alpha_{1} \geq 0, \ldots, \alpha_{p} \geq 0, \beta_{1} \geq 0, \ldots, \beta_{q} \geq 0$ and $\sum_{i=1}^{\max (p, q)}\left(\alpha_{i}+\beta_{i}\right)<1$
+These conditions on the coefficients of $\operatorname{GARCH}(p, q)$ model are deduced by reasoning similarly as for the $\mathrm{ARCH}(p)$, as follows. We can rewrite Eq. (4.35) as
+$$
+a_{t}^{2}=\omega+\sum_{k=1}^{\max (p, q)}\left(\alpha_{k}+\beta_{k}\right) a_{t-k}^{2}-\sum_{k=1}^{q} \beta_{k} W_{t-k}+W_{t}
+$$
+
+with $W_{t-k}=a_{t-k}^{2}-\sigma_{t-k}^{2}, k=0,1, \ldots, q$. This equation defines an ARMA(max $(p, q), q)$ model for $a_{t}^{2}$. From this it follows that the process is weakly stationary if and only if $\sum_{k=1}^{\max (p, q)}\left(\alpha_{k}+\beta_{k}\right)<1$. Moreover, the unconditional variance for the GARCH $(p, q)$ model is obtained by taking expectation in (4.37) as
+$$
+\sigma^{2}=\operatorname{Var}\left(a_{t}\right)=\frac{\omega}{1-\sum_{k=1}^{\max (p, q)}\left(\alpha_{k}+\beta_{k}\right)}
+$$
+This unconditional variance can be interpreted as a long-run predicted variance. To see this consider a 1-step prediction with the simpler GARCH(1,1) model. This is just a straightforward extension of the $\mathrm{ARCH}(1)$ forecast, and it has the form
+$$
+\sigma_{t+1 \mid t}^{2}=\omega+\alpha a_{t}^{2}+\beta \sigma_{t}^{2}
+$$
+For $h>1$, the $h$-step ahead prediction with $\operatorname{GARCH}(1,1)$ has the form
+$$
+\sigma_{t+h \mid t}^{2}=\omega+\alpha \sigma_{t+h-1 \mid t}^{2}+\beta \sigma_{t+h-1 \mid t}^{2}
+$$
+Taking limit as $h \rightarrow \infty$ we get the long-run predicted variance
+$$
+V_{L}=\lim _{h \rightarrow \infty} \sigma_{t+h \mid t}^{2}=\frac{\omega}{1-\alpha-\beta}
+$$
+
+This is the mean variance per day (or per time period considered) implied by the GARCH model. The implied daily volatility is $\sqrt{V_{L}}$. This also provides another interpretation for the GARCH model as an approximation to the conditional variance by a long-run variance rate, $V_{L}$, plus squared innovations and recent past variances. For the GARCH $(1,1)$ model this is
+$$
+\begin{aligned}
+Y_{t} &=\mu_{t}+a_{t} \\
+\sigma_{t}^{2} &=\gamma V_{L}+\alpha a_{t-1}^{2}+\beta \sigma_{t-1}^{2}
+\end{aligned}
+$$
+with $\gamma=1-\alpha-\beta$ and $\alpha+\beta<1$.
+Building a GARCH model. The steps are similar to the building of an ARCH model for a given return series $\left\{r_{t}\right\}$. However, determining the order $(p, q)$ of the model is not as easy. We have seen that the square of the residuals $a_{t}=r_{t}-\mu_{t}$ verify an ARMA(max $(p, q), q)$ model, so we could apply a PACF test to estimate a number $p^{\prime}$ for the AR part of the model, but this $p^{\prime}=\max (p, q)$, and we must then trial different combinations of $p$ and $q$. Nonetheless, in practice, lower order models suffice and, in fact, GARCH(1,1) model with $\alpha_{1}+\beta_{1}$ close to one have been found to approximate the data quite well. 10
+
+Next, the parameters $\omega, \alpha \mathrm{s}, \beta \mathrm{s}$ and $\mu$ are estimated with MLE method, where the log-likelihood function has the same form as for the ARCH model and given by Eq. (4.34).
+
+General criterion for building a volatility model. Now that we know how to fit an $\mathrm{ARCH}$ or GARCH model from observable data, it is important to have some criterion to decide whether such model is appropriate or not. We have seen that estimation of the ACF for the squared residuals (i.e., the squares of $a_{t}=r_{t}-\mu_{t}$ ) is used to decide on a possible dependance of the variance with its past. Then, to effectively test for conditional heteroscedasticity, or what is known as the $\mathrm{ARCH}$ effect, one possibility is to apply the Ljung-Box statistics $Q(h)$ to the $\left\{a_{t}^{2}\right\}$ series, ${ }^{11}$ where the null hypothesis to test is that the first $h$ lags of the ACF of $\left\{a_{t}^{2}\right\}$ are zero. If this null hypothesis is rejected (e.g., $p$-values of $Q(h)$ are less than the $5 \%$ significance level), then we have evidence of ARCH effect, and can well proceed to fit a volatility model.
+$R$ Example 4.6 We consider building an ARMA+GARCH(1,1) model for the series of returns of Shiller's PE 10 series. We will first test for ARCH effect, employing the Ljung-Box criterion, in order to justify the need for such volatility model. In R Example $4.4$ we had determined that the best ARMA for the mean is of the type $\operatorname{ARMA}(2,4)$, and in R Example $4.5$ we explained how to set up such combined model. Bear in mind that now we need to make a joint likelihood estimate of both sets of parameters for the ARMA and the GARCH, so one can not expect these to have the same values as those from models estimated separately. 
+

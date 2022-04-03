@@ -1,0 +1,45 @@
+---
+title: "2.5 Maximum Likelihood Methods"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Let $X$ be a random variable for which we have sample observations $x_{1}, \ldots, x_{m}$, and let $\theta=\left(\theta_{1}, \ldots, \theta_{p}\right)$ be a vector of parameters, pertaining to some statistical model for $X$, and which we want to estimate. Assuming that the observations are made randomly and independently of each other, we can consider their joint distribution as the product of their conditional distributions (Eq. (2.36)). Then, if the distribution has density function $f(x ; \theta)$, we define the likelihood of observing the $m$ values of $X$, given $\theta$, as
+$$
+L\left(x_{1}, \ldots, x_{m} ; \theta\right)=f\left(x_{1} ; \theta\right) \cdot \prod_{i=2}^{m} f\left(x_{i} \mid x_{i-1}, \ldots, x_{1} ; \theta\right)
+$$
+The value of $\theta$ that maximizes this likelihood function is the maximum-likelihood estimate (MLE) of $\theta$. This MLE might not be unique, and might even not exists. In the case that it exists, but is not unique, any of the points where the maximum is attained is an MLE of $\theta$. A useful mathematical trick for simplifying the computation of an MLE is to find instead a value of $\theta$ that maximizes the logarithm of $L$, called the log likelihood function:
+$$
+l\left(x_{1}, \ldots, x_{m} ; \theta\right)=\ln \left(L\left(x_{1}, \ldots, x_{m} ; \theta\right)\right)=\ln f\left(x_{1} ; \theta\right)+\sum_{i=2}^{m} \ln \left(f\left(x_{i} \mid x_{i-1}, \ldots, x_{1} ; \theta\right)\right)
+$$
+Maximizing $\ln L$ is the same as maximizing $L$, because $\ln$ is a monotone function. The optimization of $l\left(x_{1}, \ldots, x_{m} ; \theta\right)$ is often obtain only by numerical methods. In $\mathrm{R}$ this can be done with the function $m l e()$, or by direct use of the optimization method optim().
+
+A further simplification to the likelihood computation is to assume that all random observations are made independently. In this case Eq. (2.48) and Eq. (2.49) turn into
+
+
+$$
+L\left(x_{1}, \ldots, x_{m} ; \theta\right)=\prod_{i=1}^{m} f\left(x_{i} ; \theta\right) \text { and } l\left(x_{1}, \ldots, x_{m} ; \theta\right)=\sum_{i=1}^{m} \ln \left(f\left(x_{i} ; \theta\right)\right)
+$$
+Although the independence assumption is quite strong for time series, it simplifies likelihood computation to analytical form. As an example of the MLE method we show how to obtain the best estimate of a constant variance from sample returns.
+Example $2.7$ Let $r_{1}, \ldots, r_{m}$ be a sequence of $m$ independently observed log returns. We assume these returns have some constant variance $\sigma^{2}$, which we want to estimate under the normal distribution model, and a constant mean $\mu$ which we know. By the independence of the observations the log likelihood function is as in Eq. (2.50), with $\theta=\left(\sigma^{2}, \mu\right)$ and $\mu$ fixed, and the probability density functionf $\left(r_{i} ; \sigma^{2}, \mu\right)$ is given by the Gaussian density function (Eq. (2.27)). Therefore, the log likelihood of observing $r_{1}, \ldots, r_{m}$ is
+$$
+l\left(r_{1}, \ldots, r_{m} ; \sigma^{2}\right)=-\frac{1}{2} \sum_{i=1}^{m}\left[\ln (2 \pi)+\ln \left(\sigma^{2}\right)+\frac{\left(r_{i}-\mu\right)^{2}}{\sigma^{2}}\right]
+$$
+
+
+By the maximum likelihood method the value of $\sigma^{2}$ that maximizes (2.51) is the best estimate (or more likely) value of $\sigma^{2}$. Differentiating $l\left(r_{1}, \ldots, r_{m} ; \sigma^{2}\right)$ with respect to $\sigma^{2}$ and setting the resulting derivative to zero, we obtain that the maximum likelihood estimate of $\sigma^{2}$ is given by
+$$
+\sigma_{m l e}^{2}=\frac{1}{m} \sum_{i=1}^{m}\left(r_{i}-\mu\right)^{2}
+$$
+Note that this estimated value $\sigma_{m l e}^{2}$ is biased (cf. Remark 2.2), since
+$$
+E\left(\sigma_{m l e}^{2}\right)=\frac{m-1}{m} E\left(\widehat{\sigma}^{2}\right)=\frac{m-1}{m} \sigma^{2}
+$$
+However, the bias of $-\sigma^{2} / m$ tends to 0 as $m \rightarrow \infty$, so the maximum likelihood estimate $\sigma_{m l e}^{2}$ is asymptotically unbiased for $\sigma^{2}$. Thus, taking $m$ sufficiently large we have $\sigma_{m l e}^{2}$ a good estimator of the variance of log returns, sampled in a given interval of time, and which in fact, by construction, it is the most likely value that can be assigned to that variance.
+
+

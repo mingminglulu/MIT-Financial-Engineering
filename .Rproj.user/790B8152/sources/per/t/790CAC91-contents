@@ -1,0 +1,135 @@
+---
+title: "2.2 Distributions, Density Functions and Moments"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 2.2.1 Distributions and Probability Density Functions
+
+- cdf
+
+  - continuely
+  
+  $F_{X}(x)=\mathbb{P}(X \leq x)=\int_{-\infty}^{x} f_{X}(t) d t$
+  
+  
+  - not continuous
+  
+  $F_{X}(x)=\mathbb{P}(X \leq x)=\sum_{\left\{k \leq x: p_{X}(k)>0\right\}} p_{X}(k)$
+  
+  - empirical cumulative distribution function ECDF:
+
+$F_{n}(x)=(1 / n) \sum_{i=1}^{n} 1\left\{x_{(i)} \leq x\right\}$
+
+
+- two varible
+
+$F_{X, Y}(x, y)=\mathbb{P}(X \leq x ; Y \leq y)=\int_{-\infty}^{y} \int_{-\infty}^{x} f_{X, Y}(s, t) d s d t$
+
+
+conditionaly
+
+$F_{X \mid Y \leq y}(x)=\frac{\mathbb{P}(X \leq x ; Y \leq y)}{\mathbb{P}(Y \leq y)}$
+
+$f_{X \mid Y=y}(x)=\frac{f_{X, Y}(x, y)}{f_{Y}(y)}$
+
+
+
+# 2.2.2 Moments of a Random Variable
+
+
+$E(X)=\int_{-\infty}^{\infty} x f(x) d x$
+
+- n-th moment
+
+$E\left(X^{n}\right)=\int_{-\infty}^{\infty} x^{n} f(x) d x$
+
+- n-th central moment
+
+$E\left(\left(X-\mu_{X}\right)^{n}\right)=\int_{-\infty}^{\infty}\left(x-\mu_{X}\right)^{n} f(x) d x$
+
+$\operatorname{Var}(X)=E\left(\left(X-\mu_{X}\right)^{2}\right)$
+
+$S(X)=E\left(\frac{\left(X-\mu_{X}\right)^{3}}{\sigma_{X}^{3}}\right) \quad$ and $\quad K(X)=E\left(\frac{\left(X-\mu_{X}\right)^{4}}{\sigma_{X}^{4}}\right)$
+
+
+- Estimation of moments. In practice one has observations of a random variable $X$ and from these one does an estimation of $X$ 's moments of distribution. Given sample data $\boldsymbol{x}=\left\{x_{1}, \ldots, x_{m}\right\}$ of random variable $X$, the sample mean of $X$ is
+$$
+\widehat{\mu}_{x}=\frac{1}{m} \sum_{t=1}^{m} x_{t}
+$$
+and the sample variance is
+$$
+\widehat{\sigma}_{\boldsymbol{x}}^{2}=\frac{1}{m-1} \sum_{t=1}^{m}\left(x_{t}-\widehat{\mu}_{\boldsymbol{x}}\right)^{2}
+$$
+
+The sample standard deviation is $\widehat{\sigma}_{x}=\sqrt{\widehat{\sigma}_{x}^{2}}$. The sample skewness is
+$$
+\widehat{S}_{x}=\frac{1}{(m-1) \widehat{\sigma}_{x}^{3}} \sum_{t=1}^{m}\left(x_{t}-\widehat{\mu}_{x}\right)^{3}
+$$
+and the sample kurtosis
+$$
+\widehat{K}_{x}=\frac{1}{(m-1) \widehat{\sigma}_{x}^{4}} \sum_{t=1}^{m}\left(x_{t}-\widehat{\mu}_{x}\right)^{4}
+$$
+
+# 2.2.3 The Normal Distribution
+
+$f(x)=\frac{1}{\sigma \sqrt{2 \pi}} \exp \left(-(x-\mu)^{2} / 2 \sigma^{2}\right)$
+
+
+$\Phi(x)=\int_{-\infty}^{x} \frac{1}{\sqrt{2 \pi}} \exp \left(-t^{2} / 2\right) d t, \quad-\infty<x<\infty$
+
+
+Theorem 2.1 (Central Limit Theorem) If $X_{1}, \ldots, X_{n}$ is a random sample from a distribution of expected value given by $\mu$ and finite variance given by $\sigma^{2}$, then the limiting distribution of
+$$
+Z_{n}=\frac{\sqrt{n}}{\sigma}\left(\frac{1}{n} \sum_{i=1}^{n} X_{i}-\mu\right)
+$$
+
+# 2.2.4 Distributions of Financial Returns
+
+
+
+- Are returns normally distributed? Almost any histogram of an asset’s return
+will present some bell-shaped curve, although not quite as smooth as the normal
+distribution. We show this empirical fact with a particular stock
+
+Example $2.3$ (The log-normal distribution) A random variable $X$ has the lognormal distribution, with parameters $\mu$ and $\sigma^{2}$, if $\ln X \sim N\left(\mu, \sigma^{2}\right)$. In this case we write $X \sim \log N\left(\mu, \sigma^{2}\right)$. The log-normal density function is given by
+$$
+f_{X}(x)=\frac{1}{x \sigma \sqrt{2 \pi}} \exp \left(-(\ln x-\mu)^{2} / 2 \sigma^{2}\right), \quad x>0
+$$
+and the moments of the variable $X$ are
+$$
+E\left(X^{n}\right)=\exp \left(n \mu+\frac{1}{2} n^{2} \sigma^{2}\right), n>0
+$$
+Therefore, if we assume that the simple return series $\left\{R_{t}\right\}$ is log-normally distributed with mean $\mu_{R}$ and variance $\sigma_{R}^{2}$, so that the log return series $\left\{r_{t}\right\}$ is such that
+$$
+r_{t}=\ln \left(R_{t}+1\right) \sim N\left(\mu_{r}, \sigma_{r}^{2}\right)
+$$
+with mean $\mu_{r}$ and variance $\sigma_{r}^{2}$, we have that the respective moments for both series are related by the following equations
+$$
+E\left(R_{t}\right)=\mu_{R}=e^{\mu_{r}+\sigma_{r}^{2} / 2}-1, \quad \operatorname{Var}(R)=\sigma_{R}^{2}=e^{2 \mu_{r}+\sigma_{r}^{2}}\left(e^{\sigma_{r}^{2}}-1\right)
+$$
+As a first application of this hypothesis of normal distribution for the continuously compounded returns, we show how to compute bounds to the future price of the underlying asset with a $95 \%$ precision.
+
+
+$$
+\ln \left(\frac{P_{T}}{P_{0}}\right)=r_{1}+\cdots+r_{T} \sim N\left(\mu_{r} T, \sigma_{r}^{2} T\right)
+$$
+where $\mu_{r}$ and $\sigma_{r}^{2}$ are the mean and variance of $\left\{r_{t}\right\}$. Let $Z_{T}=\frac{\ln \left(P_{T} / P_{0}\right)-\mu_{r} T}{\sigma_{r} \sqrt{T}}$. Then $Z_{T} \sim N(0,1)$, and we have seen as a consequence of the Central Limit Theorem that for the quantile $z=1.96$ we have $\mathbb{P}\left(-z<Z_{T}<z\right)=0.95$ (go back to Example 2.3). From this we have
+$$
+\mu_{r} T-z \sigma_{r} \sqrt{T}<\ln \left(\frac{P_{T}}{P_{0}}\right)<\mu_{r} T+z \sigma_{r} \sqrt{T}
+$$
+or, equivalently
+$$
+P_{0} \exp \left(\mu_{r} T-z \sigma_{r} \sqrt{T}\right)<P_{T}<P_{0} \exp \left(\mu_{r} T+z \sigma_{r} \sqrt{T}\right)
+$$
+These equations give bounds for the price at time $t=T$, with a $95 \%$ probability if taking $z=1.96$. On real data, one makes an estimate of $\mu_{r}$ and $\sigma_{r}$ from a sample of the log returns $\left\{r_{t}\right\}$, and assumes these estimations of moments hold for the period $[0, T]$; that is, we must assume that the mean and variance of the log returns remain constant in time. Be aware then of all the considered hypotheses for these calculations to get the bounds in Eq. (2.34), so that estimations from real data should be taken as
+
+
+
+
+

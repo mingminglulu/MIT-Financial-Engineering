@@ -1,0 +1,40 @@
+---
+title: "4.1 On Trend and Seasonality"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This chapter presents some basic discrete-time models for financial time series. The general paradigm for modeling a time series $\left\{X_{t}\right\}$ is to consider each term composed of a deterministic component $H_{t}$ and a random noise component $Y_{t}$, so that
+$$
+X_{t}=H_{t}+Y_{t}
+$$
+Then one can readily estimate the deterministic component $H_{t}$, by some algebraic manipulations that we briefly indicate in Sect. 4.1, and we are left with the difficult task of approximating the values of $Y_{t}$, the random component. The basic structure of a time series model for $Y_{t}$ has the form
+$$
+Y_{t}=E\left(Y_{t} \mid F_{t-1}\right)+a_{t}
+$$
+where $F_{t-1}$ represents the information set available at time $t-1, E\left(Y_{t} \mid F_{t-1}\right)$ is the conditional mean, $a_{t}$ is the stochastic shock (or innovation) and assumed to have zero conditional mean, and hence the conditional variance $\operatorname{Var}\left(Y_{t} \mid F_{t-1}\right)=$ $E\left(a_{t}^{2} \mid F_{t-1}\right)=\sigma_{t}^{2} .$
+
+According to the form of $E\left(Y_{t} \mid F_{t-1}\right)$ and $\operatorname{Var}\left(Y_{t} \mid F_{t-1}\right)$ as functions of $F_{t-1}$, we have models of different nature for $Y_{t}$. For example, if we fix the conditional variance to a constant value, $\operatorname{Var}\left(Y_{t} \mid F_{t-1}\right)=\sigma^{2}$, and $F_{t-1}$ is a finitely long recent past of $Y_{t}$, that is, $F_{t-1}=\left\{Y_{t-1}, \ldots, Y_{t-p}\right\}$, we obtain a linear model of the Autoregressive Moving Average (ARMA) type. We study the ARMA class of time series models in Sect. 4.2. If we leave both the conditional mean and conditional variance to vary as function of $F_{t-1}$, we obtain a nonlinear model of the Autoregressive Conditional Heteroscedastic (ARCH) type. This important class of nonlinear models is reviewed in Sect. 4.3. Other nonlinear models can be obtained by composition of the right-hand expression in Eq. (4.2) with some nonlinear function $g(\cdot)$, i.e., $Y_{t}=g\left(E\left(Y_{t} \mid F_{t-1}\right)+\right.$ $\left.a_{t}\right)$, and assuming conditional mean or conditional variance constant or not. We look in Sect. 4.4 at two important machine learning models obtained this way: neural
+networks and support vector machines. We end the chapter with a case study of
+augmenting the set of information Ft−1 with a sentiment measure drawn from a
+social networking platform, and an analysis of its relevance to forecasting financial
+markets.
+
+in Sect. 4.4 at two important machine learning models obtained this way: neural
+networks and support vector machines. We end the chapter with a case study of
+augmenting the set of information Ft−1 with a sentiment measure drawn from a
+social networking platform, and an analysis of its relevance to forecasting financial
+markets.
+
+In the beginning, we treat an observed time series $\left\{X_{t}\right\}$ in the form given by Eq. (4.1). The deterministic component $H_{t}$ comprises the trend and the seasonality that might be present individually or jointly in the series. From a plot of the series one can check for the existence of a trend (observing if several mean values of the series go up or down in general), and check for a possible seasonal component (observing if some values repeat periodically). If one perceives a trend or a seasonal component in the data then fits a model with trend or seasonality. We have then the classical decomposition model
+$$
+X_{t}=m_{t}+s_{t}+Y_{t}
+$$
+where $m_{t}$ is the trend component, $s_{t}$ is the seasonal component, and $Y_{t}$ is the random component. The trend component is a slowly changing function (i.e., a polynomial in $t: m_{t}=a_{0}+a_{1} t+a_{2} t^{2}+\cdots+a_{k} t^{k}$, for some $k$ ), that can be approximated with least square regression; the seasonal component is a periodic function, with a certain period $d$ (i.e., $s_{t-d}=s_{t}$ ), that can be approximated with harmonic regression. Once these deterministic components are estimated, their estimations $\widehat{H}_{t}=\widehat{m}_{t}+\widehat{s}_{t}$ are removed from the data to leave us only with the (sample) noise: $\widehat{Y}_{t}=X_{t}-\widehat{H}_{t}$. Alternatively, the trend or seasonality can be removed directly (without estimating them) by applying appropriate differencing operations to the original series $X_{t}$. For example, a linear trend is removed by taking first differences, $X_{t}-X_{t-1}$; a quadratic trend is removed taking second order differences, $X_{t}-2 X_{t-1}+X_{t-2}$, which is the same as taking first differences to $X_{t}-X_{t-1}$; and so on. This can be systematized by defining a difference operator (Box and Jenkins 1976). For further detail on estimation of trend and seasonality or removing them by difference operators see Brockwell and Davis (1991, Chap. 1). In either case (estimating and removing or removing directly), we are left with the random component $Y_{t}$ which is assumed to be stationary, or weakly stationary, in order for some statistical modeling to be possible. ${ }^{1}$ This is our departing point for the models we study in the following sections.
+
+

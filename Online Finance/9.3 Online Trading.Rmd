@@ -1,0 +1,200 @@
+---
+title: "9.3 Online Trading"
+author: "Ming Lu"
+date: '2022-04-02'
+output:
+  word_document: default
+  html_document: default
+---
+
+The one-way trading game consists of a trader who needs to exchange some initial
+wealth given in some currency to some other currency.2 To fix ideas let’s assume the
+trader wants to exchange dollars to euros. The trader can partition his initial wealth
+and trade the parts through a sequence of time instants, each part at a different
+exchange rate offered at the time. Once all the dollars have been exchange the total
+return of the trader is the amount of euros he accumulated. The problem is then
+how to do this sequential exchange to maximize total return. Some variants of this
+problem include: knowledge of a minimum m and a maximum M prices within which
+exchange rates fluctuates, or the number n of time instants for making the trade.
+Note that the one-way trading problem resembles the price search problem, where
+the online player has the apparent advantage of partition his wealth and select different
+prices to buy sequentially. Nevertheless, it can be shown that the total return is the
+same as the price obtained by an optimal randomized search algorithm. This is the
+content of the following theorem of El-Yaniv et al. (2001)
+
+Theorem 9.3 For any deterministic one-way trading algorithm $A L G$, there exists a randomized algorithm $A L G_{r}$ that makes a single trade, and such that for any exchange rate sequence $\sigma, E\left(A L G_{r}(\sigma)\right)=A L G(\sigma)$. Conversely, for any randomized single trade algorithm $A L G_{r}$, there exists a one-way trading deterministic algorithm $A L G$, such that for any sequence of exchange rates $\sigma, E\left(A L G_{r}(\sigma)\right)=$ $A L G(\sigma) .$
+
+Proof Let the budget for investment be of $\$ 1$. Suppose a deterministic algorithm trades a fraction $s_{i}$ of the budget at the $i$-th period, $i=1, \ldots, I$. Each $0<s_{i}<1$ and $\sum_{i \in I} s_{i}=1$; hence, $s_{i}$ can be interpreted as the probability of trading the entire budget at the $i$-th period. The average return of this randomized algorithm equals the return of the deterministic algorithm. Conversely, any randomized single trade algorithm can be considered as a mixed strategy (i.e., a probability distribution over
+
+deterministic algorithms), ${ }^{3}$ and by linearity of expectation, and that the sum of all traded amounts is 1 , this mixed strategy is equivalent to a deterministic algorithm that trades the initial investment budget through a sequence $\sigma$ of fractions.
+
+Can we make profits in the stock markets with online trading algorithms? Theorem $9.3$ assure us that on average it is possible to obtain the same profit applying either a trading strategy that at the time of trade uses all our budget, or a strategy consisting in trading one-way using fragments of our budget sequentially until it is all used up. However, a particular online trading strategy might be more profitable than others, at a certain periods of time, depending on the conditions of the market and the nature of the assets (e.g. their volatility, industrial sectors, economic and social factors, etc.), and so it is of interest to evaluate the performance on real data of different online trading strategies typified by either way of using the initial budget for investment, i.e., by using it all in each transaction, or by fractions. Online trading strategies that use all the budget in each transaction can be defined from the online price search problems of the Sect. $9.2$; other online strategy of this type is the difference maximization in Kao and Tate (1999). On the other hand, online strategies that trade with fractions of the allocated budget for investments are to some extend versions of the thread-based policy described in El-Yaniv (1998); others in this family are the max-min search in Loren et al. (2009), the dollar-cost averaging and the value averaging, these last two coming from the folklore in financial markets (but see Marshall $(2000)$ for a statistical comparison and El-Yaniv (op. cit.) for performance bounds under certain restricted scenario). We propose as a research problem the question posed at the beginning of this paragraph.
+
+# 9.4 Online Portfolio Selection
+
+In Section $8.4$ we approached the problem of portfolio selection from an offline perspective. The downside with that view is that the best performing offline strategies, as the best constant rebalancing portfolio strategy $\mathrm{CRP}_{w^{*}}$, are not realistically attainable since it requires full knowledge of the future. Thus, we frame here the portfolio selection problem as a online problem, which is in fact a more natural model since decisions about portfolio management are made in practice only with current information. Nonetheless the offline strategies we have already studied for the portfolio selection problem will be important benchmarks for testing the quality of online solutions through competitive analysis.
+
+Recall that the space of portfolio vectors is $\mathscr{W}=\left\{\boldsymbol{w}: \boldsymbol{w} \in \mathbb{R}_{+}^{m}, \sum_{j=1}^{m} w_{j}=1\right\}$, and that $S_{n}\left(\boldsymbol{w}^{n}, \boldsymbol{x}^{n}\right)$ denotes the wealth factor achieved by the sequence of $n$ portfolio vectors, $w^{n}$, with respect to the sequence of market vectors $x^{n}$. An online portfolio selection (or rebalancing) strategy is defined as follows.
+
+$$
+\widehat{w}_{t}: \mathbb{R}_{+}^{m(t-1)} \rightarrow \mathscr{W}, \quad t=1,2, \ldots
+$$
+where $\widehat{w}_{t}=\widehat{w}_{t}\left(\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{t-1}\right)$ is the portfolio used at trading time $t$ given only past securities price relatives vectors (i.e. market vectors) $\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{t-1}$. An online portfolio selection algorithm is an algorithm that produces an online portfolio selection strategy.
+
+The performance of an online portfolio selection algorithm $O A L G$ can be measured with the same worst-case measures used for offline algorithms, namely:
+- by comparing its compounded return to that of a benchmark offline algorithm, e.g., the best performing stock or the best constant rebalanced strategy $\mathrm{CRP}_{w^{*}}$;
+- using the exponential growth rate of wealth $W_{n}\left(O A L G, \boldsymbol{x}^{n}\right)=\frac{1}{n} \ln S_{n}(O A L G$, $\left.\boldsymbol{x}^{n}\right)$.
+
+This is considered in a competitive analysis of performance, where the competitive ratio of $O A L G$ is given by
+$$
+\sup _{x^{n}} \frac{S_{n}\left(O P T, \boldsymbol{x}^{n}\right)}{S_{n}\left(O A L G, \boldsymbol{x}^{n}\right)}
+$$
+where $O P T$ is an optimal offline portfolio selection algorithm, which is usually taken as $\mathrm{CRP}_{w^{*}}$. Recall that the $\mathrm{CRP}_{w^{*}}$ is a very high benchmark, since as an offline strategy it outperforms: the best performing stock (and hence, buy and hold); the DJIA index (or any arithmetic market index); and the Value Line (see Example 8.4). Thus, designing an online portfolio selection strategy with a wealth factor similar to the wealth factor achieved by the $\mathrm{CRP}_{w^{*}}$ algorithm, for any sequence of market vectors $\boldsymbol{x}^{n}$, would be a much desirable strategy. That an online portfolio selection strategy performing as well as $\mathrm{CRP}_{w^{*}}$ is possible is what we shall see in the Sect. 9.4.1.
+
+# 9.4.1 The Universal Online Portfolio
+
+Cover (1991) proposed an online portfolio selection strategy that performs asymptotically as well as the best constant rebalanced portfolio $\mathrm{CRP}_{w^{*}}$. Cover's Universal Online Portfolio (UOP) algorithm assigns a uniform distribution of the initial wealth to the initial portfolio, at the beginning of the first trading period, and for subsequent trading periods selects the performance weighted average of all portfolios $\boldsymbol{w}=\left(w_{1}, \ldots, w_{m}\right) \in \mathscr{W}$ over the partial sequence of price relative information known up to the current period. Formally it is defined as the following strategy:
+$$
+\widehat{\boldsymbol{w}}_{1}=\left(\frac{1}{m}, \ldots, \frac{1}{m}\right), \quad \widehat{\boldsymbol{w}}_{k+1}=\frac{\int_{\mathscr{W}} \boldsymbol{w} S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right) d \boldsymbol{w}}{\int_{\mathscr{W}} S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right) d \boldsymbol{w}}
+$$
+
+where
+$$
+S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right)=\prod_{t=1}^{k} \boldsymbol{w}^{\prime} \cdot \boldsymbol{x}_{t}=\prod_{t=1}^{k} \sum_{j=1}^{m} w_{j} x_{t j}
+$$
+and the integration is over the set of $(m-1)$-dimensional portfolios $\mathscr{W}$. The initial wealth $S_{0}=S_{0}\left(\boldsymbol{w}, \boldsymbol{x}^{0}\right) \equiv 1$, for it corresponds to $\widehat{w}_{1}$.
+
+To have a real sense of the computations involved in this strategy, rewrite the formulas as follows:
+$$
+\begin{aligned}
+\widehat{\boldsymbol{w}}_{k+1} &=\int_{\mathscr{W}}\left(w_{1}, \ldots, w_{m}\right)\left(\frac{S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right)}{\int_{\mathscr{W}} S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right) d \boldsymbol{w}}\right) d \boldsymbol{w} \\
+&=\left(\int_{\mathscr{W}} w_{1} M_{k}(\boldsymbol{w}) d \boldsymbol{w}, \ldots, \int_{\mathscr{W}} w_{m} M_{k}(\boldsymbol{w}) d \boldsymbol{w}\right)
+\end{aligned}
+$$
+where $M_{k}(\boldsymbol{w})=S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right) / \int_{\mathscr{W}} S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right) d \boldsymbol{w}$.
+Note also that $S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right)=S_{k-1}\left(\boldsymbol{w}, \boldsymbol{x}^{k-1}\right) \sum_{j=1}^{m} x_{k j} w_{j}$, and by the definition of this wealth factor, the strategy is performing a constant rebalance up to time $t=k$, since the distribution of weights $\boldsymbol{w}$ does not changes. Thus, using the notation of Example $8.4$ we could write $S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right)=S_{k}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{k}\right)$. And now, let us look at a small specific case.
+
+Example 9.1 Consider a market with three stocks; that is, $m=3$ and the set of possible portfolios $\mathscr{W}$ is a 2-dimensional space, where each portfolio $\boldsymbol{w}=$ $\left(w_{1}, w_{2}, 1-w_{1}-w_{2}\right)$, with $0 \leq w_{1} \leq 1$ and $0 \leq w_{2} \leq 1-w_{1}$.
+The simplex that these set of points describe in $\mathbb{R}^{3}$ is shown in the figure. Then the universal online portfolio strategy consists of
+$$
+\begin{aligned}
+\widehat{w}_{1} &=(1 / 3,1 / 3,1 / 3) \\
+\widehat{w}_{k+1} &=\left(\widehat{w}_{k+1,1}, \widehat{w}_{k+1,2}, \widehat{w}_{k+1,3}\right) \\
+&=\left(\widehat{w}_{k+1,1}, \widehat{w}_{k+1,2}, 1-\widehat{w}_{k+1,1}-\widehat{w}_{k+1,2}\right)
+\end{aligned}
+$$
+
+where
+$$
+\widehat{w}_{k+1, i}=\int_{0}^{1} \int_{0}^{1-w_{1}} w_{i}\left(\frac{S_{k}\left(w_{1}, w_{2}, \boldsymbol{x}^{k}\right)}{\int_{0}^{1} \int_{0}^{1-w_{1}} S_{k}\left(w_{1}, w_{2}, \boldsymbol{x}^{k}\right) d w_{2} d w_{1}}\right) d w_{2} d w_{1}, \text { for } i=1,2 .
+$$
+and $S_{k}\left(w_{1}, w_{2}, \boldsymbol{x}^{k}\right)=\prod_{i=1}^{k}\left(w_{1} x_{i 1}+w_{2} x_{i 2}+\left(1-w_{1}-w_{2}\right) x_{i 3}\right)$ is a polynomial of degree at most $k$ in the variables $w_{1}$ and $w_{2}$.
+
+The wealth factor resulting from applying the universal online portfolio strategy UOP is given by
+$$
+S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)=\prod_{k=1}^{n} \widehat{\boldsymbol{w}}_{k}^{\prime} \cdot \boldsymbol{x}_{k}=\prod_{k=1}^{n} \sum_{j=1}^{m} \widehat{w}_{k, j} x_{k, j}
+$$
+This can be seen to be the average of the wealths achieved by the individual strategies in the simplex $\mathscr{W}$.
+
+$$
+S_{n}\left(U O P, \boldsymbol{x}^{n}\right)=\int_{\mathscr{W}} S_{n}\left(\boldsymbol{w}, \boldsymbol{x}^{n}\right) d \boldsymbol{w} / \int_{\mathscr{W}} d \boldsymbol{w}
+$$
+Proof
+$$
+\begin{aligned}
+S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right) &=\prod_{k=1}^{n} \sum_{j=1}^{m} \widehat{w}_{k, j} x_{k, j}=\prod_{k=1}^{n} \frac{\int_{\mathscr{W}} \sum_{j=1}^{m} x_{k, j} w_{j} S_{k-1}\left(\boldsymbol{w}, \boldsymbol{x}^{k-1}\right) d \boldsymbol{w}}{\int_{\mathscr{W}} S_{k-1}\left(\boldsymbol{w}, \boldsymbol{x}^{k-1}\right) d \boldsymbol{w}} \\
+&\left.=\prod_{k=1}^{n} \frac{\int_{\mathscr{W}} S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right) d \boldsymbol{w}}{\int_{\mathscr{W}} S_{k-1}\left(\boldsymbol{w}, \boldsymbol{x}^{k-1}\right) d \boldsymbol{w}} \quad \text { (product telescopes and } S_{0}=1\right) \\
+&=\frac{\int_{\mathscr{W}} S_{n}\left(\boldsymbol{w}, \boldsymbol{x}^{n}\right) d \boldsymbol{w}}{\int_{\mathscr{W}} d \boldsymbol{w}}
+\end{aligned}
+$$
+From previous remark, $S_{n}\left(w, \boldsymbol{x}^{n}\right)=S_{n}\left(\mathrm{CRP}_{w}, \boldsymbol{x}^{n}\right)$, and hence, an immediate consequence of Eq. (9.7) is
+$$
+S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)=E\left(\left\{S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{n}\right): \boldsymbol{w} \in \mathscr{W}\right\}\right)
+$$
+under uniform distribution of all portfolios. Other interesting properties of the wealth achieved by the universal online portfolio strategy can be derived from (9.7).
+
+Theorem 9.4 (Properties of UOP)
+(1) $S_{n}\left(U O P, x^{n}\right)$ is invariant under permutations of the sequences of stock market vectors $\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}$.
+(2) The Universal Portfolio exceeds the Value Line index (VLIC):
+$$
+S_{n}\left(U O P, \boldsymbol{x}^{n}\right) \geq\left(\prod_{j=1}^{m} S_{n}\left(\boldsymbol{e}_{j}\right)\right)^{1 / m}
+$$
+Proof (1) In Eq. (9.7) the integrand
+$$
+\int_{\mathscr{W}} S_{n}\left(\boldsymbol{w}, \boldsymbol{x}^{n}\right) d \boldsymbol{w}=\int_{\mathscr{W}} \prod_{k=1}^{n} \boldsymbol{w}^{\prime} \cdot \boldsymbol{x}_{k} d \boldsymbol{w}
+$$
+
+and not matter how you permute the stock vectors $\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{n}$, the product $\prod_{k=1}^{n} \boldsymbol{w}^{\prime} \cdot \boldsymbol{x}_{k}$ yields the same result.
+(2) We sketch the main idea of the proof, and leave as an exercise for the reader to complete the proof (or read through (Cover 1991, Prop. 2.5)). Rewrite $S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)$ in terms of exponential growth rate
+$$
+S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)=\frac{1}{\int_{\mathscr{W}} d \boldsymbol{w}} \int_{\mathscr{W}} S_{n}\left(\boldsymbol{w}, \boldsymbol{x}^{n}\right) d \boldsymbol{w}=\frac{1}{\int_{\mathscr{W}} d \boldsymbol{w}} \int_{\mathscr{W}} \exp \left(n W_{n}\left(\boldsymbol{w}, \boldsymbol{x}^{n}\right)\right) d \boldsymbol{w}
+$$
+Next, use Jensen's inequality to push everything inside the exponential, do the appropriate cancelations and further manipulations (e.g. recover $\ln S_{n}\left(\boldsymbol{w}, \boldsymbol{x}^{n}\right)$ and apply Jensen's inequality a second time) to get the desired result.
+
+The first property assess for the robustness of the universal portfolio: it implies that violent periods of changes in the market prices have no worse consequences for the wealth $S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)$ of the universal portfolio, that if the days comprising those unsteady times are dispersed among the regularly behaved price times. The second property shows that the universal portfolio performs as well as the best constant rebalanced portfolio (offline) strategy, $\mathrm{CRP}_{w^{*}}$, at least with respect to the VLIC index.
+
+Furthermore, a much stronger property of the wealth factor function of the universal online portfolio strategy states that this is similar (or asymptotically close) to the wealth factor of $\mathrm{CRP}_{w^{*}}$; that is
+$$
+\lim _{n \rightarrow \infty} \frac{1}{n}\left(\ln S_{n}\left(\mathrm{CRP}_{w^{*}}, x^{n}\right)-\ln S_{n}\left(\mathrm{UOP}, x^{n}\right)\right)=0
+$$
+for arbitrary sequence of stock vectors $\boldsymbol{x}^{n}$. Note that the difference is between the exponential growth rates of the two algorithms: Eq. (9.8) is equivalent to $\lim _{n \rightarrow \infty}\left(W_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right)-W_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)\right)=0$. Hence, this equation says that
+
+the strategy UOP should perform as well as the best constant rebalanced portfolio $\mathrm{CRP}_{w^{*}}$ to the first order in the exponent.
+The limit in (9.8) is a consequence of the following result.
+Theorem 9.5 For all markets with $m$ stocks, for all $n$ periods and all securities price relatives sequence $\boldsymbol{x}^{n}$,
+$$
+\frac{S_{n}\left(U O P, \boldsymbol{x}^{n}\right)}{S_{n}\left(C R P_{w^{*}}, \boldsymbol{x}^{n}\right)} \geq\left(\frac{1}{(n+1)^{m-1}}\right) \cdot \frac{1}{e}
+$$
+Proof The idea is that portfolios "near" to each other perform similarly, and that a large fraction of portfolios are near the optimal one. Suppose, in hindsight, that $w^{*}$ is an optimal CRP for the market of $m$ stocks. A portfolio near to $w^{*}$ is given by $\boldsymbol{w}=(1-\alpha) w^{*}+\alpha z$, for some $z \in \mathscr{W}, 0 \leq \alpha<1$. Then, a single period's gain of $\mathrm{CRP}_{w}$ is at least $(1-\alpha)$ times the gain of $\mathrm{CRP}_{w^{*}}$, and so, over $n$ periods
+$$
+S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{n}\right) \geq(1-\alpha)^{n} S_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right)
+$$
+A considerable large volume of portfolios is sufficiently near $w^{*}$, because the set of near portfolios is a shrunken simplex $\alpha \mathscr{W}$, translated from the origin to $(1-\alpha) w^{*}$. The volume of simplex $\mathscr{W}$ is $\operatorname{Vol}(\mathscr{W})=\int_{\mathscr{W}} d w$, and
+
+$\operatorname{Vol}\left(\left\{(1-\alpha) w^{*}+\alpha z: z \in \mathscr{W}\right\}\right)=\operatorname{Vol}(\{\alpha z: z \in \mathscr{W}\})=\alpha^{m-1} \operatorname{Vol}(\mathscr{W})$
+From these equalities we get $\operatorname{Vol}(\alpha \mathscr{W}) / \operatorname{Vol}(\mathscr{W})=\alpha^{m-1}$. Now, using equations (9.7) and (9.10), together with previous observations, we get
+$$
+\begin{aligned}
+S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right) &=\frac{1}{\int_{\mathscr{W}} d \boldsymbol{w}} \int_{\mathscr{W}} S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{n}\right) d \boldsymbol{w}=\frac{1}{\operatorname{Vol}(\mathscr{W})} \int_{\mathscr{W}} S_{n}\left(\mathrm{CRP}_{\boldsymbol{w}}, \boldsymbol{x}^{n}\right) d \boldsymbol{w} \\
+& \geq \frac{1}{\operatorname{Vol}(\mathscr{W})} \int_{\alpha \mathscr{W}}(1-\alpha)^{n} S_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right) d \boldsymbol{w} \\
+&=\left(\frac{\operatorname{Vol}(\alpha \mathscr{W})}{\operatorname{Vol}(\mathscr{W})}\right)(1-\alpha)^{n} S_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right) \\
+&=\alpha^{m-1}(1-\alpha)^{n} S_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right)
+\end{aligned}
+$$
+Take $\alpha=1 /(n+1)$. Then
+$$
+\frac{S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)}{S_{n}\left(\mathrm{CRP}_{w^{*}}, \boldsymbol{x}^{n}\right)} \geq\left(\frac{1}{(n+1)^{m-1}}\right) \cdot\left(\frac{n}{n+1}\right)^{n} \geq\left(\frac{1}{(n+1)^{m-1}}\right) \cdot \frac{1}{e}
+$$
+All of the previously stated properties of the universal portfolio strategy makes it as profitable as the best constant rebalanced portfolio $\mathrm{CRP}_{w^{*}}$, and yet realistic due
+to its online character, so what's the catch (if any)? Well, indeed, there is a catch, and it is its computational complexity. Observe that the computation of the universal portfolio involves solving an integral over an $m$-dimensional simplex. This has an exponential cost relative to $m$, and even the numerical approach to compute these integrals proposed by Cover in its original work (Cover $1991, \S 8$ ), turns intractable beyond nine assets. Cover proposes to sample portfolios at each trading period and approach the integral by averaging on the wealth of CRP on these samples; more precisely, his suggestion is to fix some level of precision $1 / N$, and take a finite sum over all possible portfolios $\boldsymbol{w}$ of the form $\left(a_{1} / N, a_{2} / N, \ldots, a_{m} / N\right)$, where each $a_{i}$ is a nonnegative integer and $a_{1}+a_{2}+\cdots+a_{m}=N$. Helmbold et al. (1998) tried this approximation method with real data to select portfolios consisting of nine stocks, and the computing time exceeded $9.5$ hours to calculate the universal portfolio updates over a 22-year trading period. Blum and Kalai (1999) suggested to do randomized sampling to approximate the universal portfolio selection algorithm, and possibly alleviate the computational costs at the sacrifice of precision. We shall review this and other efficient approximation algorithms for UOP in the Sect. 9.4.2.
+
+# 9.4.2 Efficient Universal Online Portfolio Strategies
+
+Blum and Kalai (1999) uniform randomized approximation. Because the universal portfolio strategy is a weighted average of all CRPs, Blum and Kalai suggested to do the following natural uniform randomized approximation.
+(1) Choose $N$ portfolios uniformly at random (i.e., $N$ many weight vectors $\boldsymbol{w} \in \mathscr{W}$ ).
+(2) Invest a $1 / N$ fraction of the money in each of the $N$ CRPs and let it sit within these CRPs (i.e. do not transfer between CRPs) all through the $n$ periods of trading.
+
+Note that this is like Cover's approximation that we mentioned before, but instead of considering all possible portfolios, just considers $N$ portfolios randomly chosen. How good is this strategy? If the best constant rebalanced portfolio achieves a wealth in the order of $R \cdot S_{n}$ (UOP, $\left.\boldsymbol{x}^{n}\right)$, for some real number $R>0$, then by Chebyshev's inequality one can guarantee that using $N=(R-1) / \varepsilon^{2} \delta$ random portfolios, the approximation achieves a wealth at least $(1-\varepsilon) \cdot S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)$, with probability $1-\delta$. For a given market one can determine in hindsight the optimal CRP, and then estimate $R$ (Helmbold et al. (1997) give a method to do this). However, note that by Theorem $9.5$ the value of $R$ could be as big as $n^{m-1}$. Nonetheless, experiments on stock market data by Cover (1991) and Helmbold et al. (1998), all give a ratio of $R<2$, for various combinations of two stocks, hence making this approximation particularly promising.
+
+Kalai and Vempala (2003) non-uniform randomized approximation. The key idea of Kalai and Vempala is to sample $N$ portfolios on a discretization of the simplex $\mathscr{W}$, and construct each sample as a random walk. In order to do this $\mathscr{W}$ is divided into grids of size $\delta$, and the wealth function $S_{k}$ is defined on integral multiples of $\delta$. Then
+
+all portfolios begin at the center of the grid, the point $(1 / m, \ldots, 1 / m)$, and continues through a random walk, each step taken according to their wealth performance, as determined by $\frac{S_{k}\left(\boldsymbol{w}, \boldsymbol{x}^{k}\right)}{\int_{\mathscr{W}} S_{k}\left(\boldsymbol{v}, \boldsymbol{x}^{k}\right) d \boldsymbol{v}}$. The details of Kalai and Vempala algorithm, which they named R-Universal, follows below. Its parameters are: $\delta$, the spacing of the grid; $\omega_{0}$, minimum coordinate; $N$, the number of samples; $K$, the number of steps in the random walk.
+
+Kalai and Vempala showed that, with this non-uniform sampling, the R-Universal algorithm has a performance guarantees of at least $(1-\varepsilon) \cdot S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)$, with probability $1-\eta$, and a computational cost bounded by a polynomial in $1 / \varepsilon, \log (1 / \eta)$, $m$, and $n$.
+
+Other approximation algorithms. Helmbold et al. (1998) give an experts-based approximation algorithm for the UOP, the $E G$ investment strategy, which uses a weight assignment based on a multiplicative update rule, as those employed in online regression; that is, to find a wealth distribution vector $w^{k}$ that maximizes $F\left(w^{k}\right)=$ $\eta \log \left(\boldsymbol{w}^{k} \cdot \boldsymbol{x}^{k-1}\right)-d\left(\boldsymbol{w}^{k}, \boldsymbol{w}^{k-1}\right)$, where $\eta>0$ is a parameter representing the learning rate, and $d$ is a distance measure that serves as a penalty term. This $E G$ investment strategy has a computational cost linear in $m$, but performance guarantees inferior to the one given by Theorem 9.5. Agarwal et al. (2006) give an algorithm based on the Newton method for offline optimization. It has a computational cost of order $O\left(\mathrm{~m}^{2}\right)$, but better performance guarantees than the $E G$ strategy.
+
+What lies beyond? In this presentation of the problem of portfolio selection we have at all times assumed that there are zero transaction costs, nor commissions for trading. The analysis of the universal portfolio strategy in the presence of transaction costs is treated by Blum and Kalai (1999). Another enhancement to the model of universal portfolio selection is to consider side information. This was proposed and analyzed first by Cover and Ordentlich (1996). For further details on these extensions and other related subjects see El-Yaniv (1998) and Cesa-Bianchi and Lugosi (2006), and references therein.
+
+9.5.5: Consider a portfolio with one risk-free asset and one stock. The stock is highly volatile having a price relative factor of $a>1$ on odd days, and of $1 / a$ on even days. Thus,
+$$
+\boldsymbol{x}_{1}, \boldsymbol{x}_{2}, \boldsymbol{x}_{3}, \boldsymbol{x}_{4}, \ldots=(1, a),(1,1 / a),(1, a),(1,1 / a), \ldots
+$$
+is the sequence of price relative vectors, where the first component $x_{i 1}$ corresponds to the risk-free asset and the second component $x_{i 2}$ to the stock.
+(i) Show that a constant rebalanced strategy with weights $w=(b, 1-b)$, $0 \leq b \leq 1$, on the above sequence $x^{n}$ of market vectors gives a wealth, for $n$ even,
+$$
+S_{n}\left(\boldsymbol{w}, \boldsymbol{x}^{n}\right)=(b+(1-b) a)^{n / 2}\left(b+\frac{1-b}{a}\right)^{n / 2}
+$$
+(ii) Using Eq. (9.11) show that the best constant rebalanced portfolio is obtained with $w^{*}=(1 / 2,1 / 2)$, and compute the value of $S_{n}\left(w^{*}, x^{n}\right)$, for $n$ even. (Hint: recall that $w^{*}$ is the value that maximizes (9.11)).
+(iii) What is the value of $S_{n}\left(\mathrm{UOP}, \boldsymbol{x}^{n}\right)$, for $n$ even? Try at least an approximate solution.
+

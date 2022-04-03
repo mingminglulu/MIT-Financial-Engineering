@@ -1,0 +1,145 @@
+---
+title: "8.2 Portfolios with a Risk-Free Asset"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+We have so far assumed that the assets available for constituting a portfolio are all
+risky. In this section we deal with the case of adding a risk-free asset and the pricing
+model obtained as consequence. Adding a risk free asset to a portfolio corresponds
+to lending or borrowing cash at a known interest rate r0 and with zero risk. Lending
+corresponds to the risk free asset having a positive weight, and borrowing corresponds
+to its having a negative weight
+
+Let $r_{f}=r_{0} \tau$ be the risk free rate, or return, over the time period $\tau$ of the risk free asset. A portfolio consisting solely of this risk free asset has mean value $r_{f}$ and variance 0 . This risk free portfolio is represented in the risk-mean plane by the point $\left(0, r_{f}\right)$.
+
+Now consider a portfolio consisting of the risk free asset, with mean value $r_{f}$, plus $N$ risky assets with aggregated mean and variance given by (cf. Eqs. (8.2) and (8.3))
+$$
+\mu_{w}=E\left(R^{w}\right) \quad \text { and } \quad \sigma_{w}^{2}=\operatorname{Var}\left(R^{w}\right)
+$$
+where $\boldsymbol{w}=\left(w_{1}, \ldots, w_{N}\right)$ is the vector of weights of the $N$ risky assets and $R^{w}$ the return of the portfolio. Let $w_{f}$ be the weight of the risk free asset in the portfolio; therefore,
+$$
+1-w_{f}=w_{1}+\cdots+w_{N}
+$$
+which implies that the total wealth has been distributed in two parts: one for investing in the risk free asset and the rest for investing among $N$ risky assets. We can then view the portfolio $\left(\boldsymbol{w}, w_{f}\right)=\left(w_{1}, \ldots, w_{N}, w_{f}\right)$ as consisting of one risk free asset, with weight $w_{f}$, mean $r_{f}$ and zero standard deviation, together with a risky asset, which is the aggregation of the $N$ risky assets, with weight $1-w_{f}$, mean $\mu_{w}$ and standard deviation $\sigma_{w}$. Note that this pair of risky and a risk free asset has covariance equal to zero. Then the expected return and standard deviation of this combined portfolio $\omega=\left(w, w_{f}\right)$ are
+$$
+\begin{aligned}
+\mu_{\omega} &=w_{f} r_{f}+\left(1-w_{f}\right) \mu_{w} \\
+\sigma_{\omega} &=\left(1-w_{f}\right) \sigma_{w}
+\end{aligned}
+$$
+We see in these equations that the mean and the standard deviation of the portfolio $\omega$ depend linearly on $w_{f}$. Therefore, varying $w_{f}$ we get that the different portfolios represented by Eqs. (8.12) and (8.13) trace a straight line from the point $\left(0, r_{f}\right)$ and passing through the point $\left(\sigma_{w}, \mu_{w}\right)$ in the risk-mean plane. Furthermore, varying the weights of the $N$ risky assets, i.e. building another risky portfolio $w^{\prime}$, and combining it with the risk free asset, we get another straight line describing all possible portfolios which are combination of these two. We conclude that the feasible region of meanvariance portfolios obtained from $N$ risky assets and one risk free asset is a triangle with a vertex in the point representing the risk free asset and enveloping the hyperbola containing all feasible portfolios on the $N$ risky assets. This region is shown in Fig. 8.3.
+
+# 8.2.1 The Capital Market Line and the Market Portfolio
+
+The efficient frontier for a portfolio of risky assets and one risk-free asset is now a straight line with intercept point $\left(0, r_{f}\right)$ and tangent to the efficient frontier of risky portfolios (denoted from now on $E F_{r}$ ) in the risk-mean plane. This tangent line describing all efficient portfolios is named the Capital Market Line (CML), and the point where the CML makes contact with the curve $E F_{r}$ has as coordinates the standard deviation and expected return of a particular portfolio named the Market Portfolio. The Market Portfolio is the best portfolio with respect to the (excess return)/(risk) ratio, and it is the best representative of the market for it contains shares of every stock in proportion to the stock's weight in the market. Let us see why is this so.
+
+Let $\theta$ be the angle between the horizontal axis and a line passing through $\left(0, r_{f}\right)$ and a point $\left(s t d\left(R^{w}\right), E\left(R^{w}\right)\right)$ corresponding to some feasible portfolio of risky assets only. Then
+$$
+\tan \theta=\frac{E\left(R^{w}\right)-r_{f}}{\operatorname{std}\left(R^{w}\right)}
+$$
+The Market Portfolio is the point that maximizes $\tan \theta$, for this gives the slope of the CML computed at the point tangent to the risky efficient frontier (and this is the reason why the Market Portfolio is also known as the tangency portfolio). From Eq. (8.14) it is clear that the Market Portfolio gives the maximum (excess return)/(risk) ratio; and the weights $w$ that are solution of the problem of maximizing $\tan \theta$ are in proportions The efficient frontier for a portfolio of risky assets and one risk-free asset is now a straight line with intercept point $\left(0, r_{f}\right)$ and tangent to the efficient frontier of risky portfolios (denoted from now on $E F_{r}$ ) in the risk-mean plane. This tangent line describing all efficient portfolios is named the Capital Market Line (CML), and the point where the CML makes contact with the curve $E F_{r}$ has as coordinates the standard deviation and expected return of a particular portfolio named the Market Portfolio. The Market Portfolio is the best portfolio with respect to the (excess return)/(risk) ratio, and it is the best representative of the market for it contains shares of every stock in proportion to the stock's weight in the market. Let us see why is this so.
+
+Let $\theta$ be the angle between the horizontal axis and a line passing through $\left(0, r_{f}\right)$ and a point $\left(s t d\left(R^{w}\right), E\left(R^{w}\right)\right)$ corresponding to some feasible portfolio of risky assets only. Then
+$$
+\tan \theta=\frac{E\left(R^{w}\right)-r_{f}}{\operatorname{std}\left(R^{w}\right)}
+$$
+The Market Portfolio is the point that maximizes $\tan \theta$, for this gives the slope of the CML computed at the point tangent to the risky efficient frontier (and this is the reason why the Market Portfolio is also known as the tangency portfolio). From Eq. (8.14) it is clear that the Market Portfolio gives the maximum (excess return)/(risk) ratio; and the weights $w$ that are solution of the problem of maximizing $\tan \theta$ are in proportions
+
+# 8.2.2 The Sharpe Ratio
+
+Let $\left(\operatorname{std}\left(R_{M}\right), E\left(R_{M}\right)\right)$ be the point describing the Market Portfolio, i.e. the tangency portfolio or contact point between the CML and the $E F_{r}$. As before, $\left(0, r_{f}\right)$ represents the risk-free asset. Then any point $\left(\operatorname{std}\left(R^{w}\right), E\left(R^{w}\right)\right)$ on the CML, that is, any efficient portfolio, is such that
+$$
+\begin{aligned}
+E\left(R^{w}\right) &=w_{f} \cdot r_{f}+\left(1-w_{f}\right) E\left(R_{M}\right) \text { and } \\
+\operatorname{std}\left(R^{w}\right) &=\left(1-w_{f}\right) \cdot \operatorname{std}\left(R_{M}\right)
+\end{aligned}
+$$
+where $w_{f}$ is the fraction of wealth invested in the risk-free asset. If $w_{r} \geq 0$ we are lending at the risk-free rate; whereas if $w_{r}<0$ we are borrowing at the risk-free rate, in order to increase our investment in risky assets. We can rewrite the CML as
+
+$$
+\begin{aligned}
+E\left(R^{w}\right) &=r_{f}+\left(1-w_{f}\right)\left(E\left(R_{M}\right)-r_{f}\right) \\
+&=r_{f}+\frac{\left(E\left(R_{M}\right)-r_{f}\right)}{s t d\left(R_{M}\right)} s t d\left(R^{w}\right)
+\end{aligned}
+$$
+(We could have also arrived to this point-slope equation for the CML from Eq. (8.14).)
+The quantity $S R_{M}=\left(E\left(R_{M}\right)-r_{f}\right) / \operatorname{std}\left(R_{M}\right)$ is known as the Sharpe ratio of the Market Portfolio. In general, the Sharpe ratio of any portfolio is the number
+$$
+S R^{w}=\frac{E\left(R^{w}\right)-r_{f}}{s t d\left(R^{w}\right)}
+$$
+which gives a measure of the portfolio reward to variability ratio, and has become standard for portfolio evaluation. The higher the Sharpe ratio the better the investments, with the upper bound being the Sharpe ratio of the Market Portfolio, namely $S R_{M}$. By Eq. (8.15) all efficient portfolios, with risky assets and one risk-free asset, should have same Sharpe ratio and equal to the Sharpe ratio of the market:
+$$
+S R^{w}=\frac{E\left(R^{w}\right)-r_{f}}{s t d\left(R^{w}\right)}=S R_{M}
+$$
+Thus, summarizing, the best an investor can do in a mean-variance world is to allocate a proportion of his investment money in a risk-free asset and the rest in the Market Portfolio. This guarantees the best possible ratio of excess return to variability.
+
+# 8.2.3 The Capital Asset Pricing Model and the Beta of a Security
+
+The Capital Market Line shows an equilibrium between the expected return and the
+standard deviation of an efficient portfolio consisting of a risk free asset and a basket
+of risky assets (Eq. (8.15)). It would be desirable to have a similar equilibrium relation
+between risk and reward of an individual risky asset with respect to an efficient risky
+portfolio, where it could be included. This risk-reward equilibrium for individual
+assets and a generic efficient portfolio (i.e., the Market Portfolio), is given by the
+Capital Asset Pricing Model (CAPM).
+
+Theorem 8.1 (CAPM) Let $E\left(R_{M}\right)$ be the expected return of the Market Portfolio, $\sigma_{M}=\operatorname{std}\left(R_{M}\right)$ its standard deviation, and $r_{f}$ the risk-free return in a certain period of time $\tau$. Let $E\left(R_{i}\right)$ be the expected return of an individual asset $i$, $\sigma_{i}$ its standard deviation, and $\sigma_{i M}=\operatorname{Cov}\left(R_{i}, R_{M}\right)$ be the covariance of the returns $R_{i}$ and $R_{M}$. Then
+$$
+E\left(R_{i}\right)=r_{f}+\beta_{i}\left(E\left(R_{M}\right)-r_{f}\right)
+$$
+
+where $\beta_{i}=\frac{\sigma_{i M}}{\sigma_{M}^{2}}=\frac{\operatorname{Cov}\left(R_{i}, R_{M}\right)}{\operatorname{Var}\left(R_{M}\right)}$.
+Proof Exercise (see Note 8.5.4).
+The CAPM states that the expected excess rate of return of asset $i, E\left(R_{i}\right)-r_{f}$, also known as the asset's risk premium, is proportional by a factor of $\beta_{i}$ to the expected excess rate of return of the Market Portfolio, $E\left(R_{M}\right)-r_{f}$, or the market premium. The coefficient $\beta_{i}$, known as the beta of asset $i$, is then the degree of the asset's risk premium relative to the market premium. We shall soon get back to discussing more on the meaning and use of beta, but before doing that let us see how the CAPM serves as a pricing model.
+
+Suppose that we want to know the price $P$ of an asset whose payoff after a period of time $\tau$ is set to be some random value $P_{\tau}$. Then the rate of return of the asset through the period $\tau$ is $R_{\tau}=\left(P_{\tau} / P\right)-1$, and by the CAPM the expected value of $R_{\tau}$ relates to the expected rate of return of the market, on the same period of time, as follows:
+$$
+E\left(R_{\tau}\right)=\frac{E\left(P_{\tau}\right)}{P}-1=r_{f}+\beta\left(E\left(R_{M}\right)-r_{f}\right)
+$$
+
+where $\beta$ is the beta of the asset. Solving for $P$ we get the pricing formula
+$$
+P=\frac{E\left(P_{\tau}\right)}{1+r_{f}+\beta\left(E\left(R_{M}\right)-r_{f}\right)}
+$$
+This equation is a natural generalization of the discounted cash flow formula for risk free assets (Sect. 1.2.2) to include the case of risky assets, where the present value of a risky asset is its expected future value discounted back by a risk-adjusted interest rate given by $r_{f}+\beta\left(E\left(R_{M}\right)-r_{f}\right)$. Indeed, observe that if the asset is risk free, e.g. a bond, then $E\left(P_{\tau}\right)=P_{\tau}$ and $\beta=0$, since the covariance with any constant return is null; hence, $P=P_{\tau} /\left(1+r_{f}\right)$.
+
+On the meaning of beta. Let's get back to discussing beta. Formally the beta of an asset measures the linear dependence of the asset's return and the return of the market in proportion to the asset to market volatility ratio. To better see this rewrite $\beta_{i}$ in terms of correlations
+$$
+\beta_{i}=\frac{\operatorname{Cov}\left(R_{i}, R_{M}\right)}{\operatorname{Var}\left(R_{M}\right)}=\rho\left(R_{i}, R_{M}\right) \frac{\sigma_{i}}{\sigma_{M}}
+$$
+Using this equation we produce Table $8.3$ containing interpretations of the values of an asset's beta as a measure of its co-movement with the market. Let $\beta=\beta_{i}$ and $\rho=\rho\left(R_{i}, R_{M}\right)$ the correlation coefficient of the asset and the market.
+
+Thus, for example, a $\beta=0$ means that the asset and the market are uncorrelated, since the standard deviation ratio $\sigma_{i} / \sigma_{M}$ is always positive. In this case, the CAPM states that $E\left(R_{i}\right)=r_{f}$, or that the risk premium is zero. The explanation for this surprising conclusion is that the risk of an asset which is uncorrelated with an efficient
+
+$$\begin{aligned}
+&\text { Table 8.3 Interpretation of beta }\\
+&\begin{array}{lll}
+\hline \text { Value of beta } & \begin{array}{l}
+\text { Effect on correlation } \\
+\text { and volatility ratio }
+\end{array} & \text { Interpretation } \\
+\hline \beta<0 & \rho<0, & \text { Asset moves in the opposite direction of the } \\
+& \frac{\sigma_{i}}{\sigma_{M}}>0 & \text { movement of the market } \\
+\beta=0 & \rho=0 & \text { Movements of the asset and the market are uncorrelated } \\
+0<\beta \leq 1 & \rho>0, & \text { Asset moves in the same direction as the market, } \\
+& 0<\frac{\sigma_{i}}{\sigma_{M}} \leq 1 / \rho & \text { volatility of asset can be }<\text { or }>\text { volatility of market } \\
+\beta>1 & \rho>0, & \text { Asset moves in the same direction as the market } \\
+& \frac{\sigma_{i}}{\sigma_{M}}>1 / \rho>1 & \text { but with greater volatility } \\
+\hline
+\end{array}
+\end{aligned}$$
+
+so that $\rho=\frac{1}{5}$ and $\frac{\sigma_{i}}{\sigma_{M}}=\frac{10}{5}$; hence, the standard deviation of the asset doubles the standard deviation of the market. Hence, small positive beta does not necessarily mean that the asset is less riskier than the market. We can further check this matter with real data.
+
+Estimating beta from sample. Given $n$ pairs of sample returns of stock $i, R_{i}$, and the market, $R_{M}$, over the same time period, the beta of stock $i$ with respect to the market can be estimated by using the unbiased estimators for the covariance and the variance statistics, and by Eq. (8.19), we have ${ }^{4}$
+$$
+\widehat{\beta_{i}}=\frac{\sum_{t=1}^{n}\left(R_{i, t}-\widehat{\mu}\left(R_{i}\right)\right)\left(R_{M, t}-\widehat{\mu}\left(R_{M}\right)\right)}{\sum_{t=1}^{n}\left(R_{M, t}-\widehat{\mu}\left(R_{M}\right)\right)^{2}}
+$$
+For this estimator we've assumed that the risk free rate $r_{f}$ remains constant through the time period considered. If we have a variable risk free rate, then instead of the returns $R_{i, t}$ and $R_{M, t}$, we should consider the excess returns $R_{i, t}-r_{f}$ and $R_{M, t}-r_{f}$ in Eq. (8.20).
+
+
+
+
+

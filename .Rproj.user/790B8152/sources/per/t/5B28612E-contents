@@ -1,0 +1,76 @@
+---
+title: "8.3 Optimization of Portfolios Under Different Constraint Sets"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+Let us go back to our general mean-variance portfolio model. We have $N$ assets with expected return vector $\mu=\left(\mu_{1}, \ldots, \mu_{N}\right)$, where $\mu_{i}=E\left(R_{i}\right)$ is the expected return of asset $i$, and covariance matrix $\mathbf{C}=\left[\sigma_{i j}\right]_{1 \leq i, j \leq N}$, where $\sigma_{i j}=\operatorname{Cov}\left(R_{i}, R_{j}\right)$. We choose a level of risk $\gamma \in[0,1]$, and the problem is to find a vector of weights $\boldsymbol{w}=\left(w_{1}, \ldots, w_{N}\right)$ that maximizes
+$$
+\begin{gathered}
+\gamma \boldsymbol{w}^{\prime} \boldsymbol{\mu}-(1-\gamma) \boldsymbol{w}^{\prime} \mathbf{C} \boldsymbol{w} \\
+\text { subject to: } \quad \sum_{i=1}^{N} w_{i}=1
+\end{gathered}
+$$
+Equation (8.22) is the budget constraint and is a necessary restriction to norm the solution to the mean-variance problem. There are several other constraints that can be added to the model to adapt it to more realistic scenarios. We can add some or all of the following constraints (Perold 1984; Crama and Schyns 2003):
+
+Upper and lower bounds in holdings. These constraints limit the proportions of each asset that can be held in the portfolio, and model situations where investors require to have only long positions $\left(w_{i} \geq 0\right)$, or specific proportions of certain assets. The constraints are formalized by the equations
+$$
+L_{i} \leq w_{i} \leq U_{i}, \quad \text { for each } i=1, \ldots, N
+$$
+where $L_{i}, U_{i}$ are given real numbers. Observe that if $L_{i}=0$ and $U_{i}=\infty$, for all $i$, then we are in the case of building portfolios with long positions only.
+Turnover limits in purchase or sale. These constraints impose upper bounds on the variation of the holdings from one period to the next (e.g. to limit proportions added or subtracted when rebalancing, or to model periodic administrative commissions and taxes). These are expressed by the equations:
+$$
+\begin{array}{lll}
+\max \left[w_{i}-w_{i}^{(0)}, 0\right] \leq \bar{B}_{i} & \text { for } i=1, \ldots, N & \text { (purchase) } \\
+\max \left[w_{i}^{(0)}-w_{i}, 0\right] \leq \bar{S}_{i} & \text { for } i=1, \ldots, N & \text { (sale) }
+\end{array}
+$$
+
+where $w_{i}^{(0)}$ denotes the weight of asset $i$ in the initial portfolio, $\bar{B}_{i}$ and $\bar{S}_{i}$ are the maximum allowed purchase and sale of asset $i$ during the current period.
+Trading limits. These constraints impose lower bounds on the variation of the holdings from one period to the next (e.g., if modifications to the portfolio should be enforced to trade a minimum volume for each position). These are expressed by the disjunctions:
+$$
+w_{i}=w_{i}^{(0)} \text { or } w_{i} \geq w_{i}^{(0)}+\underline{B_{i}} \text { or } w_{i} \leq w_{i}^{(0)}-\underline{S_{i}}, \text { for } i=1, \ldots, N
+$$
+where $w_{i}^{(0)}$ is the initial weight, $\underline{B_{i}}$ and $\underline{S_{i}}$ are minimal quantities of purchase and sell.
+Size of portfolio. This refers to imposing a limit in the number of assets that can be included in the portfolio. Formally, for a given integer $K \leq N$, it is asked that
+$$
+\left|\left\{i \in\{1, \ldots, N\}: w_{i} \neq 0\right\}\right| \leq K
+$$
+The addition of these constraints turns the optimization problem (8.21) computationally more harder to resolve, and for that we would have to recur to optimization heuristics. We discuss some of these constrained problems in the following sections.
+
+# 8.3.1 Portfolios with Upper and Lower Bounds in Holdings
+
+If the weights of assets in the portfolio are constrained to be within some limits then the quadratic programming problem given by Eq. (8.21), subject to constraints (8.22) and (8.23), cannot always be reduced to a linear system and has to be solved numerically. In R, solve.QP () in the package quadprog is a suitable solver for quadratic programming problems of the form
+$$
+\min _{\boldsymbol{w}} \frac{1}{2} \boldsymbol{w}^{\prime} \mathbf{C} \boldsymbol{w}-\boldsymbol{w}^{\prime} \boldsymbol{u}
+$$
+subject to: $\quad A^{\prime} \boldsymbol{w} \geq b$
+In fact, the fPort fol io function portfoliofrontier () uses as default the solver solve. QP ( ); hence, if we do not specify the solver and constraints parameters, it will be solving the long only portfolio optimization problem (i.e. $b=0$ ).
+
+# 8.3.2 Portfolios with Limited Number of Assets
+
+Consider the situation where an investor can only hold at most $K$ different assets from the $N$ available, for some given $K<N$. This is the case, more often than not, when an investor does not have enough money to invest in all available securities. This portfolio optimization problem with cardinality constraints is formally expressed by Eqs. (8.21), (8.22) and (8.27). We add the positivity condition on weights (i.e. forbid short selling), only to simplify the exposition, and consequently restate the problem as follows: Given $N$ different assets, a number $K<N$, and $\gamma \in[0,1]$, find weights $\boldsymbol{w}=\left(w_{1}, \ldots, w_{N}\right)$ satisfying
+$$
+\max _{w} \gamma w^{\prime} \mu-(1-\gamma) w^{\prime} \mathbf{C} w
+$$
+subject to the constraints
+$$
+\begin{aligned}
+&\sum_{i=1}^{N} w_{i}=1 \\
+&w_{i} \geq 0 \text { for all } i=1, \ldots, N \\
+&\sum_{i=1}^{N} b_{i} \leq K \quad \text { where } b_{i}=1\left(\text { if } w_{i}>0\right), 0 \text { (otherwise) }
+\end{aligned}
+$$
+Observe that if we have $N$ assets to choose from but only $K$ assets can be included in the portfolio, then there are $\left(\begin{array}{l}N \\ K\end{array}\right)$ possible portfolios. This means, for example, that if we have $N=50$ stocks to choose from (e.g. those from the Eurostoxx 50), and $K=10$, we have $\left(\begin{array}{l}50 \\ 10\end{array}\right)$, which is around ten billion possible combinations. Thus, finding optimal solutions by enumerating all possibilities is impracticable. As a matter of fact, one can see that the problem (8.28) with constraints (8.29)-(8.31) is a form of the Knapsack problem (Garey and Johnson 1979), which is computationally NP-hard. We shall study a solution with simulated annealing.
+
+# 8.3.3 Simulated Annealing Optimization of Portfolios
+
+The simulated annealing (SA) solution presented below for the portfolio optimization problem with cardinality constraint is a simple and direct application of the method studied and applied more throughly in Crama and Schyns (2003); therefore ours may not be the best algorithmic version as it might be prone to get stuck in a local optimum. Our purpose is to present a basic SA approach to this problem of portfolio selection, where from the reader can design better variants by tuning the appropriate parameters following the discussion on the subject by Crama and Schyns (2003), or at a more profound level by Maringer 2005 .
+
+We have $N$ different assets to choose from, but can only take $K<N$ to build an optimum portfolio. To achieve this goal we implement a SA scheme (Algorithm 8.1) which initially chooses $K$ assets out of the $N$ available (represented by a $N$-vector of weights $\boldsymbol{w}=\left(w_{1}, \ldots, w_{N}\right)$, where $N-K$ are set to 0$)$, and progressively updates the assets by exchanging some of the previously chosen by new others within the neighbor of current solution, so that the updated vector of weights $\boldsymbol{w}^{u}$ improves (maximizes) the objective function
+$$
+L(\boldsymbol{w})=\gamma \boldsymbol{w}^{\prime} \boldsymbol{\mu}-(1-\gamma) \boldsymbol{w}^{\prime} \mathbf{C} w
+$$
+
+Note that lines 6-8 (neighborhood search) looks for candidate uphill moves, keeping the vector of weights with at most $K$ non null entries, and enforcing the constraints (8.29)-(8.31). Lines $9-14$ realize the move update, and apply a geometrical cooling scheme to control next uphill moves in accordance with the dynamics of an annealing process. The parameters of the algorithm are set according to Crama and Schyns (2003) as follows. The initial temperature $T_{0}=-\Delta / \ln (0.8)$, where $\Delta$ is average $\Delta L$ through several runs. The parameter $\gamma$, which reflects the level of risk can be taken arbitrarily with $0<\gamma<1$, and the authors suggest to use $\gamma=0.95$. The number of iterations is estimated experimentally as $I \approx\left(\begin{array}{l}N \\ 3\end{array}\right)$, but this value may produce too long computations, so for practical purposes it is sufficient to use a value proportional to $N$, that is $I \approx c \cdot N$, for some constant $c>1$. Crama and Schyns report results of the SA algorithm applied to $N=151$ US stocks to build optimal portfolios of 20 assets. For $I=2 N$ the algorithm achieved near-optimal solutions, a hypothesis corroborated by performing further experiments with larger values of $I$ $\left(I=N^{2}\right)$, and finding no improvement. Moreover, the solutions described a smooth mean-variance frontier, which was obtained in less than $5 \mathrm{~min}$ of computation. For smaller instances (e.g., $N=30$ and $K=5$ ), the SA algorithm computed the full mean-variance frontier perfectly and fast (i.e., perfectly meaning that the resulting feasible portfolios coincide with solutions obtained by a commercial package that handles nonlinear programming problems and with high precision when solving small instances of the portfolio problem).

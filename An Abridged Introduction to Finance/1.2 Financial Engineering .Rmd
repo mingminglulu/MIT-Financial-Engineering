@@ -1,0 +1,109 @@
+---
+title: "1.2 Financial Engineering"
+author: "minglu"
+date: '2022-04-02'
+output: word_document
+---
+
+
+# 1.2.1 Trading Positions and Attitudes
+
+- Long and short positions:. In the financial parlance, when an investor owns a security
+it is said that she is long in that security, and when she owes the value of a security
+she is short in that security.
+
+[Being long in any security implies to have a profit if the price increases, and
+a lost if the price decreases; whereas being short carries a profit if the price of
+the security decreases, and a lost if it increases.]
+
+- A portfolio insurance strategy: Suppose an investor is long on stocks
+from XYZ. Then to cover himself from possible losses, in the event that the price of
+the stock goes down, he can simultaneously enter into a long position on a put option
+(i.e. a long put) for similar amount of XYZ shares.
+
+
+- Hedgers, speculators and arbitrageurs:Hull (2009, §1.5) identifies three types
+of traders: hedgers, speculators and arbitrageurs. Hedgers trade so as to reduce or
+eliminate the risk in taking a position on a security; their main goal is to protect
+the portfolio from loosing value at the expense of lowering the possible benefits.
+This attitude (or trading strategy) is called hedging.
+
+- Bulls and bears:When the market trend is upward, as reflected by the main index
+or the majority of its composite stocks, it is said to be bullish, or that the bulls are
+in charge
+
+- Market timing or buy-and-hold:As for possible trading strategies, at one end of
+the wide range of possibilities is the passive attitude, followed by the majority of
+investors, consisting on buying various securities and maintaining them in the portfolio for a long time. What sustains this static strategy is the observed tendency
+of almost all securities to increase their value if sufficient time is given to them to
+mature.
+
+# 1.2.2 On Price and Value of Stocks. The Discounted Cash Flow
+
+
+[The price of a stock is determined by the forces of supply and demand from
+investors]
+
+$S_0=\frac{d_1+s_1}{1+r}$
+
+==>
+
+$s_0=\frac{d_1}{1+r}+\frac{d_2}{(1+r)^2}+...+\frac{d_n+s_n}{(1+r)^n}$
+
+
+for t to infinity:
+
+$s_0=\sum_{t=1}^\infinity d_t/(1+r)^t$
+
+==>
+
+$r=\frac{d_1+s_1}{s_0}-1$
+
+for d has g growth ratio:
+
+$s_0=\sum_{t=1}^\infinity\frac{d_1(1+g)^{t-1}}{(1+r)^t}=\frac{d_1}{r-g},for r>g$
+
+
+# 1.2.3 Arbitrage and Risk-Neutral Valuation Principle
+
+- Principle of No Arbitrage: there are no arbitrage opportunities.
+
+
+Definition 1.1 (Extended no arbitrage) The extended no arbitrage is the following
+list of assumptions about the market of securities:
+• Arbitrage is not possible.
+• There are no transaction costs, no taxes, and no restrictions on short selling.
+• It is possible to borrow and lend at equal risk-free interest rates.
+• All securities are perfectly divisible
+
+
+Theorem 1.1 (Pricing a forward contract) At any time t the forward price $F_{t}$ of a forward contract to buy an asset which has a price $S_{t}$ at time $t$, with delivery price $K$, maturity date $T$, and considering a constant interest rate $r$ through the life of the contract is either:
+(1) $F_{t}=S_{t} e^{r(T-t)}$, if the asset pays no dividends and has no costs.
+(2) $F_{t}=\left(S_{t}-D_{t}\right) e^{r(T-t)}$, if the asset pays dividends or has some costs whose discounted total value is $D_{t}$.
+(3) $F_{t}=S_{t} e^{(r-q)(T-t)}$, if the asset pays interests at a continuous rate of $q$.
+
+
+Theorem 1.1 (Pricing a forward contract) At any time t the forward price $F_{t}$ of a forward contract to buy an asset which has a price $S_{t}$ at time $t$, with delivery price $K$, maturity date $T$, and considering a constant interest rate $r$ through the life of the contract is either:
+(1) $F_{t}=S_{t} e^{r(T-t)}$, if the asset pays no dividends and has no costs.
+(2) $F_{t}=\left(S_{t}-D_{t}\right) e^{r(T-t)}$, if the asset pays dividends or has some costs whose discounted total value is $D_{t}$.
+(3) $F_{t}=S_{t} e^{(r-q)(T-t)}$, if the asset pays interests at a continuous rate of $q$.
+
+
+- Risk-neutral valuation. Another way to value an option can be derived from the
+assumption that investors are indifferent about risk. This is a strong hypothesis but
+make for doing pretty valuation.
+
+# 1.2.4 The Efficient Market Hypothesis and Computational Complexity
+
+- Weak: only the price history of the securities constitutes the available information.
+
+- Semi–strong: all public information known up to the present time is available.
+
+- Strong: all public and private information (i.e., all possible information) known
+up to the present time is available.
+
+
+
+
+
+

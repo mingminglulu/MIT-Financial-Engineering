@@ -1,0 +1,129 @@
+---
+title: "7.4 Ant Colony Optimization"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+The ant colony optimization (ACO) heuristic belongs to the class of swarm intelligence based methods where a collection of individuals, having a common goal,
+exchange information about their local actions to build collectively a global
+procedure that would lead everyone of the participants to the goal. Originally
+proposed by M. Dorigo in his Doctoral Dissertation Dissertation (Dorigo 1992),
+and Colorni et al. (1992a, b), as an optimization heuristic in Computer Sciences, the
+ant colony optimization paradigm has been since then successfully applied to many
+optimization problems, ranging from purely combinatorial, to problems in telecommunication networks, scheduling, machine learning, bioinformatics and finance
+(Dorigo and Stützle 2004; Stützle et al. 2011). We give a brief account of this heuristic
+and show an application to option valuation in the following sections.
+
+# 7.4.1 The Basics of Ant Colony Optimization
+
+The inspiration for the ACO heuristic comes from the way a colony of ants search for food and traces their way back to the nest. In this search various ants go out of the colony searching for food, and once an ant finds food, it takes a portion back to the nest leaving traces of pheromone on the ground, a chemical trail to guide other ants to the food source. The first ants to arrive with food to the nest have found shortest paths to the food sources, and the quantity of pheromone deposited in each trail is an indication of the quantity and quality of the food. All this information is gathered by other ants from the nest, which quickly go out for food through the currently best routes (those with higher pheromone traces and made by the first arriving comrades). This immediate reaction updates the importance of some trails, since previously laid pheromone slowly evaporates. As the food at certain sources reduces in quantity or quality the trail slowly disappear, as the intensity of pheromone diminishes, and ants start searching for other food sources.
+
+It is clear that this is an appropriate heuristic for solving optimization problems which can be reduced to finding routes in graphs. Hence, the crux in the design of an ACO solution for a given optimization problem $(\mathscr{S}, \Omega, F)$ is to devise a constructive heuristic $\mathscr{H}$ for building solutions (elements of $\mathscr{S}$ ), as sequences of elements from a finite set $\mathscr{C}$ of solution components, which one must determined. We may view $\mathscr{H}$ as a map from sequences of elements of $\mathscr{C}$ onto $\mathscr{S}$. Any solution is then seen as a path $S=\left\langle u_{1}, u_{2}, \ldots, u_{n}\right\rangle$ in a totally connected graph formed by the elements of $\mathscr{C}$, and a solution component $u_{i}$ is added to the partial solution $S^{i-1}=\left\langle u_{1}, u_{2}, \ldots, u_{i-1}\right\rangle$ by the constructive heuristic $\mathscr{H}$, which makes sure the constrains $\Omega$ are met.
+
+Example 7.4 To illustrate the crucial step just described for the design of an $\mathrm{ACO}$ solution, consider the asymmetric traveling salesman problem (ATSP), where an instance is a completely connected directed graph $G=(V, A)$ with a positive weight $w_{i j}$ associated to each $\operatorname{arc} a_{i j} \in A$. The vertices of the graph (elements of $V$ ) represent cities and the arc weights represent distances between the cities. The goal in this problem is to find the minimum weighted directed Hamiltonian cycle, that is, a Hamiltonian cycle in $G$ for which the sum of the weights of its arcs is minimal. The ATSP is an NP-hard problem (Garey and Johnson 1979) Then to find approximate solutions to this problem with the $\mathrm{ACO}$ heuristic, consider as solution components the set of arcs, so $\mathscr{C}=A$, and the constructive heuristic $\mathscr{H}$ consist on assembling arcs together in such a way that a path is built verifying the Hamiltonian restriction.
+
+The basic ACO scheme is presented in Algorithm 7.6. The input is an instance of an optimization problem $(\mathscr{S}, \Omega, F)$, and it is assumed that we have a constructive heuristic $\mathscr{H}$ with the characteristics described above, which builds candidate solutions $S \in \mathscr{S}$ as paths formed with solution components from a finite set $\mathscr{C}$. Additionally, for a true ACO solution, in this constructive process for building solutions as paths, ants choose next solution component $u \in \mathscr{C}$ randomly with probabilities subjected to the pheromone model. These probabilities of moving from one solution component to another (or transition probabilities), are defined for the $k$ th ant, acting at time $t$, by the equation
+$$
+P^{k}(u, t)= \begin{cases}\frac{(\tau(u, t))^{\alpha} \cdot(\eta(u, t))^{\beta}}{\sum_{w \in \mathscr{R}(k)}(\tau(w, t))^{\alpha} \cdot(\eta(w, t))^{\beta}} & \text { if } u \in \mathscr{R}(k) \\ 0 & \text { otherwise }\end{cases}
+$$
+where $\tau(u, t)$ is the pheromone value present in component $u$ at time $t, \eta(u, t)$ is the heuristic information value ${ }^{8}$ of the solution component $u$ at time $t, \mathscr{R}(k)$ is the set of solution components that ant $k$ has not yet visited, and the parameters $\alpha$ and $\beta$, $\alpha>0$ and $\beta>0$, measure the relative importance of pheromone value and heuristic information.
+
+This process of building a path by an ant, using the constructive heuristic $\mathscr{H}$ to build solutions from the set $\mathscr{C}$ of solution components, subjected to the constraints $\Omega$,
+
+and selecting a next component in the path using the transition probabilities given by Eq. (7.8), is encoded in the algorithm (line 5) as function BuildPath( $k)$. This function returns a path $S_{k}$, built by the $k$ th ant. The quality of each path $S_{k}$ is evaluated by the objective function $F$ and the best path (or best solution) is updated accordingly (line 6). Then the path is saved in the set $J(t)$, which contains already constructed paths verifying the constraints up to time (or iteration) $t$ (line 7 ).
+
+The pheromone values are initially set to some positive constant $c$, and uniformly for all solution components. Afterwards, at each iteration $t>0$, when all ants have built their paths, pheromone values are updated for all components $u$ that belong to a path in the set $J(t)$. This is what the subroutine UpdatePheromone $\left(J(t),\left\langle\tau_{u}\right\rangle_{u \in \mathscr{C}}\right)$ does (line 9 ). The pheromone value of component $u$ is updated at time $t$, according to the following rule
+$$
+\tau(u, t) \leftarrow(1-\rho) \tau(u, t)+\rho \sum_{k=1}^{N_{a}} \Delta \tau^{k}(u, t)
+$$
+where $0<\rho \leq 1$ measures the pheromone decay (or evaporation rate), and $\Delta \tau^{k}(u, t)= \begin{cases}\frac{\gamma}{1+F\left(S_{\mid u}\right)} & \text { if } k \text { th ant takes component } u \\ 0 & \text { otherwise }\end{cases}$
+
+with $S_{\mid u}$ a path (candidate solution) containing component $u, \gamma$ some positive constant, and $N_{a}$ is the total number of ants. Thus, Eq. (7.9) gives an update of the value of the pheromone present at time $t$ in solution component $u$, as a convex combination of current value (which if it hasn't been visited is the initial constant $c$ ) and the cumulative sum of the pheromone deposited in $u$ by all ants. In this manner, with the parameter $\rho$, one can control the velocity of convergence of the algorithm towards local optima, by setting, for example, a high evaporation rate. A stopping criterion for $\mathrm{ACO}$ algorithm is usually set as an upper bound in the number of iterations. When this bound is reached the best path found so far is given as output. The next section describes an application of the ACO heuristic to the valuation of American put options.
+
+# 7.4.2 Valuing Options with Ant Colony Optimization
+
+
+Keber and Schuster (2002) give an ant colony based heuristic to learn analytical expressions for the valuation of American put options on non dividend paying stocks. Their main idea is to define a context-free grammar ${ }^{9} \mathscr{G}=(T, N, P, S)$ to generate analytical expressions that are to be interpreted as functional approximations for
+
+the valuation of stock options. Then an $\mathrm{ACO}$ heuristic is used as search engine for producing the derivations of the grammar.
+
+Let us begin fixing the notation. In a context-free grammar $\mathscr{G}=(T, N, P, S)$, the set $T$ is the vocabulary of the grammar and its elements are the terminal symbols, $N$ is the set of non-terminal symbols, $S$ is the start symbol, which is a member of $N$, and $P$ is the set of production rules. All the sets $T, N$ and $P$ are finite. The language $\mathscr{L}(\mathscr{G})$ produced by the grammar $\mathscr{G}$, consists of all finite concatenations (strings) of elements of $T$, which can be derived from the start symbol $S$ by successive application of the production rules in $P$ acting on the non-terminal symbols to produce elements in $N$ or $T$. Formally,
+$$
+\mathscr{L}(\mathscr{G})=\left\{w: S \stackrel{*}{\Longrightarrow} w, w \in T^{*}\right\}
+$$
+
+where $T^{*}$ is the set of all finite strings over the vocabulary $T$, and $S \stackrel{*}{\Longrightarrow} w$ means that $w$ is derived from $S$ by finitely many successive applications of production rules from $P$. The following example illustrates how a context-free grammar could be defined to obtain analytical expressions like the Black-Scholes option pricing formulas (Eqs. $5.21$ and 5.22).
+
+Example 7.5 We require a grammar $(T, N, P, S)$ where the set $T$ of terminals should contain the basic items found in a real valued analytical equation (e.g. mathematical operators, real numbers, and some predefined variables). The following $T$ should fit our purpose:
+$$
+\begin{aligned}
+T=&\left\{S_{0}, K, r, T, \sigma, 0,1,2,3,4,5,6,7,8,9\right.\\
+&\left.+,-, *, /, x^{y}, \sqrt{x}, \ln (x), \exp (x), \Phi(x)\right\}
+\end{aligned}
+$$
+The first five symbols represent, respectively, initial stock price (i.e. at time $t=0$ ), option's exercise price, annual continuous risk-free interest rate, annualized time to expiration, and annual volatility. We have the ten first natural digits that are used to construct real numbers in a manner that will be explained shortly. We have symbols for the basic arithmetic operations, and some analytical functions, including the standard normal distribution $\Phi(x)$.
+
+The set $N$ of non-terminals contain symbols that can be expanded to terminals or other non-terminals, and the start symbol $S$ is a member of $N$. Let
+$$
+\begin{aligned}
+N &=\{\text { expr }, \text { var }, \text { biop }, \text { uop }, \text { digit }, \text { int }, \text { real }\} \\
+S &=\text { expr }
+\end{aligned}
+$$
+The production rules in $P$ describe how the non-terminals are mapped to other nonterminals or terminals to create analytical expressions. Consider the following rules:
+
+$$
+\begin{aligned}
+\langle\text { expr }\rangle & \rightarrow(\langle\text { expr }\rangle\langle\text { biop }\rangle\langle\text { expr }\rangle) \\
+& \mid\langle\text { uop }\rangle(\langle\text { expr }\rangle) \\
+& \mid\langle\text { real }\rangle *(\langle\text { expr }\rangle) \\
+& \mid\langle\text { var }\rangle \\
+\langle\text { biop }\rangle & \rightarrow+|*| /{ }^{\wedge} \\
+\langle\text { uop }\rangle & \rightarrow-|\exp | \ln \mid \sqrt{\mid} \Phi \\
+\langle\text { var }\rangle & \rightarrow S_{0}|K| r|T| \sigma \\
+\langle\text { real }\rangle & \rightarrow\langle\text { int }\rangle \cdot\langle\text { int }\rangle \\
+\langle\text { int }\rangle & \rightarrow\langle\text { int }\rangle\langle\text { digit }\rangle \mid\langle\text { digit }\rangle \\
+\langle\text { digit }\rangle & \rightarrow 0|1| 2|3| 4|5| 6|7| 8 \mid 9
+\end{aligned}
+$$
+The " $\mid$ " (or) separates the different alternatives for a rule acting on a non-terminal. A derivation consist in a sequence of replacements of a non-terminal symbol by another symbol, until a string containing only terminal symbols is obtained. Each step in the derivation conforms to a mapping from a non-terminal to another symbol defined by one of the production rules. Special attention deserves the set of rules for $\langle$ real $\rangle$, $\langle$ int $\rangle$ and $\langle$ digit $\rangle$. These conform an efficient method to create numerical constants, integer or real, of any size, and which has been termed digit concatenation ( $\mathrm{O}$ 'Neill et al. 2003). For example, the real number $3.14$ can be derived using these set of rules, as follows:
+
+A derivation in the language $\mathscr{L}(\mathscr{G})$ of the grammar starts with the symbol $S$, and results in an analytical expression on the variables $S_{0}, K, r, T$, and $\sigma$. Let us see how the expression $-3.14 * S_{0} * \Phi(T)$ could be derived in this grammar.
+$$
+\begin{aligned}
+S & \rightarrow\langle\text { expr }\rangle\langle\text { biop }\rangle\langle\text { expr }\rangle \rightarrow\langle\text { uop }\rangle(\langle\text { expr }\rangle)\langle\text { biop }\rangle\langle\text { expr }\rangle \rightarrow-(\langle\text { expr }\rangle)\langle\text { biop }\rangle\langle\text { expr }\rangle \\
+& \rightarrow-(\langle\text { real }\rangle *\langle\text { expr }\rangle)\langle\text { biop }\rangle\langle\text { expr }\rangle \rightarrow \cdots \rightarrow-3.14 *\langle\text { expr }\rangle\langle\text { biop }\rangle\langle\text { expr }\rangle \\
+& \rightarrow-3.14 *\langle\text { expr }\rangle *\langle\text { expr }\rangle \rightarrow \cdots \rightarrow-3.14 *\langle\text { var }\rangle *\langle\text { uop }\rangle(\langle\text { expr }\rangle) \\
+& \rightarrow \cdots \rightarrow-3.14 * S_{0} *\langle\text { uop }\rangle(\langle\text { var }\rangle) \rightarrow \cdots \rightarrow-3.14 * S_{0} * \Phi(T)
+\end{aligned}
+$$
+We have abbreviated some steps of this derivation: the first $\rightarrow \cdots \rightarrow$ replaces the derivation of the number $3.14$ done before; the other ellipsis are shortcuts for simultaneous applications of two or more obvious production rules.
+
+Having defined the appropriate grammar, the next step is to use the ACO heuristic as search engine in the space of words $\mathscr{L}(\mathscr{G})$. The adaptation of the heuristic is somewhat natural: the strings $w \in \mathscr{L}(\mathscr{G})$ are the feasible solutions (the potential analytical expressions for valuing options), the solution components are the nonterminal and terminal symbols, paths are derivations in the grammar, ants begin
+
+path construction process BuildPath $(k)$ is comprised of the production rules of the grammar plus the transition probabilities given by Eq. (7.8) to decide the alternatives of the rules to use in the next derivation.
+
+The fitness function $F$ is defined as follows. Each path built by an ant, or derivation $w \in \mathscr{L}(\mathscr{G})$ (an analytical expression), is a function on the variables contained in the terminals $T$, so that on input data $\mathscr{E}$, subject to certain domain restrictions, delivers an output data $\mathscr{A}, w: \mathscr{E} \rightarrow \mathscr{A}$. Therefore, to test the fitness of $w$, several input data records $\mathscr{E}_{i}$ are produced respecting the restrictions, for $i=1, \ldots I$, and each corresponding output record $w\left(\mathscr{E}_{i}\right)=\mathscr{A}_{i}$ is compared to a target output $\mathscr{A}_{i}^{*}$. The fitness function is then defined by $F(w)=\frac{1}{1+Q(w)}$, where $Q(w)=\sum_{i=1}^{I} \delta\left(\mathscr{A}_{i}, \mathscr{A}_{i}^{*}\right)$ is the aggregated deviations given by some error function $\delta\left(\mathscr{A}_{i}, \mathscr{A}_{i}^{*}\right)$ (e.g. $Q$ could be a sum of squared errors).
+
+Additionally, to the ACO heuristic (Algorithm 7.6) applied to the language $\mathscr{L}(\mathscr{G}$ ) and fitness function $F$ as described above, Keber and Schuster apply a reduction in size of the set $J(t)$ in the UpdatePheromone routine (line 9 ), by deleting those paths (instances of analytic expressions) where pheromone has evaporated. The motivation for this adjustment is that the number of expressions in $\mathscr{L}(\mathscr{G})$ can grow exponentially, and hence some form of pruning the space search is needed.
+
+For their experimental set up, Keber and Schuster used as training data a randomly generated sample of 1,000 American put options on non-dividend paying stocks, described as tuples $\left(P_{0}, S_{0}, K, r, T, \sigma\right)$, where $P_{0}$ is the "exact" value of an American put option on non-dividend paying stock at $t=0$, computed by the finite difference method, and $S_{0}>S^{*}$, where $S^{*}$ represents the killing price (computed by some known numerical procedure). These sample tuples were transformed into an input data record $\mathscr{E}_{i}\left(=\left(S_{0}, K, T, r, \sigma\right)\right)$ and a corresponding target output record $\mathscr{A}_{i}^{*}\left(=P_{0}\right)$, for $i=1, \ldots, 1000$, and for the aggregated deviations function they used the sum of squared errors $\sum_{i=1}^{1000}\left(\mathscr{A}_{i}-\mathscr{A}_{i}^{*}\right)^{2}$. The domains of values for the variables were restricted as follows: $2 \leq r \leq 10,1 / 360 \leq T \leq 1 / 4$, and $10 \leq \sigma \leq 50 ; S_{0}=1$ and $S_{0}>S^{*}$. The number of ants were taken as $N_{a}=50$, and for the relative importance of pheromone and heuristic information they used $\alpha=1$ and $\beta=1$; $\rho$ was set to $0.5, \gamma=1$, and the stopping criterion is to halt after 100,000 iterations.
+
+Keber and Schuster found in their experiments as one of their best analytical approximations derived by their ACO-engined grammar, the following expression
+$$
+P_{0} \approx K \cdot e^{-r T} \Phi\left(-d_{2}\right)-S_{0} \cdot \Phi\left(-d_{1}\right)
+$$
+where
+$$
+d_{1}=\frac{\ln \left(S_{0} / K\right)}{\sigma \sqrt{T}}, \quad d_{2}=d_{1}-\sigma \sqrt{T}
+$$
+A formula that has an amazing similarity in its structure to the Black-Scholes formula
+for valuing European put options. Validation of expressions like these, and other best
+solutions obtained by their program, against 50,000 randomly generated American
+put options, resulted in a 96% of accuracy for some cases, outperforming some of
+the most frequently used analytical approximations for American put options.
+

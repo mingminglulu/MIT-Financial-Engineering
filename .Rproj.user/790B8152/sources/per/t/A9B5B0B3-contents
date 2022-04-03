@@ -1,0 +1,80 @@
+---
+title: "2.4 Forecasting"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In the analysis of financial time series we are interested in designing models for predicting future values. We are going to formalize the framework for forecasting in this chapter and postpone the model design for Chap. 4. Given a stationary stochastic process $\left\{X_{t}\right\}$ with zero mean and autocovariance function $\gamma$, we want to predict $X_{t+h}$, the value of the series $h$ time periods into the future, based on some known set of information $Z$ about $X_{t}$. The information set $Z$ is comprised of random observations, and it is in practice a finite set of recent past values of the series, that is, $Z=$ $\left\{X_{t}, X_{t-1}, \ldots, X_{t-p}\right\}$. Given the set $Z$, we view an estimation $\widehat{X}_{t+h}$ of $X_{t+h}$ as a function of $Z, \widehat{X}_{t+h}=F(Z)$, and we would like to know how good is $F(Z)$ as an estimator. The accepted criterion for measuring the performance of an estimator $F$ of a random variable $X$, based on some information $Z$, is the following ${ }^{7}$
+The best estimator or predictor of a random variable $X$, on the basis of random information $Z$ about $X$, is the function $F(Z)$ that minimizes $E(X-F(Z))^{2}$.
+This minimum mean square error predictor can be characterized in statistical terms as follows. Assuming the conditional density function of $X$ given $Z=z$ exists (cf. Eq. (2.13)), we can consider the conditional expectation of $X$ given $Z=z$, denoted $E(X \mid Z=z)$ (or, for the sake of simplicity, $E(X \mid Z)$ ), and defined as
+$$
+E(X \mid Z=z)=\int_{-\infty}^{\infty} x f_{X \mid Z=z}(x) d x
+$$
+Then the best estimator of $X$ given the information $Z$ is $E(X \mid Z=z)$. We show this fact in the following theorem.
+
+
+Theorem 2.2 Let $X$ and $Z$ be two random variables with $E\left(X^{2}\right)<\infty$ and joint density function $f_{X, Z}$, and let $\widehat{X}=E(X \mid Z)$ the conditional expectation of $X$ given $Z$. Then, for any function $F=F(Z)$, we have
+$$
+E(X-\widehat{X})^{2} \leq E(X-F(Z))^{2}
+$$
+Proof Let $F=F(Z)$ and consider the following equalities
+$$
+\begin{aligned}
+E(X-F)^{2} &=E\left([(X-\widehat{X})+(\widehat{X}-F)]^{2}\right) \\
+&=E(X-\widehat{X})^{2}+2 E((X-\widehat{X})(\widehat{X}-F))+E(\widehat{X}-F)^{2}
+\end{aligned}
+$$
+Note that $\widehat{X}-F$ is a function of $Z$, so observed values of this random variable are denoted $z^{\prime}$ (i.e., given values $\widehat{X}-F=z^{\prime}$ ). We decompose the second term in (2.43), using linearity of $E$, as follows
+
+$$
+E((X-\widehat{X})(\widehat{X}-F))=E(X(\widehat{X}-F))-E(\widehat{X}(\widehat{X}-F))
+$$
+and now resolve, using (2.39), (2.15) and (2.42),
+$$
+\begin{aligned}
+E(X(\widehat{X}-F)) &=\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} x z^{\prime} f_{X, Z}\left(x, z^{\prime}\right) d x d z^{\prime} \\
+&=\int_{-\infty}^{\infty} z^{\prime}\left(\int_{-\infty}^{\infty} x f_{X \mid Z=z^{\prime}}(x) d x\right) f_{Z}\left(z^{\prime}\right) d z^{\prime}=\int_{-\infty}^{\infty} z^{\prime} E(X \mid Z) f_{Z}\left(z^{\prime}\right) d z^{\prime} \\
+&=E(\widehat{X}(\widehat{X}-F))
+\end{aligned}
+$$
+Therefore, $E((X-\widehat{X})(\widehat{X}-F))=0$, and
+$$
+E(X-F)^{2}=E(X-\widehat{X})^{2}+E(\widehat{X}-F)^{2} \geq E(X-\widehat{X})^{2} .
+$$
+This theorem applies to the particular case of interest in which the information set is $Z=\left\{X_{t}, X_{t-1}, \ldots, X_{t-p}\right\}$, a recent history of $X_{t}$, and we want to make estimation of $X_{t+h}$. Then the best predictor in this case is the conditional expectation $E\left(X_{t+h} \mid X_{t}, X_{t-1}, \ldots, X_{t-p}\right)$. We are thus interested in determining the form of this conditional expectation. For Gaussian processes this is well determined as stated in the following proposition whose proof we leave as exercise.
+
+Proposition $2.3$ If the variables $X_{t+h}, X_{t}, \ldots, X_{t-p}$ have a normal distribution, i.e., the process $\left\{X_{t}\right\}$ is Gaussian, then
+$$
+E\left(X_{t+h} \mid X_{t}, X_{t-1}, \ldots, X_{t-p}\right)=\alpha_{0} X_{t}+\alpha_{1} X_{t-1}+\cdots+\alpha_{p} X_{t-p}
+$$
+where $\alpha_{0}, \ldots, \alpha_{p}$ are real numbers.
+In view of this proposition, the problem of building a best predictor for a Gaussian process is solved by forming a linear regression. For any other process, not necessarily normally distributed, it is still desirable to design a predictor as a linear combination of its past history, even if this does not coincides with the conditional expectation of the process given its past history. In this case we want a linear function $L$ of $\left\{X_{t}, X_{t-1}, \ldots, X_{t-p}\right\}$ that minimizes the mean square error $E\left(X_{t+h}-L\right)^{2}$; that is, we want to find coefficients $\alpha_{0}, \alpha_{1}, \ldots, \alpha_{p}$ to form $L\left(X_{t+h}\right)=\sum_{j=0}^{p} \alpha_{j} X_{t-j}$ and such that their values minimize $F\left(\alpha_{0}, \ldots, \alpha_{p}\right)=E\left(X_{t+h}-\sum_{j=0}^{p} \alpha_{j} X_{t-j}\right)^{2}$. This $F$ is a quadratic function bounded below by 0 , and hence there exists values of $\left(\alpha_{0}, \ldots, \alpha_{p}\right)$ that minimizes $F$, and this minimum satisfies $\frac{\partial F\left(\alpha_{0}, \ldots, \alpha_{p}\right)}{\partial \alpha_{j}}=0, j=0, \ldots, p$. Evaluating these derivatives we get:
+$$
+E\left(\left(X_{t+h}-\sum_{k=0}^{p} \alpha_{k} X_{t-k}\right) X_{t-j}\right)=0, \quad j=0, \ldots, p
+$$
+
+Since $E\left(X_{t}\right)=0, \gamma(h+j)=E\left(X_{t+h} X_{t-j}\right)$ for $j=0,1, \ldots, p$, and consequently we obtain from Eq. (2.44) the following system of equations:
+$\gamma(h)=\alpha_{0} \gamma(0)+\alpha_{1} \gamma(1)+\cdots+\alpha_{p} \gamma(p)$
+$\gamma(h+1)=\alpha_{0} \gamma(1)+\alpha_{1} \gamma(0)+\cdots+\alpha_{p} \gamma(p-1)$
+:
+$\gamma(h+p)=\alpha_{0} \gamma(p)+\alpha_{1} \gamma(p-1)+\cdots+\alpha_{p} \gamma(0)$
+Therefore, in terms of conditional expectation, the best linear $h$-step forecaster for the process $\left\{X_{t}\right\}$ is
+$$
+L\left(X_{t+h}\right)=\sum_{j=0}^{p} \alpha_{j} X_{t-j}
+$$
+where $\left(\alpha_{0}, \alpha_{1}, \ldots, \alpha_{p}\right)$ satisfies Eq. (2.45). On the other hand, the mean square forecast error is given by the equation
+$$
+E\left(X_{t+h}-L\left(X_{t+h}\right)\right)^{2}=\gamma(0)-2 \sum_{j=0}^{p} \alpha_{j} \gamma(h+j)+\sum_{i=0}^{p} \sum_{j=0}^{p} \alpha_{i} \alpha_{j} \gamma(i-j)
+$$
+
+Note that if we don't know the autocovariance function $\gamma$ we can make estimations using the sample covariance (Eq. (2.40)).
+
+Thus, for a stationary process its best linear forecaster in terms of its past is completely determined by the covariances of the process. However, note that even though the system of linear Eq. $(2.45)$ is computationally solvable, it can be timeconsuming for large $p$. The solution of this system can be alleviated for processes which are themselves expressed by linear combinations of white noise, as it is the case of the ARMA processes to be studied in Chap. 4. For other arbitrary processes there are some very effective recursive procedures to compute the coefficients for a 1-step forecaster. ${ }^{8}$
+
+
+

@@ -1,0 +1,125 @@
+---
+title: "5.3 Monte Carlo Valuation of Derivatives"
+author: "Ming Lu"
+date: '2022-04-02'
+output: word_document
+---
+
+A popular numerical approach to valuing securities is the Monte Carlo (MC) simulation method. We have seen already in R Example 5.2 an illustration of the method. In
+its simpler form it consists of simulating many finite trajectories of a random process
+that models the price of the asset, and then take the average of the results at a given
+point as an estimate of the value of the process at that point. This numerical method
+has been proven to be very useful when applied to pricing options.
+The application of the MC method to the valuation of options was first proposed by
+Boyle (1977), and after this seminal paper followed a long list of publications showing
+the advantage of the method in finding good approximations to the present value of
+almost any type of options, which included path dependent options such as Asian, and
+even further, options with multiple uncertainties as, for example, American arithmetic
+Asian options on a single underlying asset (Grant et al. 1997). There are different
+variants of the MC method, depending on the model assumed for the behavior of the
+underlying asset and the technique employed for speeding up the convergence of the
+simulations. We will give a very brief account of Monte Carlo discretization methods
+applied to options whose underlying asset prices follow a continuous-time model.
+Our exposition will be terse in the technical details, as our purpose is to provide a
+primer to the important and extensive field of Monte Carlo methods in finance. As a
+follow up, or better as a companion to these notes, we propose the survey by Boyle
+et al. (1997) and the textbook by Glasserman (2004).
+The general idea of the Monte Carlo method for computing the present value of a
+security is to numerically approximate the discounted expected payoff of the security,
+assuming a risk-neutral world. Here is again the risk-neutral valuation principle in
+action, which we first encounter in Sect. 1.2.3, and then again in Remark 5.2 on the
+Black-Scholes formulas, and in the construction of the CRR binomial tree model. The
+MC method implements the risk-neutral valuation of securities through the following
+steps：
+
+(1) Simulate sample paths of the underlying state variable (e.g., asset prices and interest rates) over the relevant time horizon and according to the risk-neutral measure.
+(2) Evaluate the discounted cash flows of a security on each sample path, as determined by the structure of the security in question.
+(3) Average the discounted cash flows over a given number of sample paths. The result is taken as an approximation to the value of the security.
+
+When the underlying state variable is assumed to follow a continuous time model, such as the arithmetic Brownian motion, the MC method described above consists formally in computing an approximation to $E\left(e^{-r T} f\left(X_{T}\right)\right)$, where $r$ is the constant risk-free interest rate used to discount the value $f\left(X_{T}\right), f: \mathbb{R}^{d} \rightarrow \mathbb{R}$ (the payoff of the security) and $X_{T}$ is the value at time $T$ of the random process $X(t)$ that is solution of the SDE
+$$
+d X(t)=a(X(t)) d t+b(X(t)) d B(t), \quad X(0)=X_{0} \in \mathbb{R}^{d}
+$$
+
+with $B(t)$ a Brownian motion, and $a, b: \mathbb{R}^{d} \rightarrow \mathbb{R}^{d}$ functions satisfying certain regularity conditions that ensure the existence of unique solutions to Eq. (5.34). To obtain an approximate solution of (5.34) over a time interval $[0, T]$, and where functions $a$ and $b$ are not necessarily constants, one effective method is to apply a discretization scheme. Begin by dividing the time interval $[0, T]$ in $n$ parts of equal length, such as $0=t_{0}<t_{1}<\cdots<t_{n}=T$, with $t_{j}=j \Delta t$ and $\Delta t=T / n=t_{j}-t_{j-1}$, for all $j>0$. A solution observed at discrete time $t \in\left\{t_{0}, t_{1}, \ldots, t_{n}\right\}$ is obtained by integrating (5.34) from $t$ to $t+\Delta t$ which results in
+$$
+X_{t+\Delta t}=X_{t}+\int_{t}^{t+\Delta t} a\left(X_{s}\right) d s+\int_{t}^{t+\Delta t} b\left(X_{s}\right) d B(s)
+$$
+The remaining task is to approximate the two integrals in (5.35). We do this with a simple, yet effective, discretization scheme due to Euler.
+Euler approximation. The Euler method approximates the integrals in Eq. (5.35) as products of their integrands at time $t$ and the size of the integration domain, that is,
+$$
+\int_{t}^{t+\Delta t} a\left(X_{s}\right) d s \approx a\left(X_{t}\right) \int_{t}^{t+\Delta t} d s=a\left(X_{t}\right) \Delta t
+$$
+and
+$$
+\int_{t}^{t+\Delta t} b\left(X_{s}\right) d B(s) \approx b\left(X_{t}\right) \int_{t}^{t+\Delta t} d B(s)=b\left(X_{t}\right) \sqrt{\Delta t} \varepsilon_{t}, \quad \varepsilon_{t} \sim N(0,1)
+$$
+
+Putting all together we get Euler's discrete solution of (5.34), which is
+$$
+X_{0}=X(0), \quad X_{t+\Delta t}=X_{t}+a\left(X_{t}\right) \Delta t+b\left(X_{t}\right) \sqrt{\Delta t} \varepsilon_{t}
+$$
+Now that we have a way to simulate sample paths of the arithmetic Brownian motion, we employ it in a straightforward application of the Monte Carlo method. This example has the twofold purpose of illustrating the method, as well as being a reference upon which we will develop further complicated applications of the method.
+
+Consider the problem of estimating the price of a European option (call or put) on a common stock. Thus, the underlying state variable is the stock's price $\left\{S_{t}\right\}$, which is assumed to follow a geometric Brownian motion, and hence its continuous version is solution of the equation
+$$
+d S(t)=\mu S(t) d t+\sigma S(t) d B
+$$
+where $\mu$ is the drift rate and $\sigma$ the volatility of $S(t)$. Assuming a risk-neutral measure, we put $\mu=r$, where $r$ is the risk-free interest rate. The function $f$ is the European option's payoff, which is defined as
+$$
+f\left(S_{T}\right)= \begin{cases}\max \left(S_{T}-K, 0\right) & \text { for a call } \\ \max \left(K-S_{T}, 0\right) & \text { for a put }\end{cases}
+$$
+
+where $K$ is the strike price and $S_{T}$ is the stock's price at expiration time $T$. Then the steps of the MC method adapted to the valuation of this option are as follows:
+(1) To simulate the ith sample path of $S(t)$ we use the Euler discretization with $X_{t}=S_{t}, a\left(X_{t}\right)=r S_{t}$ and $b\left(X_{t}\right)=\sigma S_{t}$. Divide the time interval $[0, T]$ into $n$ time periods $\Delta t=T / n$, and recursively compute the approximated path $\left\{\widehat{S}_{i, j}\right\}$ of length $n$ as
+$$
+\begin{aligned}
+&\widehat{S}_{i, 0}=S(0) \\
+&\widehat{S}_{i, j}=\widehat{S}_{i, j-1}+r \widehat{S}_{i, j-1} \Delta t+\sigma \widehat{S}_{i, j-1} \varepsilon_{j} \sqrt{\Delta t}, \quad \varepsilon_{j} \sim N(0,1), j=1, \ldots, n
+\end{aligned}
+$$
+(2) The discounted payoff of sample path $\omega_{i}=\left(\widehat{S}_{i, 0}, \widehat{S}_{i, 1}, \ldots, \widehat{S}_{i, n}\right)$ is $f\left(\widehat{S}_{i, n}\right) \cdot e^{-r T}$.
+(3) Considering $m$ sample paths $\omega_{1}, \ldots, \omega_{m}$, the average is given by $\frac{1}{m} \sum_{i=1}^{m} f\left(\widehat{S}_{i, n}\right) e^{-r T}$. This is the estimated price of the option.
+
+The pseudo-code for this MC simulation based on Euler discretization is presented in Algorithm 5.2. We have adapted the mathematical nomenclature to the language of $\mathrm{R}$, so that the reader can readily copy this code into his $\mathrm{R}$ console and put it to work. The default inputs are set to: a call option, stock's initial price and option's
+strike price equal to 100, expiration time one month, risk-free interest rate of 10 %,
+and volatility of 25 %.
+
+Convergence. How good is the Monte Carlo approximation $\widehat{C}_{m}^{n}=\frac{1}{m} \sum_{i=1}^{m} f\left(\widehat{S}_{i, n}\right) e^{-r T}$ to $E\left(e^{-r T} f\left(X_{T}\right)\right)$ ? We need to analyze the approximation error
+$$
+\varepsilon(m, n)=\widehat{C}_{m}^{n}-E\left(e^{-r T} f\left(X_{T}\right)\right),
+$$
+a measure that depends on both $m$ and $n$ (the number of simulated paths and the length of each path). Let's first consider $m$ variable (so that $n$ is fixed). Set $C=$ $e^{-r T} f\left(X_{T}\right)$, and let $\mu_{C}=E(C)$ and $\sigma_{C}^{2}=\operatorname{Var}(C)$. Each $\widehat{C}_{i}=f\left(\widehat{S}_{i, n}\right) e^{-r T}$ is iid sample of $C$, so that $\widehat{C}_{m}^{n}=\frac{1}{m} \sum_{i=1}^{m} \widehat{C}_{i}$ is a sample mean $\widehat{\mu}_{C}$, and the sample variance $\widehat{\sigma}_{C}^{2}=\frac{1}{m-1} \sum_{i=1}^{m}\left(\widehat{C}_{i}-\widehat{\mu}_{C}\right)^{2}$. By the Central Limit theorem the standardized estimator $\frac{\sqrt{m}\left(\widehat{C}_{m}^{n}-C\right)}{\sigma_{C}}$ converges in distribution to the standard normal. This also holds for the sample standard deviation $\widehat{\sigma}_{C}$ in the place of $\sigma_{C}$. This means that
+
+$$
+\lim _{m \rightarrow \infty} \mathbb{P}\left(\frac{\sqrt{m}}{\widehat{\sigma}_{C}}\left(\widehat{C}_{m}^{n}-C\right) \leq x\right)=\Phi(x)
+$$
+for all $x$, where $\Phi(x)$ is the cumulative normal distribution. This implies that the approximation error $\varepsilon(m, n)$, with $n$ fixed, has a rate of convergence $O(1 / \sqrt{m})$. Thus, increasing the number of simulated paths reduces the approximation error, and at a rate of $1 / \sqrt{m}$.
+
+On the other hand, with respect to $n$, and keeping $m$ fixed, it can be shown that $\lim _{n \rightarrow \infty} \varepsilon(m, n)=0$, and even further that $\varepsilon(m, n)$ is $O\left(n^{-1}\right)$ (see Kloeden and Platen (1995)). Thus, increasing the number of steps to construct the simulated paths the more accurate the approximations $\widehat{C}_{i}$, and the rate of convergence is as $1 / n$. This means that the Euler approximation is of order 1 convergence. This can be improved. A discretization method that achieves order 2 convergence, i.e., convergence is $O\left(n^{-2}\right)$, is given by Milstein discretization scheme.
+Milstein approximation. An improvement to the Euler approximation to solutions of the arithmetic Brownian motion was obtained by Milstein. ${ }^{2}$ The Milstein discretization scheme to approximate solutions to Eq. (5.34) is given by
+$$
+\begin{aligned}
+X_{t+h}=& X_{t}+a h+b \sqrt{h} \varepsilon_{t}+\frac{1}{2} b^{\prime} b\left(\left(\sqrt{h} \varepsilon_{t}\right)^{2}-h\right) \\
+&+\frac{h^{2}}{2}\left(a a^{\prime}+\frac{1}{2} b^{2} a^{\prime \prime}\right)+\frac{h^{3 / 2}}{2}\left(a^{\prime} b+a b^{\prime}+\frac{1}{2} b^{2} b^{\prime \prime}\right) \varepsilon_{t}
+\end{aligned}
+$$
+
+where $h=\Delta t$ (the time step), $a=a\left(X_{t}\right), b=b\left(X_{t}\right)$ and derivatives $a^{\prime}, a^{\prime \prime}, b^{\prime}, b^{\prime \prime}$ are with respect to $X$, and $\varepsilon_{t} \sim N(0,1)$. This approximation has a second-order convergence rate, meaning that the approximation error is $O\left(h^{-2}\right)$, under some assumptions on the continuity of the coefficient functions $a$ and $b$. Thus, with the same time step $h=\Delta t$ the Milstein approximation converges faster than Euler approximation. For a deduction of the Milstein discretization scheme and a discussion on its convergence see Glasserman (2004, Chap. 6).
+
+To apply the Milstein approximation to sample paths of the price of a stock $S$ that follows a geometric Brownian motion, we proceed as before with Euler and set $X_{t}=S_{t}, a=a\left(X_{t}\right)=r S_{t}$ and $b=b\left(X_{t}\right)=\sigma S_{t}$ (hence $a^{\prime}=r, a^{\prime \prime}=0$, $b^{\prime}=\sigma, b^{\prime \prime}=0$ ). Divide the interval $[0, T]$ into $n$ time periods $h=T / n$, and thus, an approximated Milstein path $\left\{\widehat{S}_{j}\right\}$ of length $n$ is given by
+$$
+\begin{aligned}
+\widehat{S}_{0}=& S(0) \\
+\widehat{S}_{j}=& \widehat{S}_{j-1}+r \widehat{S}_{j-1} h+\sigma \widehat{S}_{j-1} \sqrt{h} \varepsilon_{j}+\frac{1}{2} \sigma^{2} \widehat{S}_{j-1}\left(\left(\sqrt{h} \varepsilon_{j}\right)^{2}-h t\right) \\
+&+\widehat{S}_{j-1}\left(\frac{(r h)^{2}}{2}+r \sigma h^{3 / 2}\right), \quad \varepsilon_{j} \sim N(0,1), j=1, \ldots, n
+\end{aligned}
+$$
+
+You can substitute line 5 of Algorithm $5.2$ for this equation and you have a Monte Carlo method for computing the price of a European option with the Milstein discretization scheme. There are several others discretization schemes, some of higher order of convergence; for a review see Kloeden and Platen (1995). We have presented the two most popular discretization schemes.
+Path dependent options. Now that we have understood the MC method through a simple application as the valuation of European option, let's see how it applies to the case of valuing path-dependent options. As an example we consider Asian call options on stocks. Recall that the payoff of these type of options is given by the average price of the stock over some predetermined period of time until expiration. Formally, the payoff is defined by $\max \left(A_{S}\left(T_{0}, T\right)-K, 0\right)$, where $\left.A_{S}\left(T_{0}, T\right)-K, 0\right)=\frac{1}{n} \sum_{j=0}^{n} S_{t_{j}}$, for some fixed set of dates $T_{0}=t_{0}<t_{1}<\cdots<t_{n}=T$, with $T$ the expiration date for the option.
+
+We need to calculate the expected discounted payoff $E\left(e^{-r T} \max \left(A_{S}\left(T_{0}, T\right)-\right.\right.$ $K, 0))$, and to do that it will be sufficient to simulate the path $S_{t_{0}}, S_{t_{1}}, \ldots, S_{t_{n}}$ and compute the average on that path. We can use any of the discretization methods to simulate the path; for simplicity we work with Euler approximation. Algorithm $5.3$ shows the steps to do this calculation of an Asian option (which is set by default to a call).
+
+
+

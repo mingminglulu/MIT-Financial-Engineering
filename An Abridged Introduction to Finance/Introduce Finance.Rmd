@@ -1,0 +1,184 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
+# Introduction to Finance
+
+## 1.1 Financial Securities
+
+- Debt: to this class belong, in general, those securities that are “secure”, in the
+sense of been risk-free, such as bonds, commercial notes and bank deposits.
+
+- Equity: refers generally to a company’s stocks or share value
+
+- Derivatives: in this class are securities whose value depend on the values of other,
+more basic underlying variables. Examples of derivatives are: futures and forward contracts, swaps, and options. A stock option, for example, is a contract whose
+value depends on the price of a stock at a certain date
+
+### Bonds and the Continuous Compounding of Interest Rates
+
+- Compounding the interest
+
+$p_n=p_0(1+r)^n$ ==> monthly
+
+$p_n=p_0(1+r/m)^{nm}$--> 
+
+
+as n -> infinity
+
+$p_t=p_0e^{rt}$
+
+
+==>
+
+$p_{s+t}=p_te^{rs}$
+
+
+==>
+
+$p_{t-s}=p_te^(-rs)$
+
+
+==> 
+
+$p_0e^r=p_0(1+R/m)^m$  
+
+==>
+
+$r=m\ln(1+R/m)$
+
+- Payoff and profit of bonds. The payoff of any security is its value at maturity.
+
+$p_t-p_0=p_0((1+r/m)^{mt}-1)$
+
+
+## 1.1.2 Stocks: Trade, Price and Indices
+
+[market capitalization = (number of shares outstanding) × (price of share).]
+
+
+- Market order: An order that is send to the market demanding for the trade on the security to be executed immediately at the current market price.
+
+
+- Limit order: An order that is send to the market demanding for a given or better price at which to buy or sell the security.
+
+
+- Stop orders: An order that is held by the broker and only send to the market when the price of the security reaches a specified amount (the stop price).
+
+
+- Reading a stock quotes table 
+
+   - Ticker: the company’s id for the market (e.g. for General Electric Co. is GE).
+
+   - Open: the price of the stock at the opening time of the market session
+   
+   - Close: the price of the stock at the current time, if the market is in session, or the
+last price traded when the market closes.
+
+    - High: (or Max) is the maximum price reached by the stock between the Open and
+the Close price.
+
+    - Low: (or Min) is the minimum price reached by the stock between the Open and
+the Close price.
+
+   - Volume: is the number of shares traded between the times of Open and Close.
+   
+   -Adjusted Close: is the closing price adjusted to include any dividend payments
+plus any other corporate actions that affect the stock price (e.g. splits and rights
+offerings).
+
+
+- Payoff and profit of stocks
+
+$S_T-S_0Se^{rt}$
+
+==>
+
+$S_T+D_T-C(S_0)e^{rt}$
+
+- Stock indices:A measure of the value of the market, or of a sector, is given by the stock indices
+
+- rice weighted:only the price of each component stock is consider. 
+
+- Capitalization-weighted:onsiders the market capitalization of each stock composing the index; that is, the stock price times the number of shares outstanding.siders theof each stock composing the index; that is, the stock price times the number of shares outstanding.
+
+- A price weighted index
+
+ $DJIA_t=\frac{\sum_{i=1}^30S_{i,t}}{D}$
+ 
+- A capitalization weighted index
+
+$IBEX_t=IBEX_{t-1}\times\frac{\sum_{i=1}^{35}cap_{i,t}}{\sum_{i=1}^{35}cap_{i,t-1}+- J}$
+
+- Value Line Stock Index
+
+$VLIC_t=VLIC_{t-1}\times(\prod_{i=1}^n\frac{c_{i,t}}{c_{i,t-1}})^{1/n}$
+
+
+$VLIA_t=VLIA_{t-1}\times1/n \sum_{i=1}^n\frac{c_{i,t}}{c_{i,t-1}}$
+
+- Comparing the performance of two or more stocks:. As mentioned before, a way
+that investors have to gauge the performance of their stock investments is to compare
+their price behavior with another reference stock’s price history, or usually with the
+history of the market index.
+
+
+##  1.1.3 Options and Other Derivatives
+
+- Options. An option is a contract that investors can buy for a fee in order to have
+the opportunity, but not the obligation, to trade an asset in an exchange market at
+a future date, and at a given price
+
+- European: these options may only be exercised on expiration date.
+
+- American: may be exercised on any trading day on or before the expiration date.
+
+- Bermudan: may be exercised only on predetermined dates before expiration; so
+this option is somewhat between European and American.
+
+- Asian: the payoff of these type of options is determined by the average of the price
+of the underlying asset during some period of time within the life of the option
+
+- Barrier: these options may only be exercised if the price of the underlying asset
+passes a certain level (i.e. a barrier) during a certain period of time
+
+- Reading an option quotes: The price of an option, also known as the premium, is
+given on a per share basis.
+
+- Payoff and profit of options
+
+$max(p_t-k,0)$ call
+
+$max(k-p_t,0)$ put
+
+call option profit:
+
+$max(p_t-k,0)-C(p_0,t)e^{rt}$
+
+- Forward and futures contracts:. Forward and futures contracts are derivatives that
+differ from options essentially in their terms of liability.
+
+- Payoff and profit:. If K is the delivery price of the asset written in the contract and
+$P_T$ is the price at exercise date T , the payoff for the buyer in the contract on one
+unit of the asset is $P_T-K$, while the payoff for the seller on one unit of the asset is
+$K-P_T$ .
+
+## 1.1.4 Portfolios and Collective Investment
+
+- Mutual funds and ETF:An alternative to personally manage your own portfolio
+is to put your money, alongside other investors money, in a collective investment
+vehicle managed by a professional company that does the selection of securities,
+monitors their performance, and the subsequently asset allocation of the portfolio.
+
+
+
+
+
+
+
+
+
+
+
